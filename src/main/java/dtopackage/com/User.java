@@ -2,7 +2,7 @@ package dtopackage.com;
 
 
 public class User {
-  private String user_id;
+  private int user_id;
   private String Username;
   private String email;
   private String password;
@@ -13,7 +13,7 @@ public class User {
   
  
 
-  public User(String user_id, String username, String email, String password, String full_name,
+  public User(int user_id, String username, String email, String password, String full_name,
 		long phone, String role) {
 	super();
 	this.user_id = user_id;
@@ -26,11 +26,11 @@ public class User {
 	this.role = role;
 }
 
-  public String getUser_id() {
+  public int getUser_id() {
 	return user_id;
   }
 
-  public void setUser_id(String user_id) {
+  public void setUser_id(int user_id) {
 	this.user_id = user_id;
   }
 

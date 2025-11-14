@@ -9,9 +9,9 @@
 <body>
 
 
-<form action="">
+<form action="Register" method="post">
 <h1>Register Form</h1>
-<input type="hidden" name="User_id" placeholder="enter user_id"><br>
+<input type="number" name="User_id" placeholder="enter user_id"><br>
 <input type="text" name="Username" placeholder="enter username"><br>
 <input type="email" name="email" placeholder="enter email"><br>
 <input type="password" name="password" placeholder="enter password"><br>
