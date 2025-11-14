@@ -4,6 +4,6 @@ import dtopackage.com.User;
 
 public interface UserDao {
 	boolean registerUser(User u);
-	User loginUser(String email);
+	User loginUser(String username,String password);
 	
 }
