@@ -1,5 +1,9 @@
 package UserDaopackage.com;
 
-public interface UserDao {
+import dtopackage.com.User;
 
+public interface UserDao {
+	boolean registerUser(User u);
+	User loginUser(String email);
+	
 }
