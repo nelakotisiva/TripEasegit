@@ -13,7 +13,7 @@ public class User {
   
  
 
-  public User(int user_id, String username, String email, String password, String full_name,
+  public User(int user_id, String username,  String password,String email, String full_name,
 		long phone, String role) {
 	super();
 	this.user_id = user_id;

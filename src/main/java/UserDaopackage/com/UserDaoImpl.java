@@ -18,8 +18,8 @@ public class UserDaoImpl implements UserDao{
 			PreparedStatement psmt=con.prepareStatement(iqry);
 			psmt.setInt(1, u.getUser_id());
 			psmt.setString(2,u.getUsername());
-			psmt.setString(3, u.getEmail());
-			psmt.setString(4, u.getPassword());
+			psmt.setString(3, u.getPassword());
+			psmt.setString(4, u.getEmail());
 			psmt.setString(5, u.getFull_name());
 			psmt.setLong(6, u.getPhone());
 			psmt.setString(7, u.getRole());
