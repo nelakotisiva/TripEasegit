@@ -28,7 +28,7 @@ public class RegisterServlet extends HttpServlet {
 	      String password=req.getParameter("password");
 	      String conpass=req.getParameter("Confirm_password");
 	      String fullname=req.getParameter("full_name");
-	      long phone=Integer.parseInt(req.getParameter("phone"));
+	      long phone=Long.parseLong(req.getParameter("phone"));
 	      String role=req.getParameter("role");
 	      
 	      User u=new User(id, username, password, email, fullname, phone, role);

@@ -35,12 +35,41 @@ public class UserDaoImpl implements UserDao{
 			
 	}
 
+
+
 	@Override
 	public User loginUser(String username, String password) {
-		// TODO Auto-generated method stub
-		return null;
+	    Connection con = null;
+	    PreparedStatement pst = null;
+	    User user = null;
+
+	    try {
+	        con = DBConnection.getConnector();
+
+	        String sql = "SELECT * FROM `user` WHERE username = ? AND password = ?";
+	        pst = con.prepareStatement(sql);
+	        pst.setString(1, username);
+	        pst.setString(2, password);
+
+	        ResultSet rs = pst.executeQuery();
+
+	        if (rs.next()) {
+	            user = new User(
+	                rs.getInt("user_id"),
+	                rs.getString("username"),
+	                rs.getString("email"),
+	                rs.getString("password"),
+	                rs.getString("full_name"),
+	                rs.getLong("phone"),
+	                rs.getString("role")
+	            );
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return user;
 	}
 
-	
-
-}
+    }

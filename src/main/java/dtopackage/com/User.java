@@ -4,8 +4,9 @@ package dtopackage.com;
 public class User {
   private int user_id;
   private String Username;
-  private String email;
   private String password;
+  private String email;
+ 
   private String Confirm_password;
   private String full_name;
   private long phone;

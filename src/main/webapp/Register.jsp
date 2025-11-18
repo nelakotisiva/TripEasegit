@@ -10,24 +10,30 @@
 
 
 <form action="Register" method="post">
-<h1>Register Form</h1>
-<input type="number" name="User_id" placeholder="enter user_id"><br>
-<input type="text" name="Username" placeholder="enter username"><br>
-<input type="email" name="email" placeholder="enter email"><br>
-<input type="password" name="password" placeholder="enter password"><br>
-<input type="password" name="Confirm_password" placeholder="Re-enter password"><br>
-<input type="text" name="full_name" placeholder="enter full_name"><br>
-<input type="number" name="phone" placeholder="enter phone"><br>
-<input type="text" name="role" placeholder="enter role"><br>
-<button>Register</button><br>
-<button>Cancel</button><br>
+    <h1>Register Form</h1>
 
-<a href="Login.jsp">Already have an Account</a>
+    <input type="number" name="User_id" placeholder="Enter User ID"><br>
 
+    <input type="text" name="Username" placeholder="Enter Username"><br>
 
+    <input type="email" name="email" placeholder="Enter Email"><br>
 
+    <input type="password" name="password" placeholder="Enter Password"><br>
 
+    <input type="password" name="Confirm_password" placeholder="Re-enter Password"><br>
 
+    <input type="text" name="full_name" placeholder="Enter Full Name"><br>
+
+    <input type="text" name="phone" placeholder="Enter Phone"><br>  
+    <!-- FIXED: text instead of number -->
+
+    <input type="text" name="role" placeholder="Enter Role"><br>
+
+    <button type="submit">Register</button><br>
+    <button type="reset">Cancel</button><br>
+
+    <a href="Login.jsp">Already have an Account?</a>
 </form>
+
 </body>
 </html>
