@@ -25,7 +25,6 @@
     <input type="text" name="full_name" placeholder="Enter Full Name"><br>
 
     <input type="text" name="phone" placeholder="Enter Phone"><br>  
-    <!-- FIXED: text instead of number -->
 
     <input type="text" name="role" placeholder="Enter Role"><br>
 

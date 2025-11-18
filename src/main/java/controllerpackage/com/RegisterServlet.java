@@ -31,7 +31,22 @@ public class RegisterServlet extends HttpServlet {
 	      long phone=Long.parseLong(req.getParameter("phone"));
 	      String role=req.getParameter("role");
 	      
+	   // ********** PASSWORD VALIDATION **********
+	        if (!password.equals(conpass)) {
+
+	            // Popup message using JavaScript
+	            resp.setContentType("text/html");
+	            resp.getWriter().println("<script type=\"text/javascript\">");
+	            resp.getWriter().println("alert('Password and Confirm Password do not match!');");
+	            resp.getWriter().println("location='Register.jsp';"); // redirect back to register page
+	            resp.getWriter().println("</script>");
+	            return;
+	        }
+	      
 	      User u=new User(id, username, password, email, fullname, phone, role);
+	      
+	      
+	      
 	      boolean istrue=dao.registerUser(u);
 	      if(istrue) {
 	    	  req.getRequestDispatcher("Login.jsp").forward(req, resp);;

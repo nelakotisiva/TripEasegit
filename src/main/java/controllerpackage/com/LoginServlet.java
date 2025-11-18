@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet{
 		PrintWriter out=resp.getWriter();
 		if(u!=null)
 		{
-			session.setAttribute("User", u);
+			session.setAttribute("userObj", u);
 			out.print("Logged in Successfully");
 			RequestDispatcher rd=req.getRequestDispatcher("Dashboard.jsp");
 			rd.include(req, resp);

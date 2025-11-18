@@ -12,7 +12,9 @@ public class User {
   private long phone;
   private String role;
   
- 
+ public User() {
+	// TODO Auto-generated constructor stub
+}
 
   public User(int user_id, String username,  String password,String email, String full_name,
 		long phone, String role) {
@@ -27,6 +29,7 @@ public class User {
 	this.role = role;
 }
 
+ 
   public int getUser_id() {
 	return user_id;
   }
