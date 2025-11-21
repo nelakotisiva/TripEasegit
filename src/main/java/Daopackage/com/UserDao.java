@@ -1,4 +1,4 @@
-package UserDaopackage.com;
+package Daopackage.com;
 
 import java.util.List;
 

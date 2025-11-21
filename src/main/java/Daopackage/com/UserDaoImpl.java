@@ -1,4 +1,4 @@
-package UserDaopackage.com;
+package Daopackage.com;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

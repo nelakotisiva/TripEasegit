@@ -3,8 +3,8 @@ package controllerpackage.com;
 import java.io.IOException;
 import java.util.List;
 
-import UserDaopackage.com.UserDao;
-import UserDaopackage.com.UserDaoImpl;
+import Daopackage.com.UserDao;
+import Daopackage.com.UserDaoImpl;
 import dtopackage.com.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
