@@ -26,7 +26,7 @@
     <li><a href="ProfileServlet">View Profile</a></li>
     <li><a href="HotelListServlet">Hotels</a></li>
     <li><a href="VehicleListServlet">Cabs / Bikes</a></li>
-    <li><a href="RestaurantListServlet">Restaurants</a></li>
+    <li><a href="nearby.jsp">Restaurants</a></li>
     <li><a href="PackageListServlet">Tour Packages</a></li>
     <li><a href="PlacesServlet">Famous Places</a></li>
     <li><a href="MyBookingsServlet">My Bookings</a></li>
