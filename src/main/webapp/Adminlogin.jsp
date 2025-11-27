@@ -11,7 +11,6 @@
 <input type="text" name="Username" placeholder="enter admin_username"><br>
 <input type="password" name="password" placeholder="enter password"><br>
 <button>Submit</button>
-
 </form>
 </body>
 </html>
