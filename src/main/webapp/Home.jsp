@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<a href="HotelListServlet">Test Hotels</a>
 
 </body>
 </html>
