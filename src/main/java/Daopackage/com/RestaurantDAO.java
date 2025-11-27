@@ -5,5 +5,16 @@ import java.util.List;
 import dtopackage.com.Restaurant;
 
 public interface RestaurantDAO {
-List<Restaurant> getAllRestautaurants();
+	
+	// For user module	
+    List<Restaurant> getRestaurantsByMaxPrice(double budget);
+    List<Restaurant> getAllRestaurants();
+    
+    
+    // For admin module
+    boolean addRestaurant(Restaurant r);
+    boolean updateRestaurant(Restaurant r);
+    boolean deleteRestaurant(int id);
+    Restaurant getRestaurantById(int id);
+
 }

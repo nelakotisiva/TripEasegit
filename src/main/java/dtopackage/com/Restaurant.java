@@ -6,10 +6,10 @@ public class Restaurant {
     private String name;
     private String type;
     private double rating;
-    private long contact;
+    private String contact;
+    private double avgPrice;
     private double latitude;
     private double longitude;
-    
     
     
 	public int getRestaurantId() {
@@ -42,11 +42,17 @@ public class Restaurant {
 	public void setRating(double rating) {
 		this.rating = rating;
 	}
-	public long getContact() {
+	public String getContact() {
 		return contact;
 	}
-	public void setContact(long contact) {
+	public void setContact(String contact) {
 		this.contact = contact;
+	}
+	public double getAvgPrice() {
+		return avgPrice;
+	}
+	public void setAvgPrice(double avgPrice) {
+		this.avgPrice = avgPrice;
 	}
 	public double getLatitude() {
 		return latitude;
@@ -60,6 +66,7 @@ public class Restaurant {
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
+    
 
 	
 }

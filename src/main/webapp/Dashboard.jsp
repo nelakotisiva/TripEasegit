@@ -26,12 +26,29 @@
     <li><a href="ProfileServlet">View Profile</a></li>
     <li><a href="HotelListServlet">Hotels</a></li>
     <li><a href="VehicleListServlet">Cabs / Bikes</a></li>
-    <li><a href="nearby.jsp">Restaurants</a></li>
+    <li><a href="nearbyRestaurants?type=auto">Restaurants</a></li>
     <li><a href="PackageListServlet">Tour Packages</a></li>
     <li><a href="PlacesServlet">Famous Places</a></li>
     <li><a href="MyBookingsServlet">My Bookings</a></li>
     <li><a href="LogoutServlet">Logout</a></li>
 </ul>
+<li><a href="javascript:getLocation()">Restaurants</a></li>
+
+<script>
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            const lat = pos.coords.latitude;
+            const lon = pos.coords.longitude;
+            window.location.href = "nearbyRestaurants?lat=" + lat + "&lon=" + lon;
+        }, function() {
+            window.location.href = "nearbyRestaurants"; // no location
+        });
+    } else {
+        window.location.href = "nearbyRestaurants";
+    }
+}
+</script>
 
 </body>
 </html>

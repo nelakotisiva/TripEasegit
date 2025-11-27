@@ -40,5 +40,6 @@ if (message != null) {
 <p><b>Role:</b> <%= user.getRole() %></p>
 <br>
 <a href="Edit.jsp">Edit Profile</a>
+<a href="Dashboard.jsp"><button>back</button></a>
 </body>
 </html>

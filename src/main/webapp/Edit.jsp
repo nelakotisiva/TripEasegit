@@ -41,5 +41,6 @@ User user=(User) session.getAttribute("userObj");
     <input type="text" name="role" value="<%= user.getRole() %>" ><br><br>
     <input type="submit" value="Update Profile">
 </form>
+<a href="Dashboard.jsp"><button>back</button></a>
 </body>
 </html>
