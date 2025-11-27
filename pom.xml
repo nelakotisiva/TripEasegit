@@ -36,6 +36,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>TripEase</finalName>
+    <finalName>TripEasegit</finalName>
   </build>
 </project>
