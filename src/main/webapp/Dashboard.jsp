@@ -4,7 +4,7 @@
 <%
     User userObj = (User) session.getAttribute("userObj");
     if (userObj == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("Login.jsp");
         return;
     }
 %>
