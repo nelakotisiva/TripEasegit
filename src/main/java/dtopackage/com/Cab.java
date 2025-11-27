@@ -26,7 +26,7 @@ public class Cab {
     public double getPricePerDay() { return pricePerDay; }
     public String getAvailability() { return availability; }
 
-    // Setter for availability
+    // Setter 
     public void setAvailability(String availability) {
         this.availability = availability;
     }
