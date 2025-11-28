@@ -34,7 +34,6 @@ public class LoginServlet extends HttpServlet{
 		if(u!=null)
 		{
 			session.setAttribute("userObj", u);
-			out.print("Logged in Successfully");
 			RequestDispatcher rd=req.getRequestDispatcher("Dashboard.jsp");
 			rd.include(req, resp);
 		}else {
