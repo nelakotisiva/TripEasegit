@@ -16,33 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cab_rental`
+-- Table structure for table `cab_booking`
 --
 
-DROP TABLE IF EXISTS `cab_rental`;
+DROP TABLE IF EXISTS `cab_booking`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cab_rental` (
+CREATE TABLE `cab_booking` (
+  `booking_id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `rental_id` int NOT NULL,
-  `destination_id` int DEFAULT NULL,
-  `vehicle_type` varchar(50) DEFAULT NULL,
-  `model` varchar(100) DEFAULT NULL,
-  `price_per_day` decimal(10,2) DEFAULT NULL,
-  `availability` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`rental_id`),
-  KEY `destination_id_idx` (`destination_id`),
-  CONSTRAINT `d_id` FOREIGN KEY (`destination_id`) REFERENCES `destination` (`destination_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `passengers` int NOT NULL,
+  `booking_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` varchar(50) DEFAULT 'Booked',
+  PRIMARY KEY (`booking_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cab_rental`
+-- Dumping data for table `cab_booking`
 --
 
-LOCK TABLES `cab_rental` WRITE;
-/*!40000 ALTER TABLE `cab_rental` DISABLE KEYS */;
-INSERT INTO `cab_rental` VALUES (1,101,'Sedan','Toyota Corolla',2500.00,'Booked'),(2,102,'SUV','Mahindra XUV500',3500.00,'Booked'),(3,103,'Hatchback','Hyundai i20',1800.00,'Booked'),(4,101,'Sedan','Honda City',2700.00,'Booked'),(5,104,'SUV','Kia Seltos',3600.00,'Booked'),(6,105,'Hatchback','Maruti Swift',1700.00,'Booked'),(7,102,'Sedan','Skoda Octavia',3000.00,'Booked'),(8,103,'SUV','Toyota Fortuner',4500.00,'Booked'),(9,104,'Hatchback','Volkswagen Polo',2000.00,'Booked'),(10,105,'Sedan','Hyundai Verna',2800.00,'Booked');
-/*!40000 ALTER TABLE `cab_rental` ENABLE KEYS */;
+LOCK TABLES `cab_booking` WRITE;
+/*!40000 ALTER TABLE `cab_booking` DISABLE KEYS */;
+INSERT INTO `cab_booking` VALUES (1,1,1,2,'2025-11-27 11:48:03','Booked'),(2,1,2,3,'2025-11-27 11:48:12','Booked'),(3,1,8,2,'2025-11-27 15:43:40','Booked'),(4,1,8,2,'2025-11-27 15:43:51','Booked'),(5,1,3,5,'2025-11-27 15:44:28','Booked'),(6,1,4,5,'2025-11-28 02:16:41','Booked'),(7,1,5,2,'2025-11-28 02:16:49','Booked');
+/*!40000 ALTER TABLE `cab_booking` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
