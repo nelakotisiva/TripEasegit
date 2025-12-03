@@ -26,7 +26,7 @@ CREATE TABLE `destination` (
   `destination_id` int NOT NULL,
   `name` varchar(45) DEFAULT NULL,
   `location` varchar(45) DEFAULT NULL,
-  `description` varchar(45) DEFAULT NULL,
+  `description` varchar(455) DEFAULT NULL,
   `image_url` varchar(45) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   PRIMARY KEY (`destination_id`),
