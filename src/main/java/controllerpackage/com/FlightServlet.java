@@ -21,15 +21,15 @@ public class FlightServlet extends HttpServlet {
 
         List<Flight> flights = null;
 
-        // Only search when both fields are filled
-        if (source != null && destination != null 
-            && !source.trim().isEmpty() 
-            && !destination.trim().isEmpty()) {
+        // normalize inputs
+        source = (source == null) ? "" : source.trim();
+        destination = (destination == null) ? "" : destination.trim();
 
+        if (!source.isEmpty() && !destination.isEmpty()) {
+            // pass raw values (DAO will handle lowercasing/trimming as well)
             flights = new FlightDAOImpl().searchFlights(source, destination);
         }
 
-        // If user has not searched yet, flights == null (JSP will show nothing)
         req.setAttribute("flights", flights);
         req.setAttribute("source", source);
         req.setAttribute("destination", destination);

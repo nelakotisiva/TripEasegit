@@ -50,4 +50,30 @@ public class HotelDAOImpl implements HotelDAO {
         // Not used anymore (we do not show all hotels)
         return new ArrayList<>();
     }
+    
+    
+    
+    public Hotel getHotelById(int id) {
+        Hotel h = null;
+
+        String sql = "SELECT * FROM hotel WHERE hotel_id = ?";
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                h = new Hotel();
+                h.setHotelId(rs.getInt("hotel_id"));
+                h.setHotelName(rs.getString("hotel_name"));
+                h.setPricePerNight(rs.getDouble("price_per_night"));
+                h.setRating(rs.getDouble("rating"));
+                h.setNearLocation(rs.getString("near_location"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return h;
+    }
+
 }
