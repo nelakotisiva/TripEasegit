@@ -186,14 +186,15 @@ body {
 <!-- SIDEBAR -->
 <div class="sidebar">
     <h2>⚙ Admin</h2>
-    <a class="active">Dashboard</a>
+    <a href="AdminDashboard.jsp">Dashboard</a>
     <a href="ManageUsers">👤 Manage Users</a>
     <a href="ManageBookings">📦 Manage Bookings</a>
     <a href="ManageHotels">🏨 Manage Hotels</a>
-    <a href="ManageRestaurants">🍽 Manage Restaurants</a>
+    <a href="adminRestaurant?action=list">🍽 Manage Restaurants</a>
     <a href="ManageCabs">🚕 Manage Cab Rentals</a>
     <a href="AdminLogoutServlet" style="background:#ff2e2e;margin-top:20px;">🚪 Logout</a>
 </div>
+
 
 <!-- MAIN CONTENT -->
 <div class="main">
