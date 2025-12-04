@@ -133,4 +133,56 @@ public class UserDaoImpl implements UserDao{
 		return false;
 	}
 
+// For ADMIN management
+
+	   @Override
+	    public List<User> getAllUsers() {
+	        List<User> list = new ArrayList<>();
+	        try (Connection conn = DBConnection.getConnector();
+	            PreparedStatement ps = conn.prepareStatement("SELECT * FROM user");
+	            ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+	                list.add(new User(
+	                        rs.getInt("user_id"),
+	                        rs.getString("username"),
+	                        rs.getString("password"),
+	                        rs.getString("email"),
+	                        rs.getString("full_name"),
+	                        rs.getLong("phone"),
+	                        rs.getString("role")));
+	            }
+	        } catch (Exception e) { e.printStackTrace(); }
+	        return list;
+	    }
+
+	    @Override
+	    public boolean addUser(User user) {
+	        try (Connection conn = DBConnection.getConnector();
+	            PreparedStatement ps = conn.prepareStatement(
+	               "INSERT INTO user VALUES (?,?,?,?,?,?,?)")) {
+	        	ps.setInt(1, user.getUser_id());
+	            ps.setString(2, user.getUsername());
+	            ps.setString(3, user.getPassword());
+	            ps.setString(4, user.getEmail());
+	            ps.setString(5, user.getFull_name());
+	            ps.setLong(6, user.getPhone());
+	            ps.setString(7, user.getRole());
+
+	            return ps.executeUpdate() > 0;
+	        } catch (Exception e) { e.printStackTrace(); }
+	        return false;
+	    }
+
+	    @Override
+	    public boolean deleteUser(int id) {
+	        try (Connection conn = DBConnection.getConnector();
+	            PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE user_id=?")) {
+
+	            ps.setInt(1, id);
+	            return ps.executeUpdate() > 0;
+	        } catch (Exception e) { e.printStackTrace(); }
+	        return false;
+	    }
+
 }
