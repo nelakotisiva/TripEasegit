@@ -1,20 +1,13 @@
 package Daopackage.com;
 
 import java.util.List;
-
 import dtopackage.com.Restaurant;
 
 public interface RestaurantDAO {
-	
-	// For user module	
-    List<Restaurant> getRestaurantsByMaxPrice(double budget);
     List<Restaurant> getAllRestaurants();
-    
-    
-    // For admin module
+    Restaurant getRestaurantById(int id);
     boolean addRestaurant(Restaurant r);
     boolean updateRestaurant(Restaurant r);
     boolean deleteRestaurant(int id);
-    Restaurant getRestaurantById(int id);
-
+	List<Restaurant> getRestaurantsByMaxPrice(double budget);
 }
