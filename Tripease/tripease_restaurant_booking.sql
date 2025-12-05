@@ -34,7 +34,7 @@ CREATE TABLE `restaurant_booking` (
   KEY `restaurant_booking_ibfk_2` (`restaurant_id`),
   CONSTRAINT `restaurant_booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `restaurant_booking_ibfk_2` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`restaurant_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `restaurant_booking` (
 
 LOCK TABLES `restaurant_booking` WRITE;
 /*!40000 ALTER TABLE `restaurant_booking` DISABLE KEYS */;
-INSERT INTO `restaurant_booking` VALUES (1,2,1,'2025-12-05',1,'Booked');
+INSERT INTO `restaurant_booking` VALUES (1,2,1,'2025-12-05',1,'Booked'),(2,2,1,'2025-12-05',1,'Booked');
 /*!40000 ALTER TABLE `restaurant_booking` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-05 18:23:58
+-- Dump completed on 2025-12-06  0:05:14
