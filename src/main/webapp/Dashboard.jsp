@@ -241,6 +241,45 @@ function showSuccessPopup(){
         <div class="tab" id="tab-restaurants" onclick="showForm('restaurants')">🍽 Restaurants</div>
     </div>
 
+    <!-- Forms -->
+    <div class="search-forms">
+        <form id="flightsForm" class="search-form active" method="get" action="SearchFlight">
+            <div class="form-row">
+                <div class="field"><input type="text" name="fromCity" placeholder="From" required></div>
+                <div class="field"><input type="text" name="toCity" placeholder="To" required></div>
+                <div class="field"><input type="date" name="departureDate" required></div>
+            </div>
+            <div class="search-btn-row">
+                <button type="submit" class="btn-primary">Search Flights</button>
+            </div>
+        </form>
+
+        <form id="hotelsForm" class="search-form" method="get" action="HotelListServlet">
+            <div class="form-row">
+                <div class="field"><input type="text" name="city" placeholder="City"></div>
+            </div>
+            <button type="submit" class="btn-primary">Search Hotels</button>
+        </form>
+
+        <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
+            <div class="form-row">
+                <div class="field"><input type="text" name="pickup" placeholder="Pickup"></div>
+            </div>
+            <button type="submit" class="btn-primary">Search Cabs</button>
+        </form>
+
+        <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
+            <div class="form-row">
+                <div class="field"><input type="text" name="location" placeholder="Location"></div>
+            </div>
+            <button type="submit" class="btn-primary">Search Restaurants</button>
+        </form>
+        <div>
+       <button type="button" onclick="window.location.href='tourpackage.jsp'">
+    Tour packages
+</button>
+</div>
+    </div>
     <!-- FLIGHTS -->
     <form id="flightsForm" class="search-form" style="display:flex">
         <div class="form-row">
