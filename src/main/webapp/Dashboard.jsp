@@ -277,6 +277,11 @@
             </div>
             <button type="submit" class="btn-primary">Search Restaurants</button>
         </form>
+        <div>
+       <button type="button" onclick="window.location.href='tourpackage.jsp'">
+    Tour packages
+</button>
+</div>
     </div>
 </div>
 
