@@ -22,6 +22,7 @@
 
 <h3>TripEase User Dashboard</h3>
 
+
 <ul>
     <li><a href="ProfileServlet">View Profile</a></li>
     <li><a href="HotelListServlet">Hotels</a></li>
