@@ -30,7 +30,9 @@ public class MyBookingsServlet extends HttpServlet {
             response.sendRedirect("Login.jsp");
             return;
         }
-
+        
+        
+        
         BookingDAO bookingDao = new BookingDAOImpl();
        
         List<Booking> bookings = bookingDao.getBookingsByUserId(userObj.getUser_id());

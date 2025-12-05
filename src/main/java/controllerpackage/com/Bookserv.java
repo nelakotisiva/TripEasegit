@@ -1,78 +1,91 @@
 package controllerpackage.com;
 
 import java.io.IOException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import Daopackage.com.PackageDAO;
+import Daopackage.com.BookingDAO;
+import Daopackage.com.BookingDAOImpl;
+import dtopackage.com.BookingDTO;
+import dtopackage.com.PackageDTO;
+
 public class Bookserv extends HttpServlet {
-	 private Daopackage.com.PackageDAO packageDAO = new Daopackage.com.PackageDAO();
-	    private Daopackage.com.BookingDAO bookingDAO = new Daopackage.com.BookingDAO();
-	
-	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		  String pid = req.getParameter("packageId");
-          if (pid == null || pid.trim().isEmpty()) {
-              resp.sendRedirect("tourpackage.jsp");
-              return;
-          }
 
-          int id;
-          try {
-              id = Integer.parseInt(pid);
-          } catch (NumberFormatException ex) {
-              resp.sendRedirect("tourpackage.jsp");
-              return;
-          }
+    private PackageDAO packageDAO = new PackageDAOImpl();
+    private BookingDAO bookingDAO = new BookingDAOImpl();
 
-          dtopackage.com.PackageDTO p = packageDAO.findById(id);
-          if (p == null) {
-              resp.sendRedirect("tourpackage.jsp");
-              return;
-          }
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-          req.setAttribute("package", p);
-          req.getRequestDispatcher("details.jsp").forward(req, resp);
-      }
+        req.setCharacterEncoding("UTF-8");
+        String pid = req.getParameter("packageId");
+
+        if (pid == null || pid.trim().isEmpty()) {
+            resp.sendRedirect("tourpackage.jsp");
+            return;
+        }
+
+        int id;
+        try {
+            id = Integer.parseInt(pid);
+        } catch (NumberFormatException ex) {
+            resp.sendRedirect("tourpackage.jsp");
+            return;
+        }
+
+        PackageDTO p = packageDAO.findById(id);
+        if (p == null) {
+            resp.sendRedirect("tourpackage.jsp");
+            return;
+        }
+
+        req.setAttribute("package", p);
+        req.getRequestDispatcher("details.jsp").forward(req, resp);
+    }
 
 
-      protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-              throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
 
-    	  dtopackage.com.BookingDTO b = new dtopackage.com.BookingDTO();
-          b.setPackageId(Integer.parseInt(req.getParameter("packageId")));
-          b.setCustomerName(req.getParameter("customerName"));
-          b.setEmail(req.getParameter("email"));
-          b.setPhone(req.getParameter("phone"));
-          b.setFromLocation(req.getParameter("from"));
-          b.setToLocation(req.getParameter("to"));
+        req.setCharacterEncoding("UTF-8");
 
-          String travellersParam = req.getParameter("travellers");
-          int travellers = 1;
-          try {
-              travellers = Integer.parseInt(travellersParam);
-          } catch (Exception ignored) {}
-          b.setTravellers(travellers);
+        BookingDTO b = new BookingDTO();
+        b.setPackageId(Integer.parseInt(req.getParameter("packageId")));
+        b.setCustomerName(req.getParameter("customerName"));
+        b.setEmail(req.getParameter("email"));
+        b.setPhone(req.getParameter("phone"));
+        b.setFromLocation(req.getParameter("from"));
+        b.setToLocation(req.getParameter("to"));
 
-          b.setTravelDate(req.getParameter("travelDate"));   // expected yyyy-MM-dd
-          b.setReturnDate(req.getParameter("returnDate"));   // expected yyyy-MM-dd
+        // Travellers with safe parsing
+        try {
+            b.setTravellers(Integer.parseInt(req.getParameter("travellers")));
+        } catch (Exception ex) {
+            b.setTravellers(1);
+        }
 
-          dtopackage.com.PackageDTO p = packageDAO.findById(b.getPackageId());
-          if (p != null) b.setPackageTitle(p.getTitle());
+        b.setTravelDate(req.getParameter("travelDate"));
+        b.setReturnDate(req.getParameter("returnDate"));
 
-          dtopackage.com.BookingDTO saved = bookingDAO.save(b);
+        PackageDTO p = packageDAO.findById(b.getPackageId());
+        if (p != null) {
+            b.setPackageTitle(p.getTitle());
+        }
 
-          if (saved == null) {
-              resp.getWriter().write("Booking failed. Please try again later.");
-              return;
-          }
+        BookingDTO saved = bookingDAO.save(b);
 
-          req.setAttribute("booking", saved);
-          req.getRequestDispatcher("confirmation.jsp").forward(req, resp);
-      }
-   
-	}
+        if (saved == null) {
+            req.setAttribute("msg", "Booking Failed! Try again.");
+            resp.sendRedirect("error.jsp");
+            return;
+        }
 
+        req.setAttribute("booking", saved);
+        req.getRequestDispatcher("confirmation.jsp").forward(req, resp);
+    }
+}
