@@ -8,6 +8,7 @@ import java.util.List;
 
 import Daopackage.com.CabDAO;
 import dtopackage.com.Cab;
+import dtopackage.com.User;
 
 @WebServlet("/VehicleListServlet")
 public class CabServlet extends HttpServlet {
@@ -18,11 +19,23 @@ public class CabServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Cab> rentals = dao.getAllRentals();
-        req.setAttribute("rentals", rentals);
+        String location = req.getParameter("location");
 
-        RequestDispatcher rd = req.getRequestDispatcher("Cabs.jsp");
-        rd.forward(req, resp);
+        List<Cab> vehicles;
+
+        if (location != null && !location.trim().isEmpty()) {
+            vehicles = dao.getVehiclesByLocation(location);
+        } else {
+            vehicles = dao.getAllVehicles();
+        }
+
+        List<Integer> bookedIds = dao.getBookedVehicleIds();
+
+        req.setAttribute("vehicles", vehicles);
+        req.setAttribute("bookedIds", bookedIds);
+        req.setAttribute("location", location);
+
+        req.getRequestDispatcher("Cabs.jsp").forward(req, resp);
     }
 
     @Override
@@ -30,15 +43,14 @@ public class CabServlet extends HttpServlet {
             throws ServletException, IOException {
 
         int rentalId = Integer.parseInt(req.getParameter("rentalId"));
+        int passengers = Integer.parseInt(req.getParameter("passengers"));
+        String location = req.getParameter("location");
 
-        boolean success = dao.bookRental(rentalId);
+        User user = (User) req.getSession().getAttribute("userObj");
+        int userId = user.getUser_id();
 
-        if (success) {
-            req.setAttribute("message", "Booking Successful!");
-        } else {
-            req.setAttribute("message", "Booking Failed!");
-        }
+        dao.saveBooking(userId, rentalId, passengers);
 
-        doGet(req, resp);
+        resp.sendRedirect("VehicleListServlet?location=" + location);
     }
 }
