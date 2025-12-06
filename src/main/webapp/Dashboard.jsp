@@ -91,16 +91,18 @@ nav{
     border-radius:20px;
     font-weight:600;
     cursor:pointer;
+    color:black;
 }
 .tab.active{background:var(--mint);color:white}
 
-.search-form{display:none;flex-direction:column;gap:15px}
+.search-form{display:none;flex-direction:column;gap:15px;margin-top:15px}
+.search-form.active{display:flex}
 .form-row{display:flex;gap:12px;flex-wrap:wrap}
 .field{flex:1}
-.field input, select{
+.field input{
     width:100%;padding:10px;border-radius:8px;border:1px solid #cfd4ff;background:#f8fbfa;
 }
-.btn{
+.btn-primary{
     background:linear-gradient(90deg,#ff4b2b,#ff416c);
     color:white;border:none;padding:10px 20px;border-radius:8px;font-weight:600;
     cursor:pointer;
@@ -133,190 +135,68 @@ nav{
 .card .body{text-align:center;padding:14px}
 .card h3{margin:0;font-size:18px;color:var(--teal)}
 .card p{margin:6px 0 0;color:var(--muted)}
-
-/* SUCCESS POP-UP */
-.success-popup{
-    position:fixed;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    background:white;
-    border-radius:16px;
-    padding:25px 30px;
-    text-align:center;
-    box-shadow:0 10px 40px rgba(0,0,0,0.25);
-    display:none;
-    animation:fadeIn 0.4s ease-out;
-    z-index:9999;
-}
-.success-popup .icon{
-    font-size:50px;
-    color:var(--mint);
-}
-@keyframes fadeIn{
-    from{opacity:0;transform:translate(-50%,-60%)}
-    to{opacity:1;transform:translate(-50%,-50%)}
-}
-
-/* PAGE LOADING SPINNER */
-#loader{
-    position:fixed;
-    top:0;left:0;width:100%;height:100%;
-    background:rgba(255,255,255,0.8);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:99999;
-}
-.loader-circle{
-    width:45px;height:45px;
-    border:5px solid #cde6ff;
-    border-top-color:#013bff;
-    border-radius:50%;
-    animation:spin 1s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 
 <script>
-/* LOADER */
-window.onload = function(){
-    document.getElementById('loader').style.display = "none";
-
-    <% if ("success".equals(request.getParameter("msg"))) { %>
-        showSuccessPopup();
-    <% } %>
-};
-
-function showForm(tabKey){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.search-form').forEach(f=>f.style.display='none');
+function showForm(tab){
+    document.querySelectorAll(".tab").forEach(e=>e.classList.remove("active"));
+    document.querySelectorAll(".search-form").forEach(e=>e.classList.remove("active"));
     
-    document.getElementById('tab-'+tabKey).classList.add('active');
-    document.getElementById(tabKey+'Form').style.display='flex';
-}
-
-function showSuccessPopup(){
-    let popup = document.getElementById("successBox");
-    popup.style.display = "block";
-    setTimeout(()=> popup.style.display="none", 3000);
+    document.getElementById("tab-"+tab).classList.add("active");
+    document.getElementById(tab+"Form").classList.add("active");
 }
 </script>
 
 </head>
 <body>
 
-<!-- PAGE LOADER -->
-<div id="loader">
-    <div class="loader-circle"></div>
-</div>
-
-<!-- POPUP -->
-<div id="successBox" class="success-popup">
-    <div class="icon">✔</div>
-    <h3>Booking Confirmed!</h3>
-</div>
-
 <nav>
     <div class="logo">✈ TripEase</div>
     <div class="nav-links">
         <a href="Dashboard.jsp">Dashboard</a>
-        <a href="Hotels.jsp">Hotels</a>
-        <a href="Flights.jsp">Flights</a>
-        <a href="Cabs.jsp">Cabs</a>
-        <a href="Restaurants.jsp">Restaurants</a>
+        <a href="HotelListServlet">Hotels</a>
+        <a href="VehicleListServlet">Cabs</a>
+        <a href="RestaurantListServlet">Restaurants</a>
+        <a href="MyBookingsServlet">Bookings</a>
     </div>
     <a class="logout-btn" href="LogoutServlet">Logout</a>
 </nav>
 
 <section class="hero">
-    <h1>Your Journey Starts Here</h1>
-    <p>Book hotels, flights, cabs & restaurants easily</p>
+    <h1>Welcome, <%= userObj.getFullname() %> 👋</h1>
+    <p>Your Journey Starts Here</p>
 </section>
 
 <div class="search-card">
+
     <div class="tabs">
-        <div class="tab active" id="tab-flights" onclick="showForm('flights')">✈️ Flights</div>
-        <div class="tab" id="tab-hotels" onclick="showForm('hotels')">🏨 Hotels</div>
+        <div class="tab active" id="tab-hotels" onclick="showForm('hotels')">🏨 Hotels</div>
         <div class="tab" id="tab-cabs" onclick="showForm('cabs')">🚕 Cabs</div>
         <div class="tab" id="tab-restaurants" onclick="showForm('restaurants')">🍽 Restaurants</div>
     </div>
 
-    <!-- Forms -->
-    <div class="search-forms">
-        <form id="flightsForm" class="search-form active" method="get" action="SearchFlight">
-            <div class="form-row">
-                <div class="field"><input type="text" name="fromCity" placeholder="From" required></div>
-                <div class="field"><input type="text" name="toCity" placeholder="To" required></div>
-                <div class="field"><input type="date" name="departureDate" required></div>
-            </div>
-            <div class="search-btn-row">
-                <button type="submit" class="btn-primary">Search Flights</button>
-            </div>
-        </form>
-
-        <form id="hotelsForm" class="search-form" method="get" action="HotelListServlet">
-            <div class="form-row">
-                <div class="field"><input type="text" name="city" placeholder="City"></div>
-            </div>
-            <button type="submit" class="btn-primary">Search Hotels</button>
-        </form>
-
-        <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
- 		   <div class="form-row">
-       		 <!-- Use name="location" to match DAO -->
-        <div class="field">
-            <input type="text" name="location" placeholder="Enter Pickup Location" required>
-        </div>
-    </div>
-    <button type="submit" class="btn-primary">Search Cabs</button>
-</form>
-
-
-        <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
-            <div class="form-row">
-                <div class="field"><input type="text" name="location" placeholder="Location"></div>
-            </div>
-            <button type="submit" class="btn-primary">Search Restaurants</button>
-        </form>
-        <div>
-       <button type="button" onclick="window.location.href='tourpackage.jsp'">
-    Tour packages
-</button>
-</div>
-    </div>
-    <!-- FLIGHTS -->
-    <form id="flightsForm" class="search-form" style="display:flex">
+    <!-- Hotels Search -->
+    <form id="hotelsForm" class="search-form active" action="HotelListServlet">
         <div class="form-row">
-            <div class="field"><input type="text" placeholder="From"></div>
-            <div class="field"><input type="text" placeholder="To"></div>
-            <div class="field"><input type="date"></div>
+            <div class="field"><input type="text" name="city" placeholder="City"></div>
         </div>
-        <div style="text-align:center"><button class="btn">Search Flights</button></div>
+        <button class="btn-primary">Search Hotels</button>
     </form>
 
-    <!-- HOTELS -->
-    <form id="hotelsForm" class="search-form" method="get" action="HotelListServlet">
+    <!-- Cabs Search -->
+    <form id="cabsForm" class="search-form" action="VehicleListServlet">
         <div class="form-row">
-            <div class="field"><input type="text" name="location" placeholder="City"></div>
+            <div class="field"><input type="text" name="location" placeholder="Location" required></div>
         </div>
-        <div style="text-align:center"><button class="btn">Search Hotels</button></div>
+        <button class="btn-primary">Search Cabs</button>
     </form>
 
-    <!-- CABS -->
-    <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
-        <div class="form-row">
-            <div class="field"><input type="text" name="pickup" placeholder="Pickup"></div>
-            <div class="field"><input type="text" name="drop" placeholder="Drop"></div>
-        </div>
-        <div style="text-align:center"><button class="btn">Search Cabs</button></div>
-    </form>
-
-    <!-- RESTAURANTS -->
-    <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
+    <!-- Restaurants Search -->
+    <form id="restaurantsForm" class="search-form" action="nearbyRestaurants">
         <div class="form-row">
             <div class="field"><input type="text" name="location" placeholder="Area / City"></div>
         </div>
-        <div style="text-align:center"><button class="btn">Find Restaurants</button></div>
+        <button class="btn-primary">Find Restaurants</button>
     </form>
 </div>
 
@@ -324,29 +204,24 @@ function showSuccessPopup(){
 
 <div class="grid">
 
-    <div class="card" onclick="location.href='Hotels.jsp'">
+    <div class="card" onclick="location.href='HotelListServlet'">
         <div class="media" style="background-image:url('https://i.imgur.com/U8e7gbL.jpeg')"></div>
-        <div class="body"><h3>Hotels</h3><p>Find stays from budget to luxury</p></div>
+        <div class="body"><h3>Hotels</h3><p>Comfortable stays</p></div>
     </div>
 
-    <div class="card" onclick="location.href='Flights.jsp'">
-        <div class="media" style="background-image:url('https://i.imgur.com/biCj8V8.jpeg')"></div>
-        <div class="body"><h3>Flights</h3><p>Search & compare best airfares</p></div>
-    </div>
-
-    <div class="card" onclick="location.href='Cabs.jsp'">
+    <div class="card" onclick="location.href='VehicleListServlet'">
         <div class="media" style="background-image:url('https://i.imgur.com/zHbwGDW.jpeg')"></div>
-        <div class="body"><h3>Cabs</h3><p>Affordable rides anywhere</p></div>
+        <div class="body"><h3>Cabs</h3><p>Affordable rides</p></div>
     </div>
 
-    <div class="card" onclick="location.href='Restaurants.jsp'">
+    <div class="card" onclick="location.href='RestaurantListServlet'">
         <div class="media" style="background-image:url('https://i.imgur.com/9KxN1DA.jpeg')"></div>
-        <div class="body"><h3>Restaurants</h3><p>Discover trending places to eat</p></div>
+        <div class="body"><h3>Restaurants</h3><p>Delicious destinations</p></div>
     </div>
 
     <div class="card" onclick="location.href='MyBookingsServlet'">
         <div class="media" style="background-image:url('https://i.imgur.com/wxYPD2j.jpeg')"></div>
-        <div class="body"><h3>My Bookings</h3><p>View all your reservations</p></div>
+        <div class="body"><h3>My Bookings</h3><p>Your past & upcoming trips</p></div>
     </div>
 
 </div>

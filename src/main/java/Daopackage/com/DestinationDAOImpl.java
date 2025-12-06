@@ -9,29 +9,64 @@ import utilpackage.com.DBConnection;
 
 public class DestinationDAOImpl implements DestinationDAO {
 
-    private Connection con;
-
-    public DestinationDAOImpl() {
-        con = DBConnection.getConnector();
-    }
-
+    // 📌 Get All Destinations
     @Override
     public List<Destination> getAllDestinations() {
         List<Destination> list = new ArrayList<>();
-        String sql = "SELECT destination_id, name FROM destination";
+        String query = "SELECT * FROM destination";
 
-        try (PreparedStatement ps = con.prepareStatement(sql);
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
-            
+
             while (rs.next()) {
                 Destination d = new Destination();
-                d.setDestinationId(rs.getInt("destination_id"));
+                d.setDestination_id(rs.getInt("destination_id"));
                 d.setName(rs.getString("name"));
+                d.setLocation(rs.getString("location"));
+                d.setDescription(rs.getString("description"));
+                d.setImage_url(rs.getString("image_url"));
+                d.setPrice(rs.getDouble("price"));
                 list.add(d);
             }
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+        return list;
+    }
+
+    // 🔎 Search by name/location
+    @Override
+    public List<Destination> searchDestinations(String keyword) {
+        List<Destination> list = new ArrayList<>();
+        String query = "SELECT * FROM destination WHERE name LIKE ? OR location LIKE ?";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            String pattern = "%" + keyword + "%";
+            ps.setString(1, pattern);
+            ps.setString(2, pattern);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Destination d = new Destination();
+                    d.setDestination_id(rs.getInt("destination_id"));
+                    d.setName(rs.getString("name"));
+                    d.setLocation(rs.getString("location"));
+                    d.setDescription(rs.getString("description"));
+                    d.setImage_url(rs.getString("image_url"));
+                    d.setPrice(rs.getDouble("price"));
+                    list.add(d);
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return list;
     }
 }
