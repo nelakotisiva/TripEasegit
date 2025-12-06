@@ -1,47 +1,65 @@
-<%@ page isELIgnored="false" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <title>Add Restaurant</title>
+
 <style>
-body{background:#e8f0ff;font-family:Poppins;}
-.box{width:400px;margin:auto;background:white;padding:20px;border-radius:10px;}
-input, select{width:95%;margin:8px 0;padding:10px;border:1px solid #013bff;border-radius:8px;}
-button{width:100%;padding:10px;background:#013bff;color:white;border:none;border-radius:8px;}
-a{text-decoration:none;}
+body{margin:0;font-family:Poppins;background:#e8f0ff;}
+.container{width:500px;margin:40px auto;background:white;padding:25px;border-radius:10px;box-shadow:0 0 10px #ccc;}
+h2{color:#013bff;text-align:center;}
+input,select{width:100%;padding:10px;margin:8px 0;border:1px solid #ccc;border-radius:6px;}
+.btn{background:#013bff;color:white;padding:10px 15px;border:none;border-radius:6px;cursor:pointer;width:100%;}
+.preview{width:100%;height:200px;border:1px solid #ddd;border-radius:6px;object-fit:cover;display:none;margin-top:10px;}
 </style>
+
+<script>
+function showPreview() {
+    let url = document.getElementById("imageUrl").value;
+    let img = document.getElementById("previewImg");
+    if(url.trim().length > 0){
+        img.src = url;
+        img.style.display = "block";
+    }
+}
+</script>
+
 </head>
 <body>
-<div class="box">
-<h2>Add Restaurant</h2>
 
-<form action="adminRestaurant" method="post">
-    <input type="hidden" name="action" value="add">
+<div class="container">
+    <h2>Add Restaurant</h2>
 
-    <!-- Destination Dropdown -->
-    <select name="destinationId" required>
-        <option value="">-- Select Destination --</option>
-        <c:forEach var="d" items="${destinations}">
-            <option value="${d.destinationId}">
-                ${d.name} (ID: ${d.destinationId})
-            </option>
-        </c:forEach>
-    </select>
+    <form action="adminRestaurant" method="post">
+        <input type="hidden" name="action" value="insert">
 
-    <input name="name" placeholder="Name" required>
-    <input name="type" placeholder="Type" required>
-    <input name="rating" placeholder="Rating" type="number" step="0.1" min="1" max="5" required>
-    <input name="contact" placeholder="Contact" required>
-    <input name="avgPrice" placeholder="Avg Price" type="number" step="0.01" required>
-    <input name="latitude" placeholder="Latitude" required>
-    <input name="longitude" placeholder="Longitude" required>
+        <label>Destination ID</label>
+        <input type="number" name="destination_id" required>
 
-    <button type="submit">Save</button><br><br>
-    <a href="adminRestaurant?action=list">Back</a>
-</form>
+        <label>Restaurant Name</label>
+        <input type="text" name="name" required>
 
+        <label>Type</label>
+        <input type="text" name="type" required>
+
+        <label>Rating</label>
+        <input type="number" step="0.1" name="rating" required>
+
+        <label>Contact Number</label>
+        <input type="number" name="contact" required>
+
+        <label>Avg Price</label>
+        <input type="number" step="0.01" name="avg_price" required>
+
+        <label>Image URL</label>
+        <input type="text" id="imageUrl" name="image_url" onkeyup="showPreview()">
+
+        <img id="previewImg" class="preview">
+
+        <button class="btn">Add Restaurant</button>
+    </form>
 </div>
+
 </body>
 </html>

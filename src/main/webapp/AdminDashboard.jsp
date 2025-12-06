@@ -190,7 +190,6 @@ body {
     <a href="ManageUsers">👤 Manage Users</a>
     <a href="ManageBookings">📦 Manage Bookings</a>
     <a href="ManageHotels">🏨 Manage Hotels</a>
-    <a href="ManageRestaurants">🍽 Manage Restaurants</a>
 <a href="AdminManageCabs">🚕 Manage Cab Rentals</a>
     <a href="adminRestaurant?action=list">🍽 Manage Restaurants</a>
     <a href="ManageCabs">🚕 Manage Cab Rentals</a>
