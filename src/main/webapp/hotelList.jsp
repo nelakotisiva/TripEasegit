@@ -182,6 +182,10 @@
         <div class="availability <%= h.getRoomsAvailable() > 0 ? "available" : "not-available" %>">
             <%= h.getRoomsAvailable() > 0 ? "Available" : "Not Available" %>
         </div>
+       <a href="BookHotel?id=<%= h.getHotelId() %>" class="btn">Book Now</a>
+
+
+        
     </div>
 
 <%

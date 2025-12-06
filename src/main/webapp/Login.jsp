@@ -9,118 +9,134 @@
 
 <style>
 
+    /* ----- Soft Mint Background ----- */
     body {
         margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-
-        /* 🌄 TripEase Realistic Background */
-        background: url('https://chatgpt.com/backend-api/estuary/content?id=file_0000000018707207a9b51e0f7bc3572b&ts=490072&p=fs&cid=1&sig=7e9306902bc774173591cefb71f72d392d0241dc90d27e5e9e732e62fe6491e4&v=0') no-repeat center center/cover;
-
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background: #e8f5f3;   /* Soft Mint */
         height: 100vh;
         display: flex;
-        align-items: center;
         justify-content: center;
-
-        backdrop-filter: blur(3px); /* Soft blur to highlight card */
+        align-items: center;
     }
 
-    .container {
-        width: 360px;
-        background: rgba(255,255,255,0.95);
-        padding: 30px;
-        border-radius: 15px;
+    /* ----- Modern Card ----- */
+    .login-box {
+        width: 340px;
+        background: white;
+        padding: 28px;
+        border-radius: 14px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        animation: fadeIn 0.4s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ----- Title ----- */
+    .title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1f3a3d;   /* Dark Teal */
         text-align: center;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-        animation: slideDown 0.6s ease;
-    }
-
-    @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-15px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    h1 {
-        color: #0d6efd;
         margin-bottom: 20px;
-        font-size: 28px;
-        font-weight: bold;
     }
 
-    .input-field {
-        width: 90%;
+    /* ----- Input ----- */
+    input {
+        width: 100%;
         padding: 12px;
         margin: 10px 0;
+        border: 1px solid #b8d4cf;
         border-radius: 8px;
-        border: 2px solid #ddd;
-        font-size: 15px;
+        font-size: 14px;
+        background: #f8fbfa;
         transition: 0.2s;
     }
 
-    .input-field:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 5px rgba(13,110,253,0.3);
+    input:focus {
+        border-color: #3ba58b;      /* Mint Green */
+        box-shadow: 0 0 8px rgba(59,165,139,0.3);
         outline: none;
+        background: #ffffff;
     }
 
+    /* ----- Buttons ----- */
     .btn {
-        width: 94%;
+        width: 100%;
         padding: 12px;
-        margin-top: 15px;
         border: none;
         border-radius: 8px;
-        font-size: 17px;
+        margin-top: 12px;
+        font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
-        background: #0d6efd;
-        color: white;
-        transition: 0.3s;
+        color: #fff;
+        transition: 0.25s;
     }
 
-    .btn:hover {
-        background: #004ab9;
+    .login-btn {
+        background: #3ba58b;      /* Mint Green */
+    }
+
+    .login-btn:hover {
+        background: #328a74;
     }
 
     .cancel-btn {
-        background: #e63946;
-        margin-top: 10px;
+        background: #6c757d;      /* Soft Grey */
     }
 
     .cancel-btn:hover {
-        background: #b81e28;
+        background: #5a6268;
     }
 
-    a {
+    /* ----- Register Link ----- */
+    .reg-link {
+        text-align: center;
+        margin-top: 14px;
+        font-size: 14px;
+        color: #1f3a3d;
+    }
+
+    .reg-link a {
+        color: #328a74;
         text-decoration: none;
-        color: #0d6efd;
-        font-size: 15px;
-        display: block;
-        margin-top: 15px;
+        font-weight: 600;
     }
 
-    a:hover {
+    .reg-link a:hover {
         text-decoration: underline;
     }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="container">
-    <h1>Login</h1>
+    <div class="login-box">
 
-    <form action="Login" method="post">
+        <div class="title">TripEase Login</div>
 
-        <input type="text" class="input-field" name="username" placeholder="Enter Username" required>
+        <form action="Login" method="post">
 
-        <input type="password" class="input-field" name="password" placeholder="Enter Password" required>
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
 
-        <button type="submit" class="btn">Login</button>
+            <button type="submit" class="btn login-btn">Login</button>
+            <button type="reset" class="btn cancel-btn">Cancel</button>
 
-        <button type="reset" class="btn cancel-btn">Cancel</button>
+            <div class="reg-link">
+                New here? <a href="Register.jsp">Create an account</a>
+            </div>
 
-        <a href="Register.jsp">Don't have an account? Register</a>
-    </form>
-</div>
+        </form>
+
+    </div>
 
 </body>
 </html>

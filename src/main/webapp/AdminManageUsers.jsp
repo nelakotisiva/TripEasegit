@@ -1,5 +1,7 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 <%@ page import="dtopackage.com.User" %>
+
 <%
     Object adminObj = session.getAttribute("adminObj");
     if (adminObj == null) {
@@ -26,69 +28,85 @@ body {
 }
 
 .main {
-    padding: 30px;
+    padding: 25px 40px;
 }
 
 /* Header */
 .heading {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
     color: #0032d8;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Search Bar */
-.search-bar input {
-    width: 260px;
-    padding: 10px 14px;
-    border-radius: 10px;
-    border: 1.5px solid #013bff;
-    background: rgba(255,255,255,0.8);
+/* Buttons */
+.back-btn, .add-btn {
+    padding: 6px 14px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    display: inline-block;
+    transition: 0.25s;
 }
 
-/* Add Button */
-.add-btn {
-    background: #013bff;
+.back-btn {
+    background: #ff9300;
     color: white;
-    padding: 10px 18px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: 0.3s;
+    margin-right: 6px;
+}
+.back-btn:hover {
+    background: #d97700;
+}
+
+.add-btn {
+    background: #0051ff;
+    color: white;
 }
 .add-btn:hover {
-    background: #0026a2;
+    background: #0039b8;
+}
+
+/* Search Bar */
+.search-bar input {
+    width: 230px;
+    padding: 8px 12px;
+    border-radius: 7px;
+    border: 1.5px solid #013bff;
+    background: rgba(255,255,255,0.9);
+    font-size: 13px;
 }
 
 /* Table */
 .table-box {
-    background: rgba(255,255,255,0.75);
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 15px;
+    background: rgba(255,255,255,0.7);
+    padding: 16px;
+    margin-top: 18px;
+    border-radius: 12px;
     backdrop-filter: blur(10px);
-    box-shadow: 0px 6px 18px rgba(0,0,0,0.15);
+    box-shadow: 0px 4px 14px rgba(0,0,0,0.15);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 th {
     background: rgba(1,59,255,0.18);
-    padding: 14px;
+    padding: 12px;
     font-weight: 600;
     color: #0032d8;
 }
 
 td {
-    padding: 12px;
+    padding: 10px;
     background: rgba(255,255,255,0.65);
+    font-size: 13px;
 }
 
 tr:hover td {
@@ -96,15 +114,15 @@ tr:hover td {
     transition: .25s;
 }
 
-/* Buttons */
+/* Action Buttons */
 .action-btn {
-    padding: 6px 12px;
-    font-size: 12px;
-    border-radius: 8px;
+    padding: 4px 10px;
+    font-size: 11px;
+    border-radius: 6px;
     text-decoration: none;
     color: white;
     font-weight: 600;
-    margin: 3px;
+    margin: 2px;
     display: inline-block;
 }
 
@@ -137,13 +155,14 @@ function searchUsers() {
 
     <div class="heading">
         Manage Users
-        <a href="ManageUsers?action=add" class="add-btn">Add User</a>
+        <div>
+            <a href="AdminDashboard.jsp" class="back-btn">Back</a>
+            <a href="ManageUsers?action=add" class="add-btn">Add User</a>
+        </div>
     </div>
 
     <div class="search-bar">
-        <input type="text" id="searchInput"
-               onkeyup="searchUsers()"
-               placeholder="Search by Name">
+        <input type="text" id="searchInput" onkeyup="searchUsers()" placeholder="Search by Name">
     </div>
 
     <div class="table-box">
@@ -161,9 +180,9 @@ function searchUsers() {
             </thead>
 
             <tbody>
-            <% 
-            if (users != null) {
-                for (User u : users) {
+            <%
+                if (users != null) {
+                    for (User u : users) {
             %>
                 <tr>
                     <td><%=u.getUser_id()%></td>
@@ -173,20 +192,21 @@ function searchUsers() {
                     <td><%=u.getPhone()%></td>
                     <td><%=u.getRole()%></td>
                     <td>
-                        <a href="ManageUsers?action=edit&id=<%=u.getUser_id()%>"
-                           class="action-btn edit-btn">Edit</a>
+                        <a href="ManageUsers?action=edit&id=<%=u.getUser_id()%>" class="action-btn edit-btn">Edit</a>
                         <a href="ManageUsers?action=delete&id=<%=u.getUser_id()%>"
                            class="action-btn delete-btn"
-                           onclick="return confirm('Are you sure?');">
-                           Delete
-                        </a>
+                           onclick="return confirm('Are you sure?');">Delete</a>
                     </td>
                 </tr>
-            <% } } %>
+            <% 
+                    }
+                }
+            %>
             </tbody>
 
         </table>
     </div>
+
 </div>
 
 </body>
