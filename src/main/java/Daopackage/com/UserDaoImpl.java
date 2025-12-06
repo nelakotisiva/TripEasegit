@@ -86,26 +86,29 @@ public class UserDaoImpl implements UserDao {
 
         return user;
     }
-
-    @Override
     public boolean updatedetails(User u) {
-        String uqry = "UPDATE user SET full_name=?, username=?, email=?, phone=?, role=? WHERE user_id=?";
-        con = DBConnection.getConnector();
-
+        boolean f = false;
         try {
-            PreparedStatement psmt = con.prepareStatement(uqry);
-            psmt.setString(1, u.getFull_name());
-            psmt.setString(2, u.getUsername());
-            psmt.setString(3, u.getEmail());
-            psmt.setLong(4, u.getPhone());
-            psmt.setString(5, u.getRole());
-            psmt.setInt(6, u.getUser_id());
-            return psmt.executeUpdate() > 0;
+            con = DBConnection.getConnector();
+            String sql = "UPDATE user SET full_name=?, username=?, email=?, phone=?, role=? WHERE user_id=?";
+            PreparedStatement ps = con.prepareStatement(sql);
 
-        } catch (SQLException e) { e.printStackTrace(); }
+            ps.setString(1, u.getFull_name());
+            ps.setString(2, u.getUsername());
+            ps.setString(3, u.getEmail());
+            ps.setLong(4, u.getPhone());
+            ps.setString(5, u.getRole());
+            ps.setInt(6, u.getUser_id());
 
-        return false;
+            int i = ps.executeUpdate();
+            if (i > 0) f = true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return f;
     }
+
 
     @Override
     public List<User> getAllUsers() {
