@@ -265,11 +265,15 @@
         </form>
 
         <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
-            <div class="form-row">
-                <div class="field"><input type="text" name="pickup" placeholder="Pickup"></div>
-            </div>
-            <button type="submit" class="btn-primary">Search Cabs</button>
-        </form>
+ 		   <div class="form-row">
+       		 <!-- Use name="location" to match DAO -->
+        <div class="field">
+            <input type="text" name="location" placeholder="Enter Pickup Location" required>
+        </div>
+    </div>
+    <button type="submit" class="btn-primary">Search Cabs</button>
+</form>
+
 
         <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
             <div class="form-row">

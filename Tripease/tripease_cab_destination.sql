@@ -16,35 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cab_booking`
+-- Table structure for table `cab_destination`
 --
 
-DROP TABLE IF EXISTS `cab_booking`;
+DROP TABLE IF EXISTS `cab_destination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cab_booking` (
-  `booking_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
-  `rental_id` int NOT NULL,
-  `model` varchar(100) NOT NULL,
-  `seater_type` enum('4 Seater','5 Seater','7 Seater') NOT NULL,
-  `passengers` int NOT NULL,
-  `booking_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` varchar(45) DEFAULT 'Booked',
-  PRIMARY KEY (`booking_id`),
-  KEY `rental_id` (`rental_id`),
-  CONSTRAINT `cab_booking_ibfk_1` FOREIGN KEY (`rental_id`) REFERENCES `cab_rental` (`rental_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `cab_destination` (
+  `destination_id` int NOT NULL AUTO_INCREMENT,
+  `location` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`destination_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cab_booking`
+-- Dumping data for table `cab_destination`
 --
 
-LOCK TABLES `cab_booking` WRITE;
-/*!40000 ALTER TABLE `cab_booking` DISABLE KEYS */;
-INSERT INTO `cab_booking` VALUES (1,1098,4,'','4 Seater',1,'2025-12-04 16:19:12','Booked'),(2,1098,8,'','4 Seater',11,'2025-12-04 16:19:33','Booked'),(3,1098,2,'','4 Seater',2,'2025-12-04 16:27:44','Booked'),(4,1098,7,'Toyota Fortuner','7 Seater',3,'2025-12-04 16:38:47','Booked'),(5,12,6,'Skoda Slavia','4 Seater',1,'2025-12-05 13:19:31','Booked');
-/*!40000 ALTER TABLE `cab_booking` ENABLE KEYS */;
+LOCK TABLES `cab_destination` WRITE;
+/*!40000 ALTER TABLE `cab_destination` DISABLE KEYS */;
+INSERT INTO `cab_destination` VALUES (1,'Hyderabad','City cab services','hyd.jpg'),(2,'Bangalore','IT hub cabs','blr.jpg'),(3,'Chennai','Coastal city cabs','chn.jpg'),(4,'Mumbai','Metro city cabs','mum.jpg');
+/*!40000 ALTER TABLE `cab_destination` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
