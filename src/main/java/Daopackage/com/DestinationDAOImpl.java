@@ -21,11 +21,11 @@ public class DestinationDAOImpl implements DestinationDAO {
 
             while (rs.next()) {
                 Destination d = new Destination();
-                d.setDestination_id(rs.getInt("destination_id"));
+                d.setDestinationId(rs.getInt("destination_id")); // DB COLUMN
                 d.setName(rs.getString("name"));
                 d.setLocation(rs.getString("location"));
                 d.setDescription(rs.getString("description"));
-                d.setImage_url(rs.getString("image_url"));
+                d.setImageUrl(rs.getString("image_url")); // DB COLUMN
                 d.setPrice(rs.getDouble("price"));
                 list.add(d);
             }
@@ -53,11 +53,11 @@ public class DestinationDAOImpl implements DestinationDAO {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     Destination d = new Destination();
-                    d.setDestination_id(rs.getInt("destination_id"));
+                    d.setDestinationId(rs.getInt("destination_id"));
                     d.setName(rs.getString("name"));
                     d.setLocation(rs.getString("location"));
                     d.setDescription(rs.getString("description"));
-                    d.setImage_url(rs.getString("image_url"));
+                    d.setImageUrl(rs.getString("image_url"));
                     d.setPrice(rs.getDouble("price"));
                     list.add(d);
                 }

@@ -12,48 +12,45 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
 @WebServlet("/update")
-public class UpdateServlet extends HttpServlet{
+public class UpdateServlet extends HttpServlet {
 @Override
 protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-	String fulname=req.getParameter("full_name");
-	String username=req.getParameter("username");
-	String email=req.getParameter("email");
-	int phone=Integer.parseInt(req.getParameter("phone"));
-	String role=req.getParameter("role");
-	
-	HttpSession session=req.getSession(false);
-	if(session==null&&session.getAttribute("userObj")==null) {
-		return ;
-	}
-	
-	
-	
-	User loguser=(User)session.getAttribute("userObj");
-	loguser.setFull_name(fulname);
-	loguser.setUsername(username);
-	loguser.setEmail(email);
-	loguser.setPhone(phone);
-	loguser.setRole(role);
-	
-	
-	
-	UserDao dao=new UserDaoImpl();
-	boolean istrue=dao.updatedetails(loguser);
-	
-	if(istrue) {
 
-	    req.setAttribute("msg", "Details Updated Successfully!");
+	String fullName = req.getParameter("full_name");
+	String username = req.getParameter("username");
+	String email = req.getParameter("email");
+	long phone = Long.parseLong(req.getParameter("phone"));
+	String role = req.getParameter("role");
 
-	    req.setAttribute("userdetails", loguser);
-	    req.getRequestDispatcher("profile.jsp").forward(req, resp);
+	HttpSession session = req.getSession(false);
 
-	} else {
-
-	    req.setAttribute("error", "Details Not Updated!");
-	    req.getRequestDispatcher("Edit.jsp").forward(req, resp);
+	if(session == null || session.getAttribute("userObj") == null) {
+		resp.sendRedirect("Login.jsp");
+		return;
 	}
 
+	User user = (User)session.getAttribute("userObj");
+
+	user.setFull_name(fullName);
+	user.setUsername(username);
+	user.setEmail(email);
+	user.setPhone(phone);
+	user.setRole(role);
+
+	UserDao dao = new UserDaoImpl();
+	boolean updated = dao.updatedetails(user);
+
+	if(updated) {
+		session.setAttribute("userObj", user);
+		req.setAttribute("msg", "Profile Updated Successfully!");
+		req.setAttribute("userdetails", user);
+		req.getRequestDispatcher("profile.jsp").forward(req, resp);
+	} 
+	else {
+		req.setAttribute("error", "Update Failed!");
+		req.setAttribute("userdetails", user);
+		req.getRequestDispatcher("Edit.jsp").forward(req, resp);
+	}
 }
 }

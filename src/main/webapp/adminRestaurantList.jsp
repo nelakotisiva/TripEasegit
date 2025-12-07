@@ -13,6 +13,7 @@ List<Restaurant> list = (List<Restaurant>) request.getAttribute("list");
 <html>
 <head>
 <title>Manage Restaurants</title>
+
 <style>
 body{margin:0;font-family:Poppins;background:#e8f0ff;}
 .sidebar{width:250px;height:100vh;position:fixed;background:#013bff;color:white;padding:30px;}
@@ -26,7 +27,9 @@ th,td{border:1px solid #ccc;padding:10px;text-align:center;}
 .action-btn{padding:6px 10px;border-radius:6px;color:white;text-decoration:none;font-size:13px;}
 .edit-btn{background:#007bff;}
 .delete-btn{background:#ff2e2e;}
+img.thumb { width:80px; height:60px; object-fit:cover; border-radius:6px; }
 </style>
+
 </head>
 
 <body>
@@ -44,42 +47,53 @@ th,td{border:1px solid #ccc;padding:10px;text-align:center;}
 
 <div class="main">
     <h1>Manage Restaurants</h1>
+
     <a class="add-btn" href="adminRestaurant?action=add">Add Restaurant</a>
     <br><br>
 
     <table>
         <tr>
             <th>ID</th>
-            <th>Destination ID</th>
+            <th>Destination</th>
             <th>Name</th>
             <th>Type</th>
             <th>Rating</th>
             <th>Contact</th>
             <th>Avg Price</th>
+            <th>Image</th>
             <th>Actions</th>
         </tr>
 
-        <% if(list!=null){ for(Restaurant r : list){ %>
+        <% if(list != null){ 
+               for(Restaurant r : list){ 
+        %>
         <tr>
-            <td><%=r.getRestaurantId()%></td>
-            <td><%=r.getDestinationId()%></td>
-            <td><%=r.getName()%></td>
-            <td><%=r.getType()%></td>
-            <td><%=r.getRating()%></td>
-            <td><%=r.getContact()%></td>
-            <td><%=r.getAvgPrice()%></td>
+            <td><%= r.getRestaurantId() %></td>
+            <td><%= r.getDestinationId() %></td>
+            <td><%= r.getName() %></td>
+            <td><%= r.getType() %></td>
+            <td><%= r.getRating() %></td>
+            <td><%= r.getContact() %></td>
+            <td><%= r.getAvgPrice() %></td>
+
+            <td>
+                <img class="thumb" src="<%= r.getImageUrl() %>" alt="Restaurant">
+            </td>
 
             <td>
                 <a class="action-btn edit-btn"
-                   href="adminRestaurant?action=edit&id=<%=r.getRestaurantId()%>">Edit</a>
+                   href="adminRestaurant?action=edit&id=<%= r.getRestaurantId() %>">
+                   Edit</a>
 
                 <a class="action-btn delete-btn"
-                   href="adminRestaurant?action=delete&id=<%=r.getRestaurantId()%>"
-                   onclick="return confirm('Confirm delete?');">Delete</a>
+                   href="adminRestaurant?action=delete&id=<%= r.getRestaurantId() %>"
+                   onclick="return confirm('Confirm delete?');">
+                   Delete</a>
             </td>
         </tr>
         <% }} %>
     </table>
 </div>
+
 </body>
 </html>
