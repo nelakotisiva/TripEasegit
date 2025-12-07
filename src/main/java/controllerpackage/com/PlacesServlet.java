@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import Daopackage.com.DestinationDAO;
+import Daopackage.com.DestinationDAOImpl;
 import dtopackage.com.Destination;
 
 @WebServlet("/PlacesServlet")
@@ -18,7 +19,7 @@ public class PlacesServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String q = request.getParameter("q");  // search keyword
-        DestinationDAO dao = new DestinationDAO();
+        DestinationDAO dao = new DestinationDAOImpl();
         List<Destination> places;
 
         if (q != null && !q.trim().isEmpty()) {
