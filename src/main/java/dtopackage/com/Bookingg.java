@@ -1,37 +1,91 @@
 package dtopackage.com;
 
+import java.sql.Timestamp;
+
 public class Bookingg {
 
     private int bookingId;
     private int userId;
     private int hotelId;
-    private String hotelName;
-    private String checkIn;
-    private String checkOut;
+
+    private String checkin;
+    private String checkout;
     private int guests;
-    private double total;
+    private double totalAmount;
+    private Timestamp bookingDate;
 
-    public int getBookingId() { return bookingId; }
-    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+    private String hotelName;     
+    private String hotelLocation;
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    // ----------- Getters & Setters -----------
 
-    public int getHotelId() { return hotelId; }
-    public void setHotelId(int hotelId) { this.hotelId = hotelId; }
+    public int getBookingId() {
+        return bookingId;
+    }
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
 
-    public String getHotelName() { return hotelName; }
-    public void setHotelName(String hotelName) { this.hotelName = hotelName; }
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-    public String getCheckIn() { return checkIn; }
-    public void setCheckIn(String checkIn) { this.checkIn = checkIn; }
+    public int getHotelId() {
+        return hotelId;
+    }
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
+    }
 
-    public String getCheckOut() { return checkOut; }
-    public void setCheckOut(String checkOut) { this.checkOut = checkOut; }
+    public String getCheckin() {
+        return checkin;
+    }
+    public void setCheckin(String checkin) {
+        this.checkin = checkin;
+    }
 
-    public int getGuests() { return guests; }
-    public void setGuests(int guests) { this.guests = guests; }
+    public String getCheckout() {
+        return checkout;
+    }
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
+    }
 
-    public double getTotal() { return total; }
-    public void setTotal(double total) { this.total = total; }
+    public int getGuests() {
+        return guests;
+    }
+    public void setGuests(int guests) {
+        this.guests = guests;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Timestamp getBookingDate() {
+        return bookingDate;
+    }
+    public void setBookingDate(Timestamp bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
+    public String getHotelName() {
+        return hotelName;
+    }
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
+
+    public String getHotelLocation() {
+        return hotelLocation;
+    }
+    public void setHotelLocation(String hotelLocation) {
+        this.hotelLocation = hotelLocation;
+    }
 }

@@ -5,11 +5,10 @@ import java.util.List;
 
 import UserDaopackage.com.HotelDAOImpl;
 import dtopackage.com.Hotel;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.*;
 
 @WebServlet("/HotelListServlet")
 public class HotelServlet extends HttpServlet {
@@ -20,16 +19,19 @@ public class HotelServlet extends HttpServlet {
 
         String location = req.getParameter("location");
 
-        HotelDAOImpl dao = new HotelDAOImpl();
-        List<Hotel> hotelList = null;
-
-        // ONLY show hotels when user searches
-        if (location != null && !location.trim().isEmpty()) {
-            hotelList = dao.getHotelsByLocation(location);
+        if (location == null || location.trim().isEmpty()) {
+            req.setAttribute("hotels", null);
+            req.setAttribute("searched", "");
+            req.getRequestDispatcher("hotelList.jsp").forward(req, resp);
+            return;
         }
 
-        req.setAttribute("hotels", hotelList);
+        HotelDAOImpl dao = new HotelDAOImpl();
+        List<Hotel> hotels = dao.searchHotelsByCity(location.trim());
+
+        req.setAttribute("hotels", hotels);
         req.setAttribute("searched", location);
+
         req.getRequestDispatcher("hotelList.jsp").forward(req, resp);
     }
 }

@@ -16,23 +16,24 @@ public class FlightServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
         throws ServletException, IOException {
 
-        String source = req.getParameter("source");
-        String destination = req.getParameter("destination");
+        String sourceRaw = req.getParameter("source");
+        String destinationRaw = req.getParameter("destination");
+        String date = req.getParameter("date");
+
+        if (sourceRaw == null) sourceRaw = "";
+        if (destinationRaw == null) destinationRaw = "";
+        if (date == null) date = "";
 
         List<Flight> flights = null;
 
-        // normalize inputs
-        source = (source == null) ? "" : source.trim();
-        destination = (destination == null) ? "" : destination.trim();
-
-        if (!source.isEmpty() && !destination.isEmpty()) {
-            // pass raw values (DAO will handle lowercasing/trimming as well)
-            flights = new FlightDAOImpl().searchFlights(source, destination);
+        if (!sourceRaw.trim().isEmpty() && !destinationRaw.trim().isEmpty()) {
+            flights = new FlightDAOImpl().searchFlights(sourceRaw, destinationRaw);
         }
 
+        req.setAttribute("source", sourceRaw);
+        req.setAttribute("destination", destinationRaw);
+        req.setAttribute("date", date);
         req.setAttribute("flights", flights);
-        req.setAttribute("source", source);
-        req.setAttribute("destination", destination);
 
         req.getRequestDispatcher("flightSearch.jsp").forward(req, resp);
     }

@@ -3,72 +3,77 @@ package UserDaopackage.com;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Date;
+
 import utilpackage.com.DBConnection;
 
 public class FlightBookingDAOImpl implements FlightBookingDAO {
 
-    private final Connection con;
+    Connection con;
 
     public FlightBookingDAOImpl() {
         con = DBConnection.getConnector();
     }
 
     @Override
-    public boolean bookFlight(int userId, int flightId, int seats) {
-        if (seats <= 0) return false;
-
+    public boolean bookFlight(int userId, int flightId, int seats, Date travelDate) {
         try {
             con.setAutoCommit(false);
 
-            // Lock the row to prevent race conditions (MySQL InnoDB: SELECT ... FOR UPDATE)
-            String selectSql = "SELECT seats_available FROM flight WHERE flight_id = ? FOR UPDATE";
-            try (PreparedStatement ps1 = con.prepareStatement(selectSql)) {
-                ps1.setInt(1, flightId);
-                try (ResultSet rs = ps1.executeQuery()) {
-                    if (!rs.next()) {
-                        System.out.println("DEBUG: bookFlight - flight not found id=" + flightId);
-                        con.rollback();
-                        return false;
-                    }
-                    int available = rs.getInt(1);
-                    System.out.println("DEBUG: bookFlight - available seats = " + available + " requested = " + seats);
+            // Step 1: Lock flight record
+            PreparedStatement ps1 = con.prepareStatement(
+                "SELECT seats_available FROM flight WHERE flight_id=? FOR UPDATE"
+            );
+            ps1.setInt(1, flightId);
 
-                    if (available < seats) {
-                        con.rollback();
-                        return false;
-                    }
-                }
+            ResultSet rs = ps1.executeQuery();
+
+            if (!rs.next()) {
+                con.rollback();
+                return false;
             }
 
-            String insertBooking = "INSERT INTO flight_booking(user_id, flight_id, num_seats) VALUES(?,?,?)";
-            try (PreparedStatement ps2 = con.prepareStatement(insertBooking)) {
-                ps2.setInt(1, userId);
-                ps2.setInt(2, flightId);
-                ps2.setInt(3, seats);
-                ps2.executeUpdate();
+            int available = rs.getInt("seats_available");
+
+            // Step 2: Validate seats
+            if (available < seats) {
+                con.rollback();
+                return false;
             }
 
-            String updateFlight = "UPDATE flight SET seats_available = seats_available - ? WHERE flight_id = ?";
-            try (PreparedStatement ps3 = con.prepareStatement(updateFlight)) {
-                ps3.setInt(1, seats);
-                ps3.setInt(2, flightId);
-                int updated = ps3.executeUpdate();
-                if (updated != 1) {
-                    System.out.println("DEBUG: bookFlight - update affected " + updated + " rows");
-                    con.rollback();
-                    return false;
-                }
-            }
+            // Step 3: Insert booking row
+            PreparedStatement ps2 = con.prepareStatement(
+                "INSERT INTO flight_booking (user_id, flight_id, num_seats, travel_date) " +
+                "VALUES (?, ?, ?, ?)"
+            );
+            ps2.setInt(1, userId);
+            ps2.setInt(2, flightId);
+            ps2.setInt(3, seats);
+            ps2.setDate(4, travelDate);
+            ps2.executeUpdate();
 
+            // Step 4: Update seat availability
+            PreparedStatement ps3 = con.prepareStatement(
+                "UPDATE flight SET seats_available = seats_available - ? WHERE flight_id=?"
+            );
+            ps3.setInt(1, seats);
+            ps3.setInt(2, flightId);
+            ps3.executeUpdate();
+
+            // Step 5: Commit transaction
             con.commit();
             return true;
 
         } catch (Exception e) {
-            try { con.rollback(); } catch (Exception ex) { ex.printStackTrace(); }
+            try { con.rollback(); } catch (Exception ex) {}
             e.printStackTrace();
             return false;
-        } finally {
-            try { con.setAutoCommit(true); } catch (Exception ex) { /* ignore */ }
         }
+    }
+
+    // Unused old method
+    @Override
+    public boolean bookFlight(int userId, int flightId, int seats) {
+        return false;
     }
 }

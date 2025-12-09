@@ -4,199 +4,235 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hotel Finder</title>
+    <title>Hotel Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<style>
-    body {
-        font-family: 'Segoe UI', sans-serif;
-        background: #eef3ff;
-        margin: 0;
-        padding: 0;
-    }
+    <!-- FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    .header {
-        background: #0d6efd;
-        padding: 22px;
-        color: white;
-        font-size: 28px;
-        text-align: center;
-        font-weight: bold;
-        box-shadow: 0 3px 7px rgba(0,0,0,0.2);
-    }
+    <style>
+        /* ========== SOFT MINT THEME ========== */
+        :root{
+            --mint-light:#e8f5f3;
+            --mint:#3ba58b;
+            --mint-dark:#2e8e77;
+            --text:#1f3a3d;
+            --card:#ffffff;
+        }
 
-    .search-box-area {
-        text-align: center;
-        margin: 30px auto;
-    }
+        body {
+            font-family:'Poppins', sans-serif;
+            margin:0;
+            background:linear-gradient(180deg,var(--mint-light),#f7fffd);
+            color:var(--text);
+        }
 
-    .search-input {
-        width: 320px;
-        padding: 12px;
-        border-radius: 8px;
-        border: 2px solid #0d6efd;
-        outline: none;
-        font-size: 16px;
-    }
+        /* ========== HEADER / HERO ========== */
+        .header {
+            height:220px;
+            background:
+              linear-gradient(rgba(59,165,139,.85),rgba(59,165,139,.85)),
+              url("https://images.unsplash.com/photo-1566073771259-6a8506099945");
+            background-size:cover;
+            background-position:center;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:32px;
+            font-weight:800;
+            color:white;
+            text-shadow:0 6px 18px rgba(0,0,0,0.5);
+        }
 
-    .search-btn {
-        padding: 12px 20px;
-        background: #0d6efd;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-left: 10px;
-        font-size: 16px;
-    }
+        /* ========== SEARCH ========== */
+        .search-area {
+            text-align:center;
+            margin:-40px auto 30px;
+        }
 
-    .search-btn:hover {
-        background: #004ab9;
-    }
+        .search-area form{
+            display:inline-flex;
+            gap:12px;
+            padding:16px;
+            background:rgba(255,255,255,0.95);
+            border-radius:18px;
+            box-shadow:0 20px 45px rgba(0,0,0,0.12);
+        }
 
-    .message {
-        text-align: center;
-        font-size: 18px;
-        margin-top: 15px;
-    }
+        .search-input {
+            width:320px;
+            padding:12px 14px;
+            border-radius:12px;
+            border:1px solid #cfe6df;
+            font-size:14px;
+        }
 
-    .no-result {
-        color: red;
-        font-weight: bold;
-    }
+        .search-input:focus{
+            outline:none;
+            border-color:var(--mint);
+        }
 
-    /* Hotel Card Grid */
-    .hotel-grid {
-        width: 90%;
-        margin: 25px auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        grid-gap: 20px;
-    }
+        .search-btn {
+            padding:12px 22px;
+            background:linear-gradient(135deg,var(--mint),#06b7ff);
+            border:none;
+            border-radius:12px;
+            color:white;
+            cursor:pointer;
+            font-weight:700;
+        }
 
-    /* Individual Hotel Card */
-    .hotel-card {
-        background: white;
-        padding: 18px;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
+        .search-btn:hover{ opacity:.95; }
 
-    .hotel-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 22px rgba(0,0,0,0.15);
-    }
+        /* ========== GRID ========== */
+        .hotel-grid {
+            width:92%;
+            max-width:1200px;
+            margin:auto;
+            display:grid;
+            grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+            gap:24px;
+        }
 
-    .hotel-title {
-        font-size: 22px;
-        font-weight: bold;
-        margin-bottom: 8px;
-        color: #0d6efd;
-    }
+        /* ========== HOTEL CARD ========== */
+        .hotel-card {
+            background:var(--card);
+            border-radius:18px;
+            overflow:hidden;
+            box-shadow:0 12px 32px rgba(34,60,60,0.12);
+            transition:.3s ease;
+        }
 
-    .hotel-info {
-        font-size: 15px;
-        margin: 6px 0;
-        color: #555;
-    }
+        .hotel-card:hover {
+            transform:translateY(-8px);
+            box-shadow:0 20px 45px rgba(34,60,60,0.18);
+        }
 
-    .price-tag {
-        font-size: 20px;
-        font-weight: bold;
-        color: #28a745;
-        margin-top: 10px;
-    }
+        .hotel-img {
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
 
-    .availability {
-        padding: 8px;
-        margin-top: 10px;
-        text-align: center;
-        border-radius: 8px;
-        font-weight: bold;
-        font-size: 16px;
-    }
+        .hotel-content {
+            padding:18px;
+            text-align:center;
+        }
 
-    .available {
-        background: #d4f8d4;
-        color: #1e8f1e;
-    }
+        .hotel-title {
+            font-size:20px;
+            font-weight:700;
+            color:var(--mint-dark);
+            margin-bottom:6px;
+        }
 
-    .not-available {
-        background: #ffd6d6;
-        color: #b92323;
-    }
-</style>
+        .hotel-content div{
+            margin-top:4px;
+            font-size:14px;
+            color:#456b66;
+        }
 
+        .price-tag {
+            color:var(--mint);
+            font-weight:800;
+            font-size:18px;
+            margin-top:10px;
+        }
+
+        .book-btn {
+            display:inline-block;
+            margin-top:14px;
+            background:linear-gradient(90deg,var(--mint),#06b7ff);
+            color:#fff;
+            padding:10px 18px;
+            text-decoration:none;
+            border-radius:14px;
+            font-weight:700;
+            transition:.25s;
+        }
+
+        .book-btn:hover {
+            transform:scale(1.05);
+            opacity:.95;
+        }
+
+        /* ========== NO RESULTS ========== */
+        .no-results {
+            text-align:center;
+            padding:60px 20px;
+            font-size:20px;
+            color:#486e68;
+            font-weight:600;
+        }
+
+        @media(max-width:520px){
+            .search-input{ width:220px; }
+            .header{ font-size:26px; }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="header">🏨 Hotel Finder</div>
+<div class="header">🏨 Find Your Perfect Stay</div>
 
 <%
-    String searched = (String) request.getAttribute("searched");
-    if (searched == null) searched = "";
+String searched = (String) request.getAttribute("searched");
+if (searched == null) searched = "";
 %>
 
-<div class="search-box-area">
+<div class="search-area">
     <form action="HotelListServlet" method="get">
         <input type="text" name="location" class="search-input"
-               placeholder="Search hotels near..."
-               value="<%= searched %>">
+               value="<%= searched %>"
+               placeholder="Search hotels by city or area">
         <button class="search-btn">Search</button>
     </form>
 </div>
 
 <%
-    List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
+List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
 
-    if (hotels == null && searched.equals("")) {
+if (hotels == null || hotels.isEmpty()) {
 %>
-    <div class="message">🔍 Start searching for hotels near your location.</div>
-<%
-    }
 
-    if (hotels != null && hotels.isEmpty()) {
-%>
-    <div class="message no-result">❌ No hotels found for "<%= searched %>"</div>
-<%
-    }
+<div class="no-results">No hotels found. Try “Bangalore”</div>
 
-    if (hotels != null && !hotels.isEmpty()) {
+<%
+} else {
 %>
 
 <div class="hotel-grid">
 
 <%
-        for (Hotel h : hotels) {
+for (Hotel h : hotels) {
+
+    String img =
+        (h.getImageUrl() != null && !h.getImageUrl().isEmpty())
+        ? h.getImageUrl()
+        : "https://source.unsplash.com/800x600/?hotel,resort";
 %>
 
     <div class="hotel-card">
-        <div class="hotel-title"><%= h.getHotelName() %></div>
+        <img class="hotel-img" src="<%= img %>" alt="Hotel Image">
 
-        <div class="hotel-info">📍 Near: <b><%= h.getNearLocation() %></b></div>
-        <div class="hotel-info">⭐ Rating: <%= h.getRating() %> / 5</div>
-        <div class="hotel-info">📞 Contact: <%= h.getContact() %></div>
+        <div class="hotel-content">
+            <div class="hotel-title"><%= h.getHotelName() %></div>
+            <div>📍 <%= h.getNearLocation() %></div>
+            <div>⭐ <%= h.getRating() %> / 5</div>
+            <div class="price-tag">₹ <%= h.getPricePerNight() %> / night</div>
 
-        <div class="price-tag">₹ <%= h.getPricePerNight() %> / night</div>
-
-        <div class="availability <%= h.getRoomsAvailable() > 0 ? "available" : "not-available" %>">
-            <%= h.getRoomsAvailable() > 0 ? "Available" : "Not Available" %>
+            <a href="BookHotel?id=<%= h.getHotelId() %>" class="book-btn">
+                Book Now
+            </a>
         </div>
-       <a href="BookHotel?id=<%= h.getHotelId() %>" class="btn">Book Now</a>
-
-
-        
     </div>
 
-<%
-        }
-%>
+<% } %>
 
 </div>
 
-<%
-    }
-%>
+<% } %>
 
 </body>
 </html>

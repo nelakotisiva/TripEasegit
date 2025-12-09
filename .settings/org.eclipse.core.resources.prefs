@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/AdminHotels.jsp=UTF-8
 encoding//src/main/webapp/BookingSuccess.jsp=UTF-8
 encoding//src/main/webapp/Cabs.jsp=UTF-8
 encoding//src/main/webapp/Dashboard.jsp=UTF-8
@@ -6,7 +7,7 @@ encoding//src/main/webapp/HotelBooking.jsp=UTF-8
 encoding//src/main/webapp/MyBooking.jsp=UTF-8
 encoding//src/main/webapp/Register.jsp=UTF-8
 encoding//src/main/webapp/Restaurant.jsp=UTF-8
-encoding//src/main/webapp/flightSearch.jsp=UTF-8
 encoding//src/main/webapp/adminRestaurantList.jsp=UTF-8
+encoding//src/main/webapp/flightSearch.jsp=UTF-8
 encoding//src/main/webapp/hotelList.jsp=UTF-8
 encoding//src/main/webapp/index.jsp=UTF-8

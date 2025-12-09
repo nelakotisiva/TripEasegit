@@ -1,49 +1,186 @@
-<%@page import="dtopackage.com.Hotel"%>
-<%@page import="dtopackage.com.User"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page import="dtopackage.com.Hotel" %>
+<%@ page import="dtopackage.com.User" %>
 
 <%
     User user = (User) session.getAttribute("userObj");
-    if (user == null) { response.sendRedirect("Login.jsp"); return; }
+    if (user == null) {
+        response.sendRedirect("Login.jsp");
+        return;
+    }
 
     Hotel hotel = (Hotel) request.getAttribute("hotel");
+    if (hotel == null) {
+        response.sendRedirect("HotelListServlet");
+        return;
+    }
+
+    String error = (String) request.getAttribute("error");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title>Hotel Booking</title>
-<style>
-body { font-family:Poppins;background:#e8f5f3;padding:20px }
-.card { background:white;padding:20px;border-radius:12px;width:450px;margin:auto;
-        box-shadow:0 5px 18px rgba(0,0,0,0.15) }
-.btn { background:#3ba58b;color:white;border:none;padding:10px 20px;border-radius:8px }
-</style>
+    <title>Book Hotel - <%= hotel.getHotelName() %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            background:#e9f7f7;
+            font-family:'Poppins', sans-serif;
+            padding:25px;
+        }
+        .card {
+            max-width:920px;
+            margin:auto;
+            background:#fff;
+            border-radius:16px;
+            overflow:hidden;
+            box-shadow:0 10px 30px rgba(0,0,0,0.12);
+        }
+        .hotel-img {
+            width:100%;
+            height:380px;
+            object-fit:cover;
+        }
+        .card-body {
+            padding:22px;
+            display:grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap:26px;
+        }
+        .title {
+            font-size:28px;
+            font-weight:800;
+            color:#1f3a3d;
+        }
+        .info {
+            margin-top:10px;
+            line-height:1.6;
+            color:#444;
+        }
+        .price {
+            color:#28a745;
+            font-size:22px;
+            font-weight:800;
+            margin-top:12px;
+        }
+        .badge {
+            display:inline-block;
+            background:#3ba58b;
+            color:#fff;
+            padding:6px 12px;
+            border-radius:20px;
+            font-size:13px;
+            margin-top:8px;
+        }
+        .booking-form {
+            background:#f6fffd;
+            padding:18px;
+            border-radius:14px;
+            border:1px solid #d7eeea;
+        }
+        label {
+            font-weight:600;
+            margin-top:10px;
+            display:block;
+        }
+        input {
+            width:100%;
+            padding:10px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            margin-top:4px;
+        }
+        .btn {
+            width:100%;
+            margin-top:16px;
+            padding:12px;
+            background:linear-gradient(90deg,#ff4b2b,#ff416c);
+            border:none;
+            border-radius:10px;
+            color:white;
+            font-size:16px;
+            font-weight:700;
+            cursor:pointer;
+        }
+        .btn:hover {
+            opacity:0.95;
+        }
+        .error {
+            background:#ffe6e6;
+            color:#b10000;
+            padding:10px 14px;
+            border-radius:8px;
+            margin-bottom:12px;
+        }
+        @media(max-width:768px){
+            .card-body{
+                grid-template-columns:1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="card">
 
-<h2>Book Hotel: <%= hotel.getHotelName() %></h2>
-<p>Location: <%= hotel.getNearLocation() %></p>
-<p>Price per night: ₹<%= hotel.getPricePerNight() %></p>
+    <img class="hotel-img"
+         src="<%= (hotel.getImageUrl() != null && !hotel.getImageUrl().isEmpty())
+                ? hotel.getImageUrl()
+                : "https://source.unsplash.com/1200x800/?hotel,resort" %>">
 
-<form action="ConfirmHotelBooking" method="post">
-    <input type="hidden" name="hotelId" value="<%= hotel.getHotelId() %>">
+    <div class="card-body">
 
-    Check-in:
-    <input type="date" name="checkin" required><br><br>
+        <!-- LEFT SIDE : HOTEL DETAILS -->
+        <div>
+            <div class="title"><%= hotel.getHotelName() %></div>
 
-    Check-out:
-    <input type="date" name="checkout" required><br><br>
+            <div class="info">
+                📍 <strong>Location:</strong> <%= hotel.getNearLocation() %><br>
+                ⭐ <strong>Rating:</strong> <%= hotel.getRating() %> / 5<br>
+                🏨 <strong>Rooms Available:</strong> <%= hotel.getRoomsAvailable() %>
+            </div>
 
-    Guests:
-    <input type="number" name="guests" value="1" min="1"><br><br>
+            <div class="price">
+                ₹ <%= hotel.getPricePerNight() %> / night
+            </div>
 
-    <button class="btn">Confirm Booking</button>
-</form>
+            <span class="badge">Free Cancellation</span>
+        </div>
 
+        <!-- RIGHT SIDE : BOOKING FORM -->
+        <div class="booking-form">
 
+            <% if (error != null) { %>
+                <div class="error"><%= error %></div>
+            <% } %>
+
+            <form action="ConfirmHotelBooking" method="post">
+
+                <input type="hidden" name="hotelId"
+                       value="<%= hotel.getHotelId() %>">
+
+                <label>Check-in Date</label>
+                <input type="date" name="checkin" required>
+
+                <label>Check-out Date</label>
+                <input type="date" name="checkout" required>
+
+                <label>Guests</label>
+                <input type="number"
+                       name="guests"
+                       min="1"
+                       value="1"
+                       max="<%= hotel.getRoomsAvailable() %>">
+
+                <button class="btn">Confirm Booking</button>
+
+            </form>
+        </div>
+
+    </div>
 </div>
 
 </body>
