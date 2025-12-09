@@ -101,7 +101,7 @@ nav{
 .field input, select{
     width:100%;padding:10px;border-radius:8px;border:1px solid #cfd4ff;background:#f8fbfa;
 }
-.btn{
+.btn-primary{
     background:linear-gradient(90deg,#ff4b2b,#ff416c);
     color:white;border:none;padding:10px 20px;border-radius:8px;font-weight:600;
     cursor:pointer;
@@ -140,7 +140,7 @@ nav{
 function showForm(tabKey){
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.search-form').forEach(f=>f.style.display='none');
-    
+
     document.getElementById('tab-'+tabKey).classList.add('active');
     document.getElementById(tabKey+'Form').style.display='flex';
 }
@@ -158,6 +158,7 @@ function showForm(tabKey){
         <a href="SearchFlight">Flights</a>
         <a href="VehicleListServlet">Cabs</a>
         <a href="nearbyRestaurants">Restaurants</a>
+        <a href="FamousPlacesServlet">Famous Places</a>
         <a href="MyBookingsServlet">My Bookings</a>
     </div>
 
@@ -170,6 +171,7 @@ function showForm(tabKey){
 </section>
 
 <div class="search-card">
+
     <div class="tabs">
         <div class="tab active" id="tab-flights" onclick="showForm('flights')">✈️ Flights</div>
         <div class="tab" id="tab-hotels" onclick="showForm('hotels')">🏨 Hotels</div>
@@ -177,49 +179,6 @@ function showForm(tabKey){
         <div class="tab" id="tab-restaurants" onclick="showForm('restaurants')">🍽 Restaurants</div>
     </div>
 
-    <!-- Forms -->
-    <div class="search-forms">
-        <form id="flightsForm" class="search-form active" method="get" action="SearchFlight">
-            <div class="form-row">
-                <div class="field"><input type="text" name="fromCity" placeholder="From" required></div>
-                <div class="field"><input type="text" name="toCity" placeholder="To" required></div>
-                <div class="field"><input type="date" name="departureDate" required></div>
-            </div>
-            <div class="search-btn-row">
-                <button type="submit" class="btn-primary">Search Flights</button>
-            </div>
-        </form>
-
-        <form id="hotelsForm" class="search-form" method="get" action="HotelListServlet">
-            <div class="form-row">
-                <div class="field"><input type="text" name="city" placeholder="City"></div>
-            </div>
-            <button type="submit" class="btn-primary">Search Hotels</button>
-        </form>
-
-        <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
- 		   <div class="form-row">
-       		 <!-- Use name="location" to match DAO -->
-        <div class="field">
-            <input type="text" name="location" placeholder="Enter Pickup Location" required>
-        </div>
-    </div>
-    <button type="submit" class="btn-primary">Search Cabs</button>
-</form>
-
-
-        <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
-            <div class="form-row">
-                <div class="field"><input type="text" name="location" placeholder="Location"></div>
-            </div>
-            <button type="submit" class="btn-primary">Search Restaurants</button>
-        </form>
-        <div>
-       <button type="button" onclick="window.location.href='tourpackage.jsp'">
-    Tour packages
-</button>
-</div>
-    </div>
     <!-- FLIGHTS -->
     <form id="flightsForm" class="search-form" method="get" action="SearchFlight" style="display:flex">
         <div class="form-row">
@@ -227,29 +186,29 @@ function showForm(tabKey){
             <div class="field"><input type="text" name="destination" placeholder="To (City)" required></div>
             <div class="field"><input type="date" name="date"></div>
         </div>
-        <div style="text-align:center"><button class="btn" type="submit">Search Flights</button></div>
+        <button class="btn-primary" type="submit">Search Flights</button>
     </form>
 
     <!-- HOTELS -->
     <form id="hotelsForm" class="search-form" method="get" action="HotelListServlet">
         <div class="form-row"><div class="field"><input type="text" name="location" placeholder="City"></div></div>
-        <div style="text-align:center"><button class="btn">Search Hotels</button></div>
+        <button class="btn-primary" type="submit">Search Hotels</button>
     </form>
 
     <!-- CABS -->
     <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
         <div class="form-row">
-            <div class="field"><input type="text" name="pickup" placeholder="Pickup"></div>
-            <div class="field"><input type="text" name="drop" placeholder="Drop"></div>
+            <div class="field"><input type="text" name="location" placeholder="Pickup Location" required></div>
         </div>
-        <div style="text-align:center"><button class="btn">Search Cabs</button></div>
+        <button class="btn-primary" type="submit">Search Cabs</button>
     </form>
 
     <!-- RESTAURANTS -->
     <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
         <div class="form-row"><div class="field"><input type="text" name="location" placeholder="Area / City"></div></div>
-        <div style="text-align:center"><button class="btn">Find Restaurants</button></div>
+        <button class="btn-primary" type="submit">Find Restaurants</button>
     </form>
+
 </div>
 
 <div class="section-title">Explore</div>
@@ -274,6 +233,11 @@ function showForm(tabKey){
     <div class="card" onclick="location.href='nearbyRestaurants'">
         <div class="media" style="background-image:url('https://i.imgur.com/9KxN1DA.jpeg')"></div>
         <div class="body"><h3>Restaurants</h3><p>Discover trending places to eat</p></div>
+    </div>
+
+    <div class="card" onclick="location.href='FamousPlacesServlet'">
+        <div class="media" style="background-image:url('https://i.imgur.com/pFy0RVj.jpeg')"></div>
+        <div class="body"><h3>Famous Places</h3><p>Explore top tourist attractions</p></div>
     </div>
 
     <div class="card" onclick="location.href='MyBookingsServlet'">
