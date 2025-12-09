@@ -35,7 +35,7 @@ public class AdminCabDAO {
         }
         return list;
     }
-
+//
     public void addCab(HttpServletRequest req) {
         try {
             PreparedStatement ps = con.prepareStatement(

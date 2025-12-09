@@ -5,4 +5,5 @@ import dtopackage.com.Destination;
 
 public interface DestinationDAO {
     List<Destination> getAllDestinations();
+    List<Destination> searchDestinations(String keyword); // Added search method
 }

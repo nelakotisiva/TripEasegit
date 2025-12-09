@@ -11,4 +11,12 @@ public interface BookingDAO {
 
     // Fetch bookings for a user (Trip bookings)
     List<Booking> getBookingsByUserId(int userId);
+
+    // 🔹 NEW: Fetch all bookings (for Admin Manage Bookings)
+    List<Booking> getAllBookings();
+    Booking getBookingById(int bookingId);
+    boolean updateBooking(int bookingId, String status, int numPeople);
+    boolean deleteBooking(int bookingId);
+
+    
 }
