@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: tripease
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,7 +40,7 @@ CREATE TABLE `destination` (
 
 LOCK TABLES `destination` WRITE;
 /*!40000 ALTER TABLE `destination` DISABLE KEYS */;
-INSERT INTO `destination` VALUES (1,'Bangalore','Karnataka','Tech city with IT parks','bangalore.jpg',1500.00),(2,'Chennai','Tamil Nadu','Coastal metro city','chennai.jpg',1200.00),(3,'Hyderabad','Telangana','City of pearls & biryani','hyderabad.jpg',1300.00),(4,'Ooty','Tamil Nadu','Famous hill station','ooty.jpg',2500.00),(5,'Manali','Himachal','Mountain tourist spot','manali.jpg',3000.00),(6,'Mumbai','Maharashtra','Financial capital of India','mumbai.jpg',2000.00),(7,'Delhi','NCR','Capital city of India','delhi.jpg',1800.00),(8,'Mysore','Karnataka','Palaces & heritage sites','mysore.jpg',1600.00),(9,'Goa','Goa','Famous for beaches','goa.jpg',2800.00),(10,'Kolkata','West Bengal','City of joy','kolkata.jpg',1700.00);
+INSERT INTO `destination` VALUES (1,'Bangalore','Karnataka','Tech city with IT parks','bangalore.jpg',1500.00),(2,'Chennai','Tamil Nadu','Coastal metro city','chennai.jpg',1200.00),(3,'Hyderabad','Telangana','City of pearls & biryani','hyderabad.jpg',1300.00),(4,'Ooty','Tamil Nadu','Famous hill station','ooty.jpg',2500.00),(5,'Manali','Himachal','Mountain tourist spot','manali.jpg',3000.00),(6,'Mumbai','Maharashtra','Financial capital of India','mumbai.jpg',2000.00),(7,'Delhi','NCR','Capital city of India','delhi.jpg',1800.00),(8,'Mysore','Karnataka','Palaces & heritage sites','mysore.jpg',1600.00),(9,'Goa','Goa','Famous for beaches','goa.jpg',2800.00),(10,'Kolkata','West Bengal','City of joy','kolkata.jpg',1700.00),(11,'Jaipur','Rajasthan','Pink city famous for forts & palaces','jaipur.jpg',1900.00),(12,'Pune','Maharashtra','Cultural city with IT hubs & cool climate','pune.jpg',1600.00),(13,'Rishikesh','Uttarakhand','Yoga capital of the world & river rafting','rishikesh.jpg',2200.00),(14,'Varanasi','Uttar Pradesh','Spiritual capital with Ganga ghats','varanasi.jpg',2000.00),(15,'Kodaikanal','Tamil Nadu','Beautiful hill station known as Princess of Hills','kodaikanal.jpg',2600.00),(16,'Udaipur','Rajasthan','City of lakes with royal palaces','udaipur.jpg',2500.00),(17,'Coorg','Karnataka','Scenic coffee plantations & waterfalls','coorg.jpg',2700.00),(18,'Ahmedabad','Gujarat','Heritage city with Sabarmati riverfront','ahmedabad.jpg',1500.00),(19,'Alleppey','Kerala','Famous for houseboats & backwaters','alleppey.jpg',3000.00),(20,'Shimla','Himachal Pradesh','Queen of hills with colonial charm','shimla.jpg',2800.00);
 /*!40000 ALTER TABLE `destination` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-28 10:22:39
+-- Dump completed on 2025-12-06  0:05:14

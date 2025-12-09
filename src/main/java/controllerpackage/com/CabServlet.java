@@ -19,11 +19,21 @@ public class CabServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Cab> vehicles = dao.getAllVehicles();
+        String location = req.getParameter("location");
+
+        List<Cab> vehicles;
+
+        if (location != null && !location.trim().isEmpty()) {
+            vehicles = dao.getVehiclesByLocation(location);
+        } else {
+            vehicles = dao.getAllVehicles();
+        }
+
         List<Integer> bookedIds = dao.getBookedVehicleIds();
 
         req.setAttribute("vehicles", vehicles);
         req.setAttribute("bookedIds", bookedIds);
+        req.setAttribute("location", location);
 
         req.getRequestDispatcher("Cabs.jsp").forward(req, resp);
     }
@@ -34,11 +44,13 @@ public class CabServlet extends HttpServlet {
 
         int rentalId = Integer.parseInt(req.getParameter("rentalId"));
         int passengers = Integer.parseInt(req.getParameter("passengers"));
-        int userId = ((User)req.getSession().getAttribute("userObj")).getUser_id();
+        String location = req.getParameter("location");
 
-        boolean status = dao.saveBooking(userId,rentalId,passengers);
+        User user = (User) req.getSession().getAttribute("userObj");
+        int userId = user.getUser_id();
 
-        req.setAttribute("message", status ? "Booking Successful!" : "Booking Failed!");
-        doGet(req, resp);
+        dao.saveBooking(userId, rentalId, passengers);
+
+        resp.sendRedirect("VehicleListServlet?location=" + location);
     }
 }
