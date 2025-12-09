@@ -16,33 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `flight_booking`
+-- Table structure for table `destination_area`
 --
 
-DROP TABLE IF EXISTS `flight_booking`;
+DROP TABLE IF EXISTS `destination_area`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `flight_booking` (
-  `booking_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int DEFAULT NULL,
-  `flight_id` int DEFAULT NULL,
-  `num_seats` int DEFAULT NULL,
-  `travel_date` date DEFAULT NULL,
-  PRIMARY KEY (`booking_id`),
-  KEY `flight_id` (`flight_id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `flight_booking_ibfk_1` FOREIGN KEY (`flight_id`) REFERENCES `flight` (`flight_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `destination_area` (
+  `area_id` int NOT NULL AUTO_INCREMENT,
+  `destination_id` int NOT NULL,
+  `area_name` varchar(150) NOT NULL,
+  PRIMARY KEY (`area_id`),
+  KEY `destination_id` (`destination_id`),
+  CONSTRAINT `destination_area_ibfk_1` FOREIGN KEY (`destination_id`) REFERENCES `destination1` (`destination_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `flight_booking`
+-- Dumping data for table `destination_area`
 --
 
-LOCK TABLES `flight_booking` WRITE;
-/*!40000 ALTER TABLE `flight_booking` DISABLE KEYS */;
-INSERT INTO `flight_booking` VALUES (1,3,1,1,'2025-12-06'),(2,3,40,1,'2025-12-08'),(3,3,1,1,'2025-12-04'),(4,3,1,1,'2025-12-25'),(5,3,1,1,'2025-12-11'),(6,3,40,1,'2025-12-11'),(7,3,1,1,'2025-12-11'),(8,3,17,1,'2025-12-24'),(9,3,1,1,'2025-12-17'),(16,8,2,1,'2025-12-07'),(17,8,40,1,'2025-12-07'),(18,8,2,1,'2025-12-07'),(19,8,2,1,'2025-12-08'),(20,8,1,1,'2025-12-07'),(21,8,18,1,'2025-12-07'),(22,8,1,1,'2025-12-10');
-/*!40000 ALTER TABLE `flight_booking` ENABLE KEYS */;
+LOCK TABLES `destination_area` WRITE;
+/*!40000 ALTER TABLE `destination_area` DISABLE KEYS */;
+INSERT INTO `destination_area` VALUES (1,1,'Koramangala'),(2,1,'Indiranagar'),(3,1,'Jayanagar'),(4,1,'BTM Layout'),(5,1,'Whitefield'),(6,1,'HSR Layout'),(7,2,'Madhapur'),(8,2,'HITEC City'),(9,2,'Banjara Hills'),(10,2,'Jubilee Hills'),(11,3,'T Nagar'),(12,3,'Velachery'),(13,3,'Anna Nagar'),(14,4,'Calangute'),(15,4,'Baga'),(16,4,'Candolim'),(17,5,'Old Manali'),(18,5,'Mall Road'),(19,5,'Solang Valley'),(20,6,'Bandra'),(21,6,'Andheri'),(22,6,'Colaba'),(23,9,'Salt Lake'),(24,9,'Park Street'),(25,9,'Howrah'),(26,8,'Vijayanagar'),(27,8,'Jayalakshmipuram');
+/*!40000 ALTER TABLE `destination_area` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

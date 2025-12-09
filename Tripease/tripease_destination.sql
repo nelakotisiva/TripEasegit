@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: tripease
 -- ------------------------------------------------------
--- Server version	8.0.42
+-- Server version	8.0.43
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,7 +40,7 @@ CREATE TABLE `destination` (
 
 LOCK TABLES `destination` WRITE;
 /*!40000 ALTER TABLE `destination` DISABLE KEYS */;
-INSERT INTO `destination` VALUES (1,'Goa Beach','Goa','Sunny beaches and water sports','images/goa.jpg',4999.00),(2,'Manali Hills','Manali','Snowy mountains and trekking','images/manali.jpg',6999.00);
+INSERT INTO `destination` VALUES (1,'Bangalore','Karnataka','Tech city with IT parks','bangalore.jpg',1500.00),(2,'Hyderabad','Tamil Nadu','Coastal metro city','chennai.jpg',1200.00),(3,'Chennai','Telangana','City of pearls & biryani','hyderabad.jpg',1300.00),(4,'Goa','Tamil Nadu','Famous hill station','ooty.jpg',2500.00),(5,'Manali','Himachal','Mountain tourist spot','manali.jpg',3000.00),(6,'Mumbai','Maharashtra','Financial capital of India','mumbai.jpg',2000.00),(7,'Delhi','NCR','Capital city of India','delhi.jpg',1800.00),(8,'Mysore','Karnataka','Palaces & heritage sites','mysore.jpg',1600.00),(9,'Goa','Goa','Famous for beaches','goa.jpg',2800.00),(10,'Kolkata','West Bengal','City of joy','kolkata.jpg',1700.00);
 /*!40000 ALTER TABLE `destination` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-06 20:00:17
+-- Dump completed on 2025-12-09 22:59:05
