@@ -8,10 +8,15 @@
     <meta charset="UTF-8">
     <title>Famous Places - TripEase</title>
 
-    <!-- Bootstrap 5 CDN -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .card-img-top{
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body class="bg-light">
 
@@ -28,13 +33,11 @@
 
 <div class="container">
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 class="mb-0">Famous Places</h2>
-    </div>
+    <h2 class="mb-3">Famous Places</h2>
 
-    <!-- 🔍 Search Bar -->
+    <!-- 🔍 Search -->
     <form class="row g-2 mb-4" method="get" action="<%= request.getContextPath() %>/PlacesServlet">
-        <div class="col-sm-6 col-md-4">
+        <div class="col-md-4">
             <input type="text"
                    name="q"
                    class="form-control"
@@ -42,64 +45,60 @@
                    value="<%= request.getAttribute("q") != null ? request.getAttribute("q") : "" %>">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button class="btn btn-primary">Search</button>
         </div>
         <div class="col-auto">
-            <a href="<%= request.getContextPath() %>/PlacesServlet" class="btn btn-outline-secondary">
-                Clear
-            </a>
+            <a href="<%= request.getContextPath() %>/PlacesServlet"
+               class="btn btn-outline-secondary">Clear</a>
         </div>
     </form>
 
     <%
-        List<Destination> list = (List<Destination>) request.getAttribute("placesList");
+        List<Destination> list =
+                (List<Destination>) request.getAttribute("placesList");
+
         if (list != null && !list.isEmpty()) {
     %>
 
-    <!-- 🧩 Destination Cards -->
     <div class="row">
-        <%
-            for (Destination d : list) {
-        %>
+        <% for (Destination d : list) { %>
+
         <div class="col-md-4 mb-4">
             <div class="card h-100 shadow-sm">
-                <img src="<%= request.getContextPath() + "/" + d.getImage_url() %>"
-                     class="card-img-top"
-                     alt="<%= d.getName() %>">
 
-                <div class="card-body d-flex flex-column">
+                <!-- ✅ FIXED IMAGE -->
+                <img src="<%= d.getImageUrl() %>"
+     class="card-img-top"
+     alt="<%= d.getName() %>"
+     referrerpolicy="no-referrer"
+     onerror="this.src='https://via.placeholder.com/400x250?text=Image+Not+Available'">
+
+                <div class="card-body">
                     <h5 class="card-title">
                         <%= d.getName() %>
                         <small class="text-muted"> • <%= d.getLocation() %></small>
                     </h5>
 
-                    <p class="card-text flex-grow-1">
+                    <p class="card-text">
                         <%= d.getDescription() %>
                     </p>
 
-                    <div class="mt-2 fw-semibold text-primary">
+                    <p class="fw-semibold text-primary">
                         Price: ₹<%= d.getPrice() %>
-                    </div>
+                    </p>
                 </div>
             </div>
         </div>
-        <%
-            }
-        %>
+
+        <% } %>
     </div>
 
-    <%
-        } else {
-    %>
-        <div class="alert alert-info">
-            No places available for this search.
-        </div>
-    <%
-        }
-    %>
+    <% } else { %>
+        <div class="alert alert-info">No places found.</div>
+    <% } %>
+
 </div>
 
-<!-- Bootstrap JS (optional but good for future components) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

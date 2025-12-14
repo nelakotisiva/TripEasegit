@@ -86,9 +86,22 @@ body{
 .cab-grid{
     margin-top:40px;
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    grid-template-columns:repeat(3, 1fr);
     gap:25px;
 }
+
+@media(max-width:1100px){
+    .cab-grid{
+        grid-template-columns:repeat(2, 1fr);
+    }
+}
+
+@media(max-width:700px){
+    .cab-grid{
+        grid-template-columns:1fr;
+    }
+}
+
 
 .cab-card{
     background:#fff;
@@ -181,11 +194,37 @@ body{
 </head>
 
 <body>
+<%
+    String msg = request.getParameter("msg");
+    if("success".equals(msg)){
+%>
+    <script>
+        alert("✅ Your cab booked successfully!");
+    </script>
+<%
+    } else if("fail".equals(msg)){
+%>
+    <script>
+        alert("❌ This cab is already booked!");
+    </script>
+<%
+    }
+%>
 
 <div class="header">
-    <div class="logo">🚕 TripEase Cabs</div>
-    <div class="user">Welcome, <%= user.getFull_name() %></div>
+    <div class="logo">TripEase Cabs</div>
+
+    <div style="display:flex; gap:20px; align-items:center;">
+        <a href="CabBookingServlet" 
+           style="text-decoration:none; background:#00c6ff; color:white; 
+                  padding:10px 18px; border-radius:8px; font-weight:600;">
+            My Bookings
+        </a>
+
+        <div class="user">Welcome, <%= user.getFull_name() %></div>
+    </div>
 </div>
+
 
 <form class="search-box" method="get" action="VehicleListServlet">
     <input type="text" name="location" placeholder="Enter Pickup Location" value="<%= location.equals("null")?"":location %>" required>
@@ -209,7 +248,7 @@ body{
     <div class="cab-info">Type: <%= c.getSeaterType() %></div>
     <div class="cab-info">Location: <%= c.getLocation() %></div>
 
-    <div class="price">₹ <%= c.getPricePerDay() %> / Day</div>
+    <div class="price"><%= c.getPricePerDay() %> / Day</div>
 
     <span class="status <%= isBooked?"booked":"available" %>">
         <%= isBooked?"BOOKED":"AVAILABLE" %>

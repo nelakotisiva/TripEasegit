@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import Daopackage.com.BookingDAO;
+import Daopackage.com.BookingDAOImpl;
 import dtopackage.com.Bookingg;
 import utilpackage.com.DBConnection;
 
@@ -23,15 +25,16 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
     }
 
     // =======================================================
-    //               SAVE BOOKING (INSERT LOGIC)
+    //               SAVE HOTEL BOOKING
     // =======================================================
     @Override
-    public boolean saveBooking(int userId, int hotelId, String checkin, String checkout,
+    public boolean saveBooking(int userId, int hotelId,
+                               String checkin, String checkout,
                                int guests, double total) {
 
-        String sql = "INSERT INTO hotel_booking "
-                   + "(user_id, hotel_id, check_in, check_out, guests, total_amount) "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO hotel_booking " +
+                     "(user_id, hotel_id, check_in, check_out, guests, total_amount) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -42,34 +45,35 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
             ps.setInt(5, guests);
             ps.setDouble(6, total);
 
-            System.out.println("🔍 TRYING INSERT → user=" + userId + ", hotel=" + hotelId);
-
             int result = ps.executeUpdate();
+            System.out.println("✔ Hotel booking inserted = " + result);
 
-            System.out.println("✔ Insert result = " + result);
+            // 🔥 ALSO INSERT INTO MAIN booking TABLE
+            if (result > 0) {
 
-            return result > 0;
+                int destinationId = getDestinationIdByHotel(hotelId);
+
+                BookingDAO bookingDAO = new BookingDAOImpl();
+                bookingDAO.saveServiceBooking(
+                        userId,
+                        destinationId,
+                        java.sql.Date.valueOf(checkin),
+                        guests
+                );
+
+                return true;
+            }
 
         } catch (Exception e) {
-
-            System.out.println("\n❌ SQL ERROR WHILE SAVING BOOKING");
-            System.out.println("--------------------------------------");
-            System.out.println("User ID     : " + userId);
-            System.out.println("Hotel ID    : " + hotelId);
-            System.out.println("Check-in    : " + checkin);
-            System.out.println("Check-out   : " + checkout);
-            System.out.println("Guests      : " + guests);
-            System.out.println("Total Amt   : " + total);
-            System.out.println("--------------------------------------");
+            System.out.println("❌ Error saving hotel booking");
             e.printStackTrace();
-            System.out.println("--------------------------------------\n");
-
-            return false;
         }
+
+        return false;
     }
 
     // =======================================================
-    //          FETCH BOOKINGS FOR SPECIFIC USER
+    //          FETCH HOTEL BOOKINGS FOR USER
     // =======================================================
     @Override
     public List<Bookingg> getBookingsByUser(int userId) {
@@ -89,8 +93,6 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
 
-            System.out.println("📌 Fetching bookings for userId = " + userId);
-
             while (rs.next()) {
                 Bookingg b = new Bookingg();
 
@@ -108,13 +110,32 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
                 list.add(b);
             }
 
-            System.out.println("📌 Total bookings found = " + list.size());
-
         } catch (Exception e) {
-            System.out.println("❌ Error fetching bookings:");
+            System.out.println("❌ Error fetching hotel bookings");
             e.printStackTrace();
         }
 
         return list;
+    }
+
+    // =======================================================
+    //          HELPER → HOTEL → DESTINATION
+    // =======================================================
+    private int getDestinationIdByHotel(int hotelId) {
+
+        String sql = "SELECT destination_id FROM hotel WHERE hotel_id = ?";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, hotelId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("destination_id");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

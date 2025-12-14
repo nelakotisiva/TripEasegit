@@ -9,89 +9,110 @@ import utilpackage.com.DBConnection;
 
 public class UserDaoImpl implements UserDao {
 
-    Connection con = null;
-
+    // ✅ Register User
     @Override
     public boolean registerUser(User u) {
-        String iqry = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
-        con = DBConnection.getConnector();
 
-        try {
-            PreparedStatement psmt = con.prepareStatement(iqry);
-            psmt.setInt(1, u.getUser_id());
-            psmt.setString(2, u.getUsername());
-            psmt.setString(3, u.getPassword());
-            psmt.setString(4, u.getEmail());
-            psmt.setString(5, u.getFull_name());
-            psmt.setLong(6, u.getPhone());
-            psmt.setString(7, u.getRole());
-            return psmt.executeUpdate() > 0;
+        String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        } catch (SQLException e) { e.printStackTrace(); }
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            if (con == null) return false;
+
+            ps.setInt(1, u.getUser_id());
+            ps.setString(2, u.getUsername());
+            ps.setString(3, u.getPassword());
+            ps.setString(4, u.getEmail());
+            ps.setString(5, u.getFull_name());
+            ps.setLong(6, u.getPhone());
+            ps.setString(7, u.getRole());
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
+    // ✅ Login User (FIXED – NO NPE)
     @Override
     public User loginUser(String username, String password) {
+
         User user = null;
+        String sql = "SELECT * FROM user WHERE username=? AND password=?";
 
         try (Connection con = DBConnection.getConnector();
-             PreparedStatement pst = con.prepareStatement(
-                     "SELECT * FROM user WHERE username = ? AND password = ?")) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            pst.setString(1, username);
-            pst.setString(2, password);
+            if (con == null) return null;
 
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                user = new User(
-                    rs.getInt("user_id"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("email"),
-                    rs.getString("full_name"),
-                    rs.getLong("phone"),
-                    rs.getString("role")
-                );
+            ps.setString(1, username);
+            ps.setString(2, password);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getInt("user_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getLong("phone"),
+                        rs.getString("role")
+                    );
+                }
             }
-        } catch (Exception e) { e.printStackTrace(); }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return user;
     }
 
+    // ✅ Get User by ID
     @Override
     public User getid(int id) {
+
         User user = null;
-        String qry = "SELECT * FROM user WHERE user_id = ?";
-        con = DBConnection.getConnector();
+        String sql = "SELECT * FROM user WHERE user_id=?";
 
-        try {
-            PreparedStatement psmt = con.prepareStatement(qry);
-            psmt.setInt(1, id);
-            ResultSet rs = psmt.executeQuery();
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                user = new User(
-                    rs.getInt("user_id"),
-                    rs.getString("username"),
-                    rs.getString("password"),
-                    rs.getString("email"),
-                    rs.getString("full_name"),
-                    rs.getLong("phone"),
-                    rs.getString("role")
-                );
+            if (con == null) return null;
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    user = new User(
+                        rs.getInt("user_id"),
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getLong("phone"),
+                        rs.getString("role")
+                    );
+                }
             }
-
-        } catch (SQLException e) { e.printStackTrace(); }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return user;
     }
+
+    // ✅ Update User
+    @Override
     public boolean updatedetails(User u) {
-        boolean f = false;
-        try {
-            con = DBConnection.getConnector();
-            String sql = "UPDATE user SET full_name=?, username=?, email=?, phone=?, role=? WHERE user_id=?";
-            PreparedStatement ps = con.prepareStatement(sql);
+
+        String sql = "UPDATE user SET full_name=?, username=?, email=?, phone=?, role=? WHERE user_id=?";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            if (con == null) return false;
 
             ps.setString(1, u.getFull_name());
             ps.setString(2, u.getUsername());
@@ -100,23 +121,26 @@ public class UserDaoImpl implements UserDao {
             ps.setString(5, u.getRole());
             ps.setInt(6, u.getUser_id());
 
-            int i = ps.executeUpdate();
-            if (i > 0) f = true;
+            return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return f;
+        return false;
     }
 
-
+    // ✅ Get All Users
     @Override
     public List<User> getAllUsers() {
-        List<User> list = new ArrayList<>();
 
-        try (Connection conn = DBConnection.getConnector();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM user");
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM user";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+
+            if (con == null) return list;
 
             while (rs.next()) {
                 list.add(new User(
@@ -130,16 +154,22 @@ public class UserDaoImpl implements UserDao {
                 ));
             }
 
-        } catch (Exception e) { e.printStackTrace(); }
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
+    // ✅ Add User
     @Override
     public boolean addUser(User user) {
-        try (Connection conn = DBConnection.getConnector();
-             PreparedStatement ps = conn.prepareStatement(
-                     "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)")) {
+
+        String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            if (con == null) return false;
 
             ps.setInt(1, user.getUser_id());
             ps.setString(2, user.getUsername());
@@ -148,21 +178,32 @@ public class UserDaoImpl implements UserDao {
             ps.setString(5, user.getFull_name());
             ps.setLong(6, user.getPhone());
             ps.setString(7, user.getRole());
+
             return ps.executeUpdate() > 0;
 
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 
+    // ✅ Delete User
     @Override
     public boolean deleteUser(int id) {
-        try (Connection conn = DBConnection.getConnector();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM user WHERE user_id=?")) {
+
+        String sql = "DELETE FROM user WHERE user_id=?";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            if (con == null) return false;
 
             ps.setInt(1, id);
             return ps.executeUpdate() > 0;
 
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }

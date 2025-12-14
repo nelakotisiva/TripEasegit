@@ -1,5 +1,6 @@
 package Daopackage.com;
 
+import java.sql.Date;
 import java.util.List;
 import dtopackage.com.Booking;
 import dtopackage.com.BookingDTO;
@@ -18,5 +19,10 @@ public interface BookingDAO {
     boolean updateBooking(int bookingId, String status, int numPeople);
     boolean deleteBooking(int bookingId);
 
-    
+ // 🔹 NEW: Save simple service booking (Hotel / Cab / Restaurant / Place)
+    boolean saveServiceBooking(int userId,
+                               int destinationId,
+                               Date travelDate,
+                               int numOfPeople);
+
 }

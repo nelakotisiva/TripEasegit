@@ -1,10 +1,11 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
-<<<<<<< HEAD
 encoding//src/main/webapp/AdminHotels.jsp=UTF-8
-=======
 encoding//src/main/webapp/AdminManageCabs.jsp=UTF-8
->>>>>>> refs/remotes/origin/master
 encoding//src/main/webapp/BookingSuccess.jsp=UTF-8
+encoding//src/main/webapp/CabBookings.jsp=UTF-8
 encoding//src/main/webapp/Cabs.jsp=UTF-8
 encoding//src/main/webapp/Dashboard.jsp=UTF-8
 encoding//src/main/webapp/HotelBooking.jsp=UTF-8

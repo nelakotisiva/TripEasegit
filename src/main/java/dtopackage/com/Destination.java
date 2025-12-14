@@ -1,8 +1,7 @@
-
 package dtopackage.com;
 
-
 public class Destination {
+
     private int destinationId;
     private String name;
     private String location;
@@ -52,4 +51,3 @@ public class Destination {
         this.price = price;
     }
 }
-

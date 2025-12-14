@@ -12,7 +12,9 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             con = DriverManager.getConnection(
-            		"jdbc:mysql://localhost:3306/tripease","root","sql@123"
+                "jdbc:mysql://localhost:3306/tripease?useSSL=false&serverTimezone=UTC",
+                "root",
+                "sql@123"
             );
 
         } catch (Exception e) {
@@ -20,6 +22,6 @@ public class DBConnection {
             e.printStackTrace();
         }
 
-        return con;  // If null → DAO must stop further execution
+        return con;
     }
 }

@@ -3,47 +3,55 @@ package controllerpackage.com;
 import java.io.IOException;
 import java.util.List;
 
-import dtopackage.com.Bookingg;
-import dtopackage.com.User;
-import UserDaopackage.com.HotelBookingDAO;
+import Daopackage.com.BookingDAOImpl;
 import UserDaopackage.com.HotelBookingDAOImpl;
+import Daopackage.com.CabDAO;
+
+
+import dtopackage.com.Booking;
+import dtopackage.com.Bookingg;
+import dtopackage.com.Cab;
+
+import dtopackage.com.User;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 @WebServlet("/MyBookingsServlet")
 public class MyBookingsServlet extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // Get existing session, don't create new
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userObj") == null) {
             resp.sendRedirect("Login.jsp");
             return;
         }
 
-        // Get logged-in user from session
         User user = (User) session.getAttribute("userObj");
+        int userId = user.getUser_id();
 
-        // Optional debug logs
-        System.out.println("Fetching bookings for userId = " + user.getUser_id());
+        // 🏨 Hotels
+        List<Bookingg> hotelBookings =
+                new HotelBookingDAOImpl().getBookingsByUser(userId);
 
-        // Use DAO to fetch bookings
-        HotelBookingDAO dao = new HotelBookingDAOImpl();
-        List<Bookingg> bookings = dao.getBookingsByUser(user.getUser_id());
+        // 🍽 Restaurants + 🗺 Places + 🚕 (from booking table)
+        List<Booking> commonBookings =
+                new BookingDAOImpl().getBookingsByUserId(userId);
 
-        System.out.println("Bookings found = " + bookings.size());
+        // 🚕 Cabs (detailed)
+        List<Cab> cabBookings =
+                new CabDAO().getMyBookings(userId);
 
-        // Set data in request scope and forward to JSP
-        req.setAttribute("bookings", bookings);
-        req.getRequestDispatcher("MyBookings.jsp").forward(req, resp);
+        
+        req.setAttribute("hotelBookings", hotelBookings);
+        req.setAttribute("commonBookings", commonBookings);
+        req.setAttribute("cabBookings", cabBookings);
+       
+
+        req.getRequestDispatcher("MyBooking.jsp").forward(req, resp);
     }
 }

@@ -1,249 +1,301 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>TripEase | Plan Your Perfect Stay</title>
+<title>TripEase | Travel Made Simple</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ================= ROOT THEME ================= */
+:root{
+    --mint:#3ba58b;
+    --mint-dark:#2f8a74;
+    --mint-light:#eaf7f4;
+    --text:#1f3a3d;
+    --muted:#6c757d;
+    --white:#ffffff;
+}
 
-    body {
-        margin: 0;
-        font-family: "Poppins", sans-serif;
-        background: #f4f7f7;
-        scroll-behavior: smooth;
-    }
+/* ================= BASE ================= */
+*{box-sizing:border-box}
 
-    /* ---------- NAVBAR ---------- */
-    .navbar {
-        background: #ffffff;
-        padding: 14px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-    }
+body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:var(--mint-light);
+    color:var(--text);
+}
 
-    .logo {
-        font-size: 26px;
-        font-weight: 700;
-        color: #3ba58b;
-    }
+/* ================= NAVBAR ================= */
+header{
+    position:sticky;
+    top:0;
+    background:white;
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
+    z-index:100;
+}
 
-    .nav-links a {
-        margin-left: 25px;
-        text-decoration: none;
-        color: #333;
-        font-weight: 600;
-        font-size: 15px;
-    }
+.navbar{
+    max-width:1200px;
+    margin:auto;
+    padding:16px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
 
-    .nav-links a:hover {
-        color: #3ba58b;
-    }
+.logo{
+    font-size:26px;
+    font-weight:800;
+    color:var(--mint);
+}
 
-    /* ---------- HERO SECTION ---------- */
-    .hero {
-        width: 100%;
-        height: 380px;
-        background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e') no-repeat center center/cover;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+.nav-links a{
+    margin-left:22px;
+    text-decoration:none;
+    font-weight:600;
+    color:var(--text);
+}
 
-    .hero-overlay {
-        background: rgba(0, 0, 0, 0.45);
-        padding: 40px;
-        border-radius: 12px;
-        text-align: center;
-    }
+.nav-links .btn{
+    background:var(--mint);
+    color:white;
+    padding:8px 18px;
+    border-radius:20px;
+}
 
-    .hero-title {
-        font-size: 38px;
-        color: white;
-        font-weight: 700;
-    }
+.nav-links .btn:hover{
+    background:var(--mint-dark);
+}
 
-    .hero-sub {
-        font-size: 18px;
-        color: #f2f2f2;
-        margin-top: 10px;
-    }
+/* ================= HERO ================= */
+.hero{
+    height:80vh;
+    position:relative;
+}
 
-    /* ---------- SEARCH BOX ---------- */
-    .search-area {
-        width: 70%;
-        margin: -25px auto 40px auto;
-        background: white;
-        padding: 20px;
-        border-radius: 14px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        display: flex;
-        justify-content: center;
-    }
+.hero video{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
 
-    .search-input {
-        width: 60%;
-        padding: 12px;
-        border-radius: 10px;
-        border: 1px solid #b8d4cf;
-        font-size: 16px;
-        outline: none;
-    }
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:white;
+    padding:20px;
+}
 
-    .search-btn {
-        padding: 12px 24px;
-        margin-left: 10px;
-        border-radius: 10px;
-        border: none;
-        background: #3ba58b;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        font-weight: bold;
-    }
+.hero-overlay h1{
+    font-size:46px;
+    margin:0;
+}
 
-    .search-btn:hover {
-        background: #2f8a74;
-    }
+.hero-overlay p{
+    margin-top:10px;
+    font-size:18px;
+}
 
-    /* ---------- SECTION TITLE ---------- */
-    .section-title {
-        font-size: 26px;
-        font-weight: 700;
-        text-align: center;
-        margin: 40px 0 20px;
-        color: #1f3a3d;
-    }
+/* ================= SEARCH ================= */
+.search-box{
+    background:white;
+    max-width:1000px;
+    margin:-60px auto 60px;
+    padding:24px;
+    border-radius:18px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.15);
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
 
-    /* ---------- IMAGE GRID ---------- */
-    .grid {
-        width: 90%;
-        margin: auto;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 20px;
-    }
+.search-box input{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #b7ded4;
+}
 
-    .card {
-        height: 180px;
-        border-radius: 14px;
-        overflow: hidden;
-        position: relative;
-        cursor: pointer;
-        box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-        transition: 0.3s;
-    }
+.search-box button{
+    background:var(--mint);
+    border:none;
+    padding:12px 28px;
+    border-radius:12px;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+}
 
-    .card:hover {
-        transform: scale(1.04);
-    }
+/* ================= SECTIONS ================= */
+.section{
+    max-width:1200px;
+    margin:auto;
+    padding:10px 20px 60px;
+}
 
-    .card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.section-title{
+    font-size:28px;
+    font-weight:800;
+    margin-bottom:25px;
+}
 
-    .card-label {
-        position: absolute;
-        bottom: 8px;
-        left: 12px;
-        color: white;
-        font-weight: bold;
-        font-size: 18px;
-        text-shadow: 0 3px 6px rgba(0,0,0,0.4);
-    }
+/* ================= GRID/CARDS ================= */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:22px;
+}
 
-    /* ---------- FOOTER ---------- */
-    .footer {
-        margin-top: 40px;
-        background: #ffffff;
-        padding: 18px;
-        text-align: center;
-        color: #555;
-        font-size: 14px;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-    }
+.card{
+    background:white;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 26px rgba(0,0,0,0.12);
+    transition:0.3s;
+}
 
+.card:hover{transform:translateY(-8px)}
+
+.card img{
+    width:100%;
+    height:190px;
+    object-fit:cover;
+}
+
+.card .card-body{
+    padding:16px;
+}
+
+.card h3{margin:0}
+.card p{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* ================= ADS ================= */
+.ads{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:22px;
+}
+
+.ads img{
+    width:100%;
+    border-radius:18px;
+    box-shadow:0 8px 26px rgba(0,0,0,0.15);
+}
+
+/* ================= FOOTER ================= */
+footer{
+    background:white;
+    text-align:center;
+    padding:28px;
+    color:#777;
+    font-size:14px;
+}
 </style>
-
 </head>
+
 <body>
 
-<!-- ---------- NAVBAR ---------- -->
-<div class="navbar">
-    <div class="logo">TripEase</div>
-    <div class="nav-links">
-        <a href="index.jsp">Home</a>
-        <a href="HotelListServlet">Hotels</a>
-        <a href="#cabs">Cabs</a>
-        <a href="#restaurants">Restaurants</a>
-        <a href="Login.jsp">Login</a>
-        <a href="Register.jsp">Register</a>
+<!-- ================= NAVBAR ================= -->
+<header>
+    <div class="navbar">
+        <div class="logo">✈ TripEase</div>
+        <div class="nav-links">
+            <a href="index.jsp">Home</a>
+            <a href="Register.jsp">Register</a>
+            <a class="btn" href="Login.jsp">Login</a>
+        </div>
     </div>
-</div>
+</header>
 
-<!-- ---------- HERO ---------- -->
-<div class="hero">
+<!-- ================= HERO ================= -->
+<section class="hero">
+    <video autoplay muted loop>
+        <source src="https://cdn.coverr.co/videos/coverr-waves-crashing-on-the-beach-8968/1080p.mp4" type="video/mp4">
+    </video>
     <div class="hero-overlay">
-        <div class="hero-title">Plan Your Perfect Trip</div>
-        <div class="hero-sub">Hotels • Cabs • Restaurants — Everything at one place</div>
+        <div>
+            <h1>Calm Journeys Begin Here</h1>
+            <p>Discover destinations, relax & travel beautifully</p>
+        </div>
     </div>
+</section>
+
+<!-- ================= SEARCH ================= -->
+<div class="search-box">
+    <input type="text" placeholder="Where do you want to go?">
+    <input type="date">
+    <button>Explore</button>
 </div>
 
-<!-- ---------- SEARCH BOX ---------- -->
-<div class="search-area">
-    <form action="HotelListServlet" method="get">
-        <input type="text" class="search-input" name="location" placeholder="Search hotels, cabs, restaurants..." required>
-        <button class="search-btn">Search</button>
-    </form>
-</div>
+<!-- ================= OFFERS ================= -->
+<section class="section">
+    <div class="section-title">Special Travel Offers</div>
+    <div class="ads">
+        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470">
+        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d">
+        <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff">
+    </div>
+</section>
 
-<!-- ---------- POPULAR DESTINATIONS ---------- -->
-<div class="section-title">Popular Destinations</div>
+<!-- ================= DESTINATIONS ================= -->
+<section class="section">
+    <div class="section-title">Popular Destinations</div>
+    <div class="grid">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c">
+            <div class="card-body"><h3>Goa</h3><p>Sun, beaches & nightlife</p></div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1580656063820-306dfc0d7c4d">
+            <div class="card-body"><h3>Mysore</h3><p>Royal heritage & culture</p></div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791">
+            <div class="card-body"><h3>Bengaluru</h3><p>Urban energy & cafes</p></div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1532413992370-8b8c1e52b33c">
+            <div class="card-body"><h3>Chennai</h3><p>Culture & coastlines</p></div>
+        </div>
+    </div>
+</section>
 
-<div class="grid">
-    <div class="card"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c"><div class="card-label">Goa</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1532413992370-8b8c1e52b33c"><div class="card-label">Chennai</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791"><div class="card-label">Bengaluru</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1562771242-bd6bbf31cf8e"><div class="card-label">Mumbai</div></div>
-</div>
+<!-- ================= EXPERIENCE ================= -->
+<section class="section">
+    <div class="section-title">Travel Feelings</div>
+    <div class="grid">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
+            <div class="card-body"><h3>Adventure</h3><p>Unforgettable moments</p></div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad">
+            <div class="card-body"><h3>Relaxation</h3><p>Peaceful escapes</p></div>
+        </div>
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
+            <div class="card-body"><h3>Nature</h3><p>Fresh air & calm views</p></div>
+        </div>
+    </div>
+</section>
 
-<!-- ---------- FEATURED HOTELS ---------- -->
-<div class="section-title">Featured Hotels</div>
-
-<div class="grid">
-    <div class="card"><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/19399570.jpg"><div class="card-label">Taj Resort</div></div>
-    <div class="card"><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/157535773.jpg"><div class="card-label">Radisson Blu</div></div>
-    <div class="card"><img src="https://cf.bstatic.com/xdata/images/hotel/max1024x768/318783361.jpg"><div class="card-label">Heritage Madurai</div></div>
-</div>
-
-<!-- ---------- FEATURED RESTAURANTS ---------- -->
-<div class="section-title" id="restaurants">Popular Restaurants</div>
-
-<div class="grid">
-    <div class="card"><img src="https://images.unsplash.com/photo-1552566626-52f8b828add9"><div class="card-label">BBQ Nation</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1"><div class="card-label">Olive Bistro</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1555992336-03a23c7151dd"><div class="card-label">Paradise Biryani</div></div>
-</div>
-
-<!-- ---------- FEATURED CABS ---------- -->
-<div class="section-title" id="cabs">Cab Services</div>
-
-<div class="grid">
-    <div class="card"><img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea"><div class="card-label">Ola Cabs</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6"><div class="card-label">Uber</div></div>
-    <div class="card"><img src="https://images.unsplash.com/photo-1542365887-1f6ab59f7e74"><div class="card-label">Local Taxi</div></div>
-</div>
-
-<!-- ---------- FOOTER ---------- -->
-<div class="footer">
-    © 2025 TripEase – Your All-in-One Travel Companion
-</div>
+<!-- ================= FOOTER ================= -->
+<footer>
+    © 2025 TripEase · Travel Beautifully
+</footer>
 
 </body>
 </html>

@@ -2,29 +2,94 @@ package Daopackage.com;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import Daopackage.com.BookingDAO;
+import Daopackage.com.BookingDAOImpl;
 import dtopackage.com.RestaurantBooking;
 import utilpackage.com.DBConnection;
 
 public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
-	
-	@Override
-	public boolean bookRestaurant(RestaurantBooking rb) {
-		Connection con=DBConnection.getConnector();
-		String sql="insert into restaurant_booking values(?,?,?,?,?)";
-		try {
-			PreparedStatement ps=con.prepareStatement(sql);
-			ps.setInt(1, rb.getUserId());
-			ps.setInt(2, rb.getRestaurantId());
-			ps.setDate(3, rb.getBookingDate());
-			ps.setInt(4, rb.getNumPeople());
-			ps.setString(5, rb.getStatus());
-			return ps.executeUpdate()==1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
 
+    // ------------------------------------------------
+    // ORIGINAL METHOD (KEEP – NO CHANGE)
+    // ------------------------------------------------
+    @Override
+    public boolean bookRestaurant(RestaurantBooking rb) {
+        Connection con = DBConnection.getConnector();
+        String sql = "INSERT INTO restaurant_booking VALUES (?,?,?,?,?)";
+
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, rb.getUserId());
+            ps.setInt(2, rb.getRestaurantId());
+            ps.setDate(3, rb.getBookingDate());
+            ps.setInt(4, rb.getNumPeople());
+            ps.setString(5, rb.getStatus());
+
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ------------------------------------------------
+    // 🔥 NEW METHOD → CONNECT TO booking TABLE
+    // ------------------------------------------------
+    @Override
+    public boolean bookRestaurantAndMainBooking(RestaurantBooking rb) {
+
+        Connection con = DBConnection.getConnector();
+
+        try {
+            // 1️⃣ Insert into restaurant_booking
+            boolean ok = bookRestaurant(rb);
+            if (!ok) return false;
+
+            // 2️⃣ Get destination_id from restaurant
+            int destinationId = getDestinationIdByRestaurant(rb.getRestaurantId());
+
+            // 3️⃣ Insert into MAIN booking table
+            BookingDAO bookingDAO = new BookingDAOImpl();
+            bookingDAO.saveServiceBooking(
+                    rb.getUserId(),
+                    destinationId,
+                    rb.getBookingDate(),
+                    rb.getNumPeople()
+            );
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // ------------------------------------------------
+    // HELPER: restaurant → destination
+    // ------------------------------------------------
+    private int getDestinationIdByRestaurant(int restaurantId) {
+
+        String sql = "SELECT destination_id FROM restaurant WHERE restaurant_id = ?";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, restaurantId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("destination_id");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
 }

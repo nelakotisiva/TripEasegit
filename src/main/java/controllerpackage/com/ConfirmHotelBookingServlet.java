@@ -38,19 +38,10 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
             String checkoutStr = req.getParameter("checkout");
             int guests = Integer.parseInt(req.getParameter("guests"));
 
-            // Debug
-            System.out.println("------ BOOKING DEBUG ------");
-            System.out.println("userId = " + user.getUser_id());
-            System.out.println("hotelId = " + hotelId);
-            System.out.println("checkin = " + checkinStr);
-            System.out.println("checkout = " + checkoutStr);
-            System.out.println("guests = " + guests);
-            System.out.println("---------------------------");
-
             if (checkinStr == null || checkoutStr == null ||
                 checkinStr.isEmpty() || checkoutStr.isEmpty()) {
 
-                req.setAttribute("error", "Please select check-in and check-out dates.");
+                req.setAttribute("error", "Please select dates.");
                 req.getRequestDispatcher("HotelBooking.jsp").forward(req, resp);
                 return;
             }
@@ -58,13 +49,9 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
             LocalDate checkin = LocalDate.parse(checkinStr);
             LocalDate checkout = LocalDate.parse(checkoutStr);
 
-            // 🔥 Allow same-day booking (1 day stay)
             long nights = ChronoUnit.DAYS.between(checkin, checkout);
-            if (nights <= 0) {
-                nights = 1;
-            }
+            if (nights <= 0) nights = 1;
 
-            // fetch hotel
             HotelDAOImpl hotelDao = new HotelDAOImpl();
             Hotel hotel = hotelDao.getHotelById(hotelId);
 
@@ -74,27 +61,37 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
                 return;
             }
 
-            double pricePerNight = hotel.getPricePerNight();
-            double total = pricePerNight * nights * Math.max(1, guests);
+            double total =
+                    hotel.getPricePerNight() * nights * Math.max(1, guests);
 
-            // save booking
             HotelBookingDAO bookingDao = new HotelBookingDAOImpl();
-            boolean ok = bookingDao.saveBooking(
-                    user.getUser_id(), hotelId, checkinStr, checkoutStr, guests, total
+            boolean success = bookingDao.saveBooking(
+                    user.getUser_id(),
+                    hotelId,
+                    checkinStr,
+                    checkoutStr,
+                    guests,
+                    total
             );
 
-            if (ok) {
-                System.out.println("BOOKING SAVED SUCCESSFULLY!");
-                resp.sendRedirect("MyBookingsServlet");
+            if (success) {
+                // ✅ SUCCESS POPUP MESSAGE
+                session.setAttribute(
+                        "bookingSuccess",
+                        "Hotel booked successfully!"
+                );
+
+                // redirect to hotel list
+                resp.sendRedirect("HotelListServlet");
+                return;
             } else {
-                System.out.println("BOOKING FAILED!");
-                req.setAttribute("error", "Failed to save booking. Try again.");
+                req.setAttribute("error", "Booking failed. Try again.");
                 req.getRequestDispatcher("HotelBooking.jsp").forward(req, resp);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            req.setAttribute("error", "Invalid input. Try again.");
+            req.setAttribute("error", "Invalid booking details.");
             req.getRequestDispatcher("hotelList.jsp").forward(req, resp);
         }
     }

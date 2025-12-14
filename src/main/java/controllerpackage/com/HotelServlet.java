@@ -19,6 +19,7 @@ public class HotelServlet extends HttpServlet {
 
         String location = req.getParameter("location");
 
+        // ❌ DO NOT SHOW HOTELS BY DEFAULT
         if (location == null || location.trim().isEmpty()) {
             req.setAttribute("hotels", null);
             req.setAttribute("searched", "");
@@ -26,6 +27,7 @@ public class HotelServlet extends HttpServlet {
             return;
         }
 
+        // ✅ SHOW ONLY AFTER SEARCH
         HotelDAOImpl dao = new HotelDAOImpl();
         List<Hotel> hotels = dao.searchHotelsByCity(location.trim());
 

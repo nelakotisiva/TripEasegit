@@ -18,7 +18,8 @@ public class PlacesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String q = request.getParameter("q");  // search keyword
+        String q = request.getParameter("q");
+
         DestinationDAO dao = new DestinationDAOImpl();
         List<Destination> places;
 
@@ -29,8 +30,9 @@ public class PlacesServlet extends HttpServlet {
         }
 
         request.setAttribute("placesList", places);
-        request.setAttribute("q", q); // keep search value on page
+        request.setAttribute("q", q);
 
-        request.getRequestDispatcher("/famousPlaces.jsp").forward(request, response);
+        request.getRequestDispatcher("/famousPlaces.jsp")
+               .forward(request, response);
     }
 }

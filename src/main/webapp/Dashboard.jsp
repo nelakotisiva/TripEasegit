@@ -14,19 +14,20 @@
 <head>
 <meta charset="UTF-8">
 <title>TripEase | Dashboard</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-/* THEME */
 :root{
-    --bg:#e8f5f3;
+    --bg:#eef6ff;
     --card:#ffffff;
-    --mint:#3ba58b;
-    --mint-dark:#2f8a74;
+    --primary:#007aff;
+    --primary-dark:#0059c1;
     --teal:#1f3a3d;
     --muted:#6c757d;
 }
+
 body{
     margin:0;
     font-family:'Poppins',sans-serif;
@@ -39,16 +40,20 @@ nav{
     justify-content:space-between;
     align-items:center;
     padding:14px 30px;
-    background:linear-gradient(90deg,#013bff,#06b7ff);
+    background:linear-gradient(90deg,#005bea,#00c6fb);
     color:#fff;
     box-shadow:0 4px 18px rgba(0,0,0,0.22);
 }
+
+.logo{font-size:22px;font-weight:700}
+
 .nav-links a{
     color:white;
     text-decoration:none;
     margin:0 12px;
     font-weight:600;
 }
+
 .logout-btn{
     background:#ff2b2b;
     padding:8px 14px;
@@ -60,95 +65,98 @@ nav{
 
 /* HERO */
 .hero{
-    background: url('https://i.imgur.com/g4kZkF4.jpeg') center/cover no-repeat,
-    linear-gradient(135deg,#021b79,#0575e6);
-    background-blend-mode: overlay;
+    background:url('https://i.imgur.com/g4kZkF4.jpeg') center/cover no-repeat,
+    linear-gradient(135deg,#002f8f,#0086ff);
+    background-blend-mode:overlay;
     text-align:center;
-    padding:65px 20px 140px;
+    padding:70px 20px 150px;
     color:white;
 }
-.hero h1{font-size:32px;font-weight:700;margin:0;}
-.hero p{margin-top:8px}
+
+.hero h1{font-size:34px;margin:0}
+.hero p{margin-top:10px;font-size:15px}
 
 /* SEARCH CARD */
 .search-card{
     width:90%;
     max-width:1100px;
-    margin:-70px auto 20px;
+    margin:-90px auto 30px;
     background:white;
-    border-radius:16px;
-    padding:16px;
-    box-shadow:0 14px 40px rgba(0,0,0,0.20);
+    padding:18px;
+    border-radius:18px;
+    box-shadow:0 20px 45px rgba(0,0,0,0.22);
 }
 
-.tabs{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    padding:8px;
-}
-.tab{
-    padding:8px 16px;
-    border-radius:20px;
-    font-weight:600;
-    cursor:pointer;
-}
-.tab.active{background:var(--mint);color:white}
-
-.search-form{display:none;flex-direction:column;gap:15px}
-.form-row{display:flex;gap:12px;flex-wrap:wrap}
-.field{flex:1}
-.field input, select{
-    width:100%;padding:10px;border-radius:8px;border:1px solid #cfd4ff;background:#f8fbfa;
-}
-.btn-primary{
-    background:linear-gradient(90deg,#ff4b2b,#ff416c);
-    color:white;border:none;padding:10px 20px;border-radius:8px;font-weight:600;
-    cursor:pointer;
-}
-
-/* GRID CARDS */
+/* GRID */
 .section-title{
-    width:90%;margin:auto;
-    margin-bottom:10px;
-    font-size:20px;
+    width:90%;
+    max-width:1100px;
+    margin:20px auto 12px;
+    font-size:22px;
     font-weight:700;
     color:var(--teal);
 }
+
 .grid{
-    width:90%;max-width:1100px;margin:auto;
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:20px;margin-bottom:40px;
+    width:90%;
+    max-width:1100px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:22px;
+    margin-bottom:60px;
 }
+
 .card{
-    background:white;border-radius:14px;overflow:hidden;cursor:pointer;
-    box-shadow:0 6px 22px rgba(0,0,0,0.1);
-    transition:0.3s;
+    background:white;
+    border-radius:16px;
+    overflow:hidden;
+    cursor:pointer;
+    box-shadow:0 10px 26px rgba(0,0,0,0.14);
+    transition:.3s;
 }
-.card:hover{transform:translateY(-6px)}
+
+.card:hover{transform:translateY(-8px)}
+
 .media{
-    height:160px;background-size:cover;background-position:center;
-    transition:0.4s;
+    height:170px;
+    background-size:cover;
+    background-position:center;
 }
-.card:hover .media{transform:scale(1.07)}
-.card .body{text-align:center;padding:14px}
-.card h3{margin:0;font-size:18px;color:var(--teal)}
-.card p{margin:6px 0 0;color:var(--muted)}
+
+.body{
+    padding:14px;
+    text-align:center;
+}
+
+.body h3{
+    margin:0;
+    font-size:18px;
+    color:var(--teal);
+}
+
+.body p{
+    margin-top:6px;
+    color:var(--muted);
+    font-size:14px;
+}
+
+/* PACKAGE BADGE */
+.badge{
+    background:#ff5722;
+    color:white;
+    font-size:11px;
+    padding:4px 10px;
+    border-radius:20px;
+    display:inline-block;
+    margin-bottom:8px;
+}
 </style>
-
-<script>
-function showForm(tabKey){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-    document.querySelectorAll('.search-form').forEach(f=>f.style.display='none');
-
-    document.getElementById('tab-'+tabKey).classList.add('active');
-    document.getElementById(tabKey+'Form').style.display='flex';
-}
-</script>
 
 </head>
 <body>
 
+<!-- NAVBAR -->
 <nav>
     <div class="logo">✈ TripEase</div>
 
@@ -158,91 +166,76 @@ function showForm(tabKey){
         <a href="SearchFlight">Flights</a>
         <a href="VehicleListServlet">Cabs</a>
         <a href="nearbyRestaurants">Restaurants</a>
-        <a href="FamousPlacesServlet">Famous Places</a>
-        <a href="MyBookingsServlet">My Bookings</a>
+        <a href="ToursServlet">Tours & Packages</a>
+        <a href="PlacesServlet">Famous Places</a>
     </div>
 
     <a class="logout-btn" href="LogoutServlet">Logout</a>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
     <h1>Your Journey Starts Here</h1>
-    <p>Book hotels, flights, cabs & restaurants easily</p>
+    <p>Explore hotels, flights, cabs, restaurants & exciting tour packages</p>
 </section>
 
-<div class="search-card">
-
-    <div class="tabs">
-        <div class="tab active" id="tab-flights" onclick="showForm('flights')">✈️ Flights</div>
-        <div class="tab" id="tab-hotels" onclick="showForm('hotels')">🏨 Hotels</div>
-        <div class="tab" id="tab-cabs" onclick="showForm('cabs')">🚕 Cabs</div>
-        <div class="tab" id="tab-restaurants" onclick="showForm('restaurants')">🍽 Restaurants</div>
-    </div>
-
-    <!-- FLIGHTS -->
-    <form id="flightsForm" class="search-form" method="get" action="SearchFlight" style="display:flex">
-        <div class="form-row">
-            <div class="field"><input type="text" name="source" placeholder="From (City)" required></div>
-            <div class="field"><input type="text" name="destination" placeholder="To (City)" required></div>
-            <div class="field"><input type="date" name="date"></div>
-        </div>
-        <button class="btn-primary" type="submit">Search Flights</button>
-    </form>
-
-    <!-- HOTELS -->
-    <form id="hotelsForm" class="search-form" method="get" action="HotelListServlet">
-        <div class="form-row"><div class="field"><input type="text" name="location" placeholder="City"></div></div>
-        <button class="btn-primary" type="submit">Search Hotels</button>
-    </form>
-
-    <!-- CABS -->
-    <form id="cabsForm" class="search-form" method="get" action="VehicleListServlet">
-        <div class="form-row">
-            <div class="field"><input type="text" name="location" placeholder="Pickup Location" required></div>
-        </div>
-        <button class="btn-primary" type="submit">Search Cabs</button>
-    </form>
-
-    <!-- RESTAURANTS -->
-    <form id="restaurantsForm" class="search-form" method="get" action="nearbyRestaurants">
-        <div class="form-row"><div class="field"><input type="text" name="location" placeholder="Area / City"></div></div>
-        <button class="btn-primary" type="submit">Find Restaurants</button>
-    </form>
-
-</div>
-
-<div class="section-title">Explore</div>
+<!-- EXPLORE -->
+<div class="section-title">Explore Services</div>
 
 <div class="grid">
 
     <div class="card" onclick="location.href='HotelListServlet'">
         <div class="media" style="background-image:url('https://i.imgur.com/U8e7gbL.jpeg')"></div>
-        <div class="body"><h3>Hotels</h3><p>Find stays from budget to luxury</p></div>
+        <div class="body"><h3>Hotels</h3><p>Luxury & budget stays</p></div>
     </div>
 
     <div class="card" onclick="location.href='SearchFlight'">
         <div class="media" style="background-image:url('https://i.imgur.com/biCj8V8.jpeg')"></div>
-        <div class="body"><h3>Flights</h3><p>Search & compare best airfares</p></div>
+        <div class="body"><h3>Flights</h3><p>Best airfares</p></div>
     </div>
 
     <div class="card" onclick="location.href='VehicleListServlet'">
         <div class="media" style="background-image:url('https://i.imgur.com/zHbwGDW.jpeg')"></div>
-        <div class="body"><h3>Cabs</h3><p>Affordable rides anywhere</p></div>
+        <div class="body"><h3>Cabs</h3><p>Affordable rides</p></div>
     </div>
 
     <div class="card" onclick="location.href='nearbyRestaurants'">
         <div class="media" style="background-image:url('https://i.imgur.com/9KxN1DA.jpeg')"></div>
-        <div class="body"><h3>Restaurants</h3><p>Discover trending places to eat</p></div>
+        <div class="body"><h3>Restaurants</h3><p>Top spots to eat</p></div>
     </div>
 
-    <div class="card" onclick="location.href='FamousPlacesServlet'">
-        <div class="media" style="background-image:url('https://i.imgur.com/pFy0RVj.jpeg')"></div>
-        <div class="body"><h3>Famous Places</h3><p>Explore top tourist attractions</p></div>
+</div>
+
+<!-- TOURS & PACKAGES -->
+<div class="section-title">Popular Tours & Packages</div>
+
+<div class="grid">
+
+    <div class="card">
+        <div class="media" style="background-image:url('https://i.imgur.com/XYFQ8Xj.jpeg')"></div>
+        <div class="body">
+            <span class="badge">Best Seller</span>
+            <h3>Goa Beach Package</h3>
+            <p>3 Nights · 4 Days · Starting ₹9,999</p>
+        </div>
     </div>
 
-    <div class="card" onclick="location.href='MyBookingsServlet'">
-        <div class="media" style="background-image:url('https://i.imgur.com/wxYPD2j.jpeg')"></div>
-        <div class="body"><h3>My Bookings</h3><p>View your reservations</p></div>
+    <div class="card">
+        <div class="media" style="background-image:url('https://i.imgur.com/v6ZkYp5.jpeg')"></div>
+        <div class="body">
+            <span class="badge">Honeymoon</span>
+            <h3>Manali & Shimla</h3>
+            <p>5 Nights · 6 Days · Starting ₹18,500</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="media" style="background-image:url('https://i.imgur.com/R3jylUn.jpeg')"></div>
+        <div class="body">
+            <span class="badge">Adventure</span>
+            <h3>Kerala Backwaters</h3>
+            <p>4 Nights · 5 Days · Starting ₹15,999</p>
+        </div>
     </div>
 
 </div>
