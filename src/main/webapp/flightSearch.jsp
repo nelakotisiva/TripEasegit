@@ -26,6 +26,27 @@ body{
   color:var(--text);
 }
 
+/* ================= BACK BUTTON (ADDED ONLY THIS) ================= */
+.back-dashboard{
+  position:fixed;
+  top:18px;
+  left:18px;
+  z-index:9999;
+  background:linear-gradient(135deg,#334155,#0f172a);
+  color:white;
+  padding:10px 18px;
+  border-radius:999px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
+  transition:.3s;
+}
+.back-dashboard:hover{
+  transform:translateX(-4px);
+}
+/* ================================================================ */
+
 /* ================= HERO ================= */
 .hero{
   height:260px;
@@ -237,6 +258,10 @@ body{
 
 <body>
 
+<!-- ================= BACK BUTTON (ADDED ONLY THIS) ================= -->
+<a href="Dashboard.jsp" class="back-dashboard">← Back to Dashboard</a>
+<!-- ================================================================ -->
+
 <div class="hero">
   <div>
     <h1>✈ Find Your Perfect Flight</h1>
@@ -316,7 +341,6 @@ if(msg!=null && msg.contains("successfully")){
     <p><%=msg%></p>
     <div style="margin-top:20px;display:flex;gap:12px;justify-content:center">
       <a href="SearchFlight"><button class="back">Back</button></a>
-      
     </div>
   </div>
 </div>

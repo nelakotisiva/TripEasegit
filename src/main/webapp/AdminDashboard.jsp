@@ -192,7 +192,6 @@ body {
     <a href="ManageHotels">🏨 Manage Hotels</a>
 <a href="AdminManageCabs">🚕 Manage Cab Rentals</a>
     <a href="adminRestaurant?action=list">🍽 Manage Restaurants</a>
-    <a href="ManageCabs">🚕 Manage Cab Rentals</a>
     <a href="AdminLogoutServlet" style="background:#ff2e2e;margin-top:20px;">🚪 Logout</a>
 </div>
 

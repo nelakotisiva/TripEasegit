@@ -30,6 +30,30 @@
             font-family:'Poppins', sans-serif;
             padding:25px;
         }
+
+        /* BACK BUTTON */
+        .back-wrap{
+            max-width:920px;
+            margin:0 auto 16px;
+        }
+        .back-btn{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            background:linear-gradient(135deg,#3ba58b,#2f8a74);
+            color:white;
+            padding:10px 20px;
+            border-radius:999px;
+            text-decoration:none;
+            font-weight:600;
+            box-shadow:0 6px 18px rgba(59,165,139,.35);
+            transition:.3s;
+        }
+        .back-btn:hover{
+            transform:translateX(-4px);
+            box-shadow:0 10px 24px rgba(59,165,139,.45);
+        }
+
         .card {
             max-width:920px;
             margin:auto;
@@ -123,6 +147,11 @@
 </head>
 
 <body>
+
+<!-- ✅ BACK TO HOTEL LIST -->
+<div class="back-wrap">
+    <a href="HotelList.jsp" class="back-btn">← Back to Hotels</a>
+</div>
 
 <div class="card">
 

@@ -23,12 +23,24 @@
         .top-bar{
             width:95%;
             margin:20px auto;
-            text-align:right;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
         }
 
         .add-btn{
             padding:10px 18px;
             background:#0047ff;
+            color:white;
+            text-decoration:none;
+            border-radius:6px;
+            font-weight:bold;
+        }
+
+        /* ✅ BACK BUTTON */
+        .back-btn{
+            padding:10px 18px;
+            background:#6c757d;
             color:white;
             text-decoration:none;
             border-radius:6px;
@@ -72,8 +84,9 @@
 
 <h2>🏨 Manage Hotels</h2>
 
-<!-- ✅ ADD HOTEL BUTTON -->
+<!-- 🔙 BACK + ➕ ADD HOTEL -->
 <div class="top-bar">
+    <a class="back-btn" href="AdminDashboard.jsp">⬅ Back to Dashboard</a>
     <a class="add-btn" href="AddHotel">➕ Add Hotel</a>
 </div>
 
@@ -95,7 +108,6 @@
 <tr>
     <td><%= h.getHotelId() %></td>
 
-    <!-- ✅ IMAGE FIX (NO img ICON EVER) -->
     <td>
         <img src="<%= h.getImageUrl() %>"
              width="100"

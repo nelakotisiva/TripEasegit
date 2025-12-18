@@ -22,7 +22,7 @@ public class LogoutServlet extends HttpServlet {
 		}
 		
 		// Redirect to login page with message
-		resp.sendRedirect("Login.jsp?msg=logout");
+		resp.sendRedirect("index.jsp?msg=logout");
 	}
 }
 

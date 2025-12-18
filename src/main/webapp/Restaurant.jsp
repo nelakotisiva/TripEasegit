@@ -42,7 +42,7 @@ h2 {
     background:#328a74;
 }
 
-/* Use My Location Button */
+/* Location Button */
 .location-btn {
     background:#3ba58b;
     padding:10px 16px;
@@ -81,7 +81,7 @@ h2 {
     transform:translateY(-3px);
 }
 
-/* Restaurant Image */
+/* Image */
 .card img {
     width:100%;
     height:180px;
@@ -89,7 +89,7 @@ h2 {
     border-radius:12px;
 }
 
-/* Booking Input */
+/* Input */
 input {
     padding:10px;
     width:100%;
@@ -97,13 +97,10 @@ input {
     margin-top:10px;
     border:1px solid #b8d4cf;
     background:#f8fbfa;
-    transition:0.25s;
 }
 
 input:focus {
     border-color:#3ba58b;
-    box-shadow:0 0 8px rgba(59,165,139,0.3);
-    background:white;
     outline:none;
 }
 
@@ -118,47 +115,65 @@ input:focus {
     border-radius:8px;
     margin-top:10px;
     cursor:pointer;
-    transition:0.25s;
 }
 
 .book-btn:hover {
     background:#328a74;
 }
 
-</style>
+/* ---------- POPUP ---------- */
+#popup {
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.4);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+}
 
+.popup-box {
+    background:white;
+    padding:25px 30px;
+    border-radius:14px;
+    width:320px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.popup-box h3 {
+    color:#1f3a3d;
+    margin-bottom:10px;
+}
+
+.popup-box button {
+    background:#3ba58b;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+.popup-box button:hover {
+    background:#328a74;
+}
+
+</style>
 </head>
+
 <body>
 
-<!-- Back Button -->
 <a href="Dashboard.jsp" class="back-btn">⬅ Back to Dashboard</a>
 
 <h2>🍽 Find Restaurants Near You</h2>
 
-<!-- Location Button -->
 <button class="location-btn" onclick="getLocationAndRedirect()">📍 Use My Location</button>
 <br><br>
-
-<!-- Booking Message -->
-<%
-String msg = (String) session.getAttribute("msg");
-if(msg != null){
-%>
-    <p style="color:green; font-weight:600;"><%= msg %></p>
-<%
-session.removeAttribute("msg");
-}
-%>
-
-<!-- Budget Display -->
-<%
-Double budget = (Double) request.getAttribute("budget");
-if (budget != null && budget > 0) {
-%>
-    <p style="color:#1f3a3d;"><b>Your last booking spending:</b> ₹ <%= budget %></p>
-<%
-}
-%>
 
 <!-- Restaurants Grid -->
 <div class="container">
@@ -167,11 +182,10 @@ if (budget != null && budget > 0) {
 List<Restaurant> list = (List<Restaurant>) request.getAttribute("restaurants");
 
 if (list != null && !list.isEmpty()) {
-for (Restaurant r : list) {
+    for (Restaurant r : list) {
 %>
 
 <div class="card">
-
     <img src="<%= r.getImageUrl() != null ? r.getImageUrl() : "https://via.placeholder.com/300" %>">
 
     <h3 style="color:#1f3a3d;"><%= r.getName() %></h3>
@@ -180,25 +194,31 @@ for (Restaurant r : list) {
     <p><b>Avg Price:</b> ₹ <%= r.getAvgPrice() %></p>
     <p><b>Contact:</b> <%= r.getContact() %></p>
 
-    <!-- Booking Form -->
     <form action="bookRestaurant" method="post">
         <input type="hidden" name="restaurantId" value="<%= r.getRestaurantId() %>">
         <input type="number" name="people" placeholder="Number of People" required>
         <button type="submit" class="book-btn">Book Now</button>
     </form>
-
 </div>
 
 <%
-}} else {
+    }
+} else {
 %>
-
     <p style="color:#1f3a3d; font-weight:600;">No restaurants found.</p>
-
 <%
 }
 %>
 
+</div>
+
+<!-- ---------- POPUP ---------- -->
+<div id="popup">
+    <div class="popup-box">
+        <h3>Booking Status</h3>
+        <p id="popupMsg"></p>
+        <button onclick="closePopup()">OK</button>
+    </div>
 </div>
 
 <script>
@@ -209,15 +229,34 @@ function getLocationAndRedirect(){
                 "nearbyRestaurants?lat=" + pos.coords.latitude +
                 "&lon=" + pos.coords.longitude;
         }, function(){
-            alert("Location access denied! Showing all restaurants.");
             window.location.href = "nearbyRestaurants";
         });
     } else {
-         alert("GPS not supported! Showing all restaurants.");
-         window.location.href = "nearbyRestaurants";
+        window.location.href = "nearbyRestaurants";
     }
 }
+
+function showPopup(msg){
+    document.getElementById("popupMsg").innerText = msg;
+    document.getElementById("popup").style.display = "flex";
+}
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+}
 </script>
+
+<!-- ---------- POPUP TRIGGER FROM SESSION ---------- -->
+<%
+String msg = (String) session.getAttribute("msg");
+if (msg != null) {
+%>
+<script>
+    showPopup("<%= msg %>");
+</script>
+<%
+    session.removeAttribute("msg");
+}
+%>
 
 </body>
 </html>

@@ -66,13 +66,42 @@ body{
     cursor:pointer;
 }
 
-/* GRID */
+/* CONTAINER */
 .container{
     width:92%;
     max-width:1200px;
     margin:-40px auto 50px;
 }
 
+/* BACK BUTTON */
+.back-wrap{
+    display:flex;
+    justify-content:flex-start;
+    margin:25px 0 10px;
+}
+
+.back-btn-page{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background:linear-gradient(135deg,#3ba58b,#2f8a74);
+    color:white;
+    padding:10px 22px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+    box-shadow:0 8px 20px rgba(59,165,139,.35);
+    transition:all .3s ease;
+}
+
+.back-btn-page:hover{
+    transform:translateX(-4px);
+    box-shadow:0 12px 28px rgba(59,165,139,.45);
+    background:linear-gradient(135deg,#2f8a74,#1f6f5c);
+}
+
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -131,46 +160,27 @@ body{
     color:#4c7f78;
     font-weight:600;
 }
-
-/* MODAL */
-.modal-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.6);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-}
-
-.modal{
-    background:white;
-    padding:30px;
-    border-radius:20px;
-    width:90%;
-    max-width:380px;
-    text-align:center;
-}
-
-.modal h2{ color:#2e8e77; }
-
-.modal button{
-    padding:10px 18px;
-    border:none;
-    border-radius:12px;
-    font-weight:700;
-    cursor:pointer;
-    color:white;
-}
-
-.back-btn{background:#6c757d;}
-.my-btn{background:#3ba58b;}
 </style>
 </head>
 
 <body>
 
-<!-- HEADER + SEARCH -->
+<!-- ✅ BOOKING SUCCESS POPUP -->
+<%
+    String bookingSuccess = (String) session.getAttribute("bookingSuccess");
+    if (bookingSuccess != null) {
+%>
+<script>
+    window.onload = function () {
+        alert("<%= bookingSuccess %>");
+    };
+</script>
+<%
+        session.removeAttribute("bookingSuccess");
+    }
+%>
+
+<!-- HEADER -->
 <div class="header">
     <h1>🏨 Find Your Perfect Stay</h1>
 
@@ -184,11 +194,16 @@ body{
 
 <div class="container">
 
+<!-- BACK BUTTON -->
+<div class="back-wrap">
+    <a href="Dashboard.jsp" class="back-btn-page">← Back to Dashboard</a>
+</div>
+
 <%
 List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
 String searched = (String) request.getAttribute("searched");
 
-/* NO SEARCH YET */
+/* BEFORE SEARCH */
 if (searched == null || searched.isEmpty()) {
 %>
     <div class="info">🔍 Search hotels by city to continue</div>
@@ -200,7 +215,7 @@ else if (hotels == null || hotels.isEmpty()) {
     <div class="info">❌ No hotels found in "<%= searched %>"</div>
 <%
 }
-/* SHOW RESULTS */
+/* HOTEL LIST SHOWN */
 else {
 %>
 <div class="grid">
@@ -224,28 +239,6 @@ for (Hotel h : hotels) {
 <% } %>
 
 </div>
-
-<!-- ✅ SUCCESS POPUP -->
-<%
-String bookingSuccess = (String) session.getAttribute("bookingSuccess");
-if (bookingSuccess != null) {
-%>
-<div class="modal-overlay">
-    <div class="modal">
-        <h2>🎉 Booking Confirmed</h2>
-        <p><%= bookingSuccess %></p>
-
-        <div style="display:flex;gap:12px;justify-content:center;margin-top:20px">
-            <a href="HotelListServlet"><button class="back-btn">Back</button></a>
-           
-        </div>
-    </div>
-</div>
-<script>document.body.style.overflow="hidden";</script>
-<%
-session.removeAttribute("bookingSuccess");
-}
-%>
 
 </body>
 </html>
