@@ -1,301 +1,444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TripEase | Travel Made Simple</title>
+    <meta charset="UTF-8">
+    <title>TripEase | India's Premium Travel App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #00A3FF; 
+            --app-bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--app-bg); color: var(--text-main); }
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(15px);
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .nav {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px;
+        }
+        .logo {
+            font-size: 22px; font-weight: 800; color: #0F172A;
+            text-decoration: none; display: flex; gap: 8px; align-items: center;
+        }
+        .logo-box {
+            width: 34px; height: 34px; background: var(--brand-blue);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: #fff;
+        }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-muted);
+            font-weight: 700; font-size: 14px;
+        }
+        .login-btn {
+            background: #0F172A; color: #fff !important;
+            padding: 8px 18px; border-radius: 8px;
+        }
 
-<style>
-/* ================= ROOT THEME ================= */
-:root{
-    --mint:#3ba58b;
-    --mint-dark:#2f8a74;
-    --mint-light:#eaf7f4;
-    --text:#1f3a3d;
-    --muted:#6c757d;
-    --white:#ffffff;
-}
+        main { max-width: 1200px; margin: 90px auto 40px; padding: 0 20px; }
 
-/* ================= BASE ================= */
-*{box-sizing:border-box}
+        .hero-banner {
+            height: 220px; border-radius: 24px; overflow: hidden;
+            position: relative; margin-bottom: 40px;
+            display: flex; align-items: center; padding: 40px;
+            background: linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .hero-bg-video {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; z-index: 0;
+        }
+        .hero-banner h1 {
+            position: relative; z-index: 1;
+            font-size: 28px; font-weight: 800;
+        }
 
-body{
-    margin:0;
-    font-family:'Poppins',sans-serif;
-    background:var(--mint-light);
-    color:var(--text);
-}
+        .section-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px;
+        }
+        .section-header h2 { font-size: 22px; font-weight: 800; }
 
-/* ================= NAVBAR ================= */
-header{
-    position:sticky;
-    top:0;
-    background:white;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    z-index:100;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px; margin-bottom: 60px;
+        }
+        .card {
+            height: 300px; border-radius: 20px;
+            overflow: hidden; position: relative;
+            border: 1px solid #E2E8F0;
+            transition: 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+        .card-info {
+            position: absolute; bottom: 0;
+            width: 100%; padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+        }
 
-.navbar{
-    max-width:1200px;
-    margin:auto;
-    padding:16px 30px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 40px;
+        }
+        .footer-col h4 {
+            color: var(--brand-blue);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .footer-col a, .footer-col p {
+            color: #94A3B8;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
 
-.logo{
-    font-size:26px;
-    font-weight:800;
-    color:var(--mint);
-}
-
-.nav-links a{
-    margin-left:22px;
-    text-decoration:none;
-    font-weight:600;
-    color:var(--text);
-}
-
-.nav-links .btn{
-    background:var(--mint);
-    color:white;
-    padding:8px 18px;
-    border-radius:20px;
-}
-
-.nav-links .btn:hover{
-    background:var(--mint-dark);
-}
-
-/* ================= HERO ================= */
-.hero{
-    height:80vh;
-    position:relative;
-}
-
-.hero video{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.hero-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    color:white;
-    padding:20px;
-}
-
-.hero-overlay h1{
-    font-size:46px;
-    margin:0;
-}
-
-.hero-overlay p{
-    margin-top:10px;
-    font-size:18px;
-}
-
-/* ================= SEARCH ================= */
-.search-box{
-    background:white;
-    max-width:1000px;
-    margin:-60px auto 60px;
-    padding:24px;
-    border-radius:18px;
-    box-shadow:0 20px 50px rgba(0,0,0,0.15);
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-}
-
-.search-box input{
-    flex:1;
-    padding:12px;
-    border-radius:10px;
-    border:1px solid #b7ded4;
-}
-
-.search-box button{
-    background:var(--mint);
-    border:none;
-    padding:12px 28px;
-    border-radius:12px;
-    color:white;
-    font-weight:700;
-    cursor:pointer;
-}
-
-/* ================= SECTIONS ================= */
-.section{
-    max-width:1200px;
-    margin:auto;
-    padding:10px 20px 60px;
-}
-
-.section-title{
-    font-size:28px;
-    font-weight:800;
-    margin-bottom:25px;
-}
-
-/* ================= GRID/CARDS ================= */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:22px;
-}
-
-.card{
-    background:white;
-    border-radius:18px;
-    overflow:hidden;
-    box-shadow:0 10px 26px rgba(0,0,0,0.12);
-    transition:0.3s;
-}
-
-.card:hover{transform:translateY(-8px)}
-
-.card img{
-    width:100%;
-    height:190px;
-    object-fit:cover;
-}
-
-.card .card-body{
-    padding:16px;
-}
-
-.card h3{margin:0}
-.card p{
-    margin-top:6px;
-    color:var(--muted);
-    font-size:14px;
-}
-
-/* ================= ADS ================= */
-.ads{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:22px;
-}
-
-.ads img{
-    width:100%;
-    border-radius:18px;
-    box-shadow:0 8px 26px rgba(0,0,0,0.15);
-}
-
-/* ================= FOOTER ================= */
-footer{
-    background:white;
-    text-align:center;
-    padding:28px;
-    color:#777;
-    font-size:14px;
-}
-</style>
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: repeat(2,1fr); }
+            .footer-grid { grid-template-columns: repeat(2,1fr); }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
 <header>
-    <div class="navbar">
-        <div class="logo">✈ TripEase</div>
+    <nav class="nav">
+        <a href="index.jsp" class="logo">
+            <div class="logo-box">✈</div> TripEase
+        </a>
         <div class="nav-links">
             <a href="index.jsp">Home</a>
             <a href="Register.jsp">Register</a>
-            <a class="btn" href="Login.jsp">Login</a>
+            <a href="Login.jsp" class="login-btn">Login</a>
         </div>
-    </div>
+    </nav>
 </header>
 
-<!-- ================= HERO ================= -->
-<section class="hero">
-    <video autoplay muted loop>
-        <source src="https://cdn.coverr.co/videos/coverr-waves-crashing-on-the-beach-8968/1080p.mp4" type="video/mp4">
-    </video>
-    <div class="hero-overlay">
-        <div>
-            <h1>Calm Journeys Begin Here</h1>
-            <p>Discover destinations, relax & travel beautifully</p>
-        </div>
+<main>
+
+    <!-- HERO -->
+    <div class="hero-banner">
+        <video class="hero-bg-video" autoplay muted loop playsinline>
+            <source src="assets/videos/Trip.mp4" type="video/mp4">
+        </video>
+        <h1>
+            Explore Smarter.<br>
+            <span style="color:var(--brand-blue)">Premium</span> stays.
+        </h1>
     </div>
-</section>
 
-<!-- ================= SEARCH ================= -->
-<div class="search-box">
-    <input type="text" placeholder="Where do you want to go?">
-    <input type="date">
-    <button>Explore</button>
-</div>
-
-<!-- ================= OFFERS ================= -->
-<section class="section">
-    <div class="section-title">Special Travel Offers</div>
-    <div class="ads">
-        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470">
-        <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d">
-        <img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff">
+    <!-- TRENDING -->
+    <div class="section-header">
+        <h2>Trending Destinations</h2>
     </div>
-</section>
 
-<!-- ================= DESTINATIONS ================= -->
-<section class="section">
-    <div class="section-title">Popular Destinations</div>
     <div class="grid">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c">
-            <div class="card-body"><h3>Goa</h3><p>Sun, beaches & nightlife</p></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4"><div class="card-info"><h3>Bali Escape</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1547234935-80c7145ec969"><div class="card-info"><h3>Santorini</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c"><div class="card-info"><h3>Dubai</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9"><div class="card-info"><h3>Venice</h3></div></div>
+    </div>
+
+    <!-- WHY CHOOSE -->
+    <div class="section-header">
+        <h2>Why Choose TripEase</h2>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"><div class="card-info"><h3>Handpicked Destinations</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7"><div class="card-info"><h3>Luxury Stays</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff"><div class="card-info"><h3>24/7 Support</h3></div></div>
+    </div>
+
+    <!-- POPULAR EXPERIENCES -->
+    <div class="section-header">
+        <h2>Popular Experiences</h2>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"><div class="card-info"><h3>Beach Holidays</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e"><div class="card-info"><h3>Mountain Adventures</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad"><div class="card-info"><h3>City Tours</h3></div></div>
+    </div>
+
+</main>
+
+<footer style="background:#000; padding:80px 20px 40px;">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>About</h4>
+            <a href="#">Our Vision</a>
+            <a href="#">Careers</a>
+            <a href="#">Press & Media</a>
         </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1580656063820-306dfc0d7c4d">
-            <div class="card-body"><h3>Mysore</h3><p>Royal heritage & culture</p></div>
+        <div class="footer-col">
+            <h4>Information</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Refund Policy</a>
         </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791">
-            <div class="card-body"><h3>Bengaluru</h3><p>Urban energy & cafes</p></div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">Help Center</a>
+            <a href="#">Cancellation</a>
+            <a href="#">Safety Guidelines</a>
         </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1532413992370-8b8c1e52b33c">
-            <div class="card-body"><h3>Chennai</h3><p>Culture & coastlines</p></div>
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <p>Email: help@tripease.in</p>
+            <p>Phone: +91 1800 44 5555</p>
+            <p>Bengaluru, India</p>
         </div>
     </div>
-</section>
 
-<!-- ================= EXPERIENCE ================= -->
-<section class="section">
-    <div class="section-title">Travel Feelings</div>
-    <div class="grid">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee">
-            <div class="card-body"><h3>Adventure</h3><p>Unforgettable moments</p></div>
-        </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad">
-            <div class="card-body"><h3>Relaxation</h3><p>Peaceful escapes</p></div>
-        </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
-            <div class="card-body"><h3>Nature</h3><p>Fresh air & calm views</p></div>
-        </div>
+    <div style="text-align:center; color:#475569; font-size:12px;">
+        © 2025 TRIPEASE GLOBAL PARTNERS PVT LTD. ALL RIGHTS RESERVED.
     </div>
-</section>
-
-<!-- ================= FOOTER ================= -->
-<footer>
-    © 2025 TripEase · Travel Beautifully
 </footer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TripEase | India's Premium Travel App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-blue: #00A3FF; 
+            --app-bg: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--app-bg); color: var(--text-main); }
+
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(15px);
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .nav {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 20px;
+        }
+        .logo {
+            font-size: 22px; font-weight: 800; color: #0F172A;
+            text-decoration: none; display: flex; gap: 8px; align-items: center;
+        }
+        .logo-box {
+            width: 34px; height: 34px; background: var(--brand-blue);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: #fff;
+        }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a {
+            text-decoration: none; color: var(--text-muted);
+            font-weight: 700; font-size: 14px;
+        }
+        .login-btn {
+            background: #0F172A; color: #fff !important;
+            padding: 8px 18px; border-radius: 8px;
+        }
+
+        main { max-width: 1200px; margin: 90px auto 40px; padding: 0 20px; }
+
+        .hero-banner {
+            height: 220px; border-radius: 24px; overflow: hidden;
+            position: relative; margin-bottom: 40px;
+            display: flex; align-items: center; padding: 40px;
+            background: linear-gradient(to right, rgba(255,255,255,0.8), rgba(255,255,255,0));
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .hero-bg-video {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover; z-index: 0;
+        }
+        .hero-banner h1 {
+            position: relative; z-index: 1;
+            font-size: 28px; font-weight: 800;
+        }
+
+        .section-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 20px;
+        }
+        .section-header h2 { font-size: 22px; font-weight: 800; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px; margin-bottom: 60px;
+        }
+        .card {
+            height: 300px; border-radius: 20px;
+            overflow: hidden; position: relative;
+            border: 1px solid #E2E8F0;
+            transition: 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+        .card-info {
+            position: absolute; bottom: 0;
+            width: 100%; padding: 20px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto 40px;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 40px;
+        }
+        .footer-col h4 {
+            color: var(--brand-blue);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .footer-col a, .footer-col p {
+            color: #94A3B8;
+            font-size: 14px;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: repeat(2,1fr); }
+            .footer-grid { grid-template-columns: repeat(2,1fr); }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <nav class="nav">
+        <a href="index.jsp" class="logo">
+            <div class="logo-box">✈</div> TripEase
+        </a>
+        <div class="nav-links">
+            <a href="index.jsp">Home</a>
+            <a href="Register.jsp">Register</a>
+            <a href="Login.jsp" class="login-btn">Login</a>
+        </div>
+    </nav>
+</header>
+
+<main>
+
+    <!-- HERO -->
+    <div class="hero-banner">
+        <video class="hero-bg-video" autoplay muted loop playsinline>
+            <source src="assets/videos/Trip.mp4" type="video/mp4">
+        </video>
+        <h1>
+            Explore Smarter.<br>
+            <span style="color:var(--brand-blue)">Premium</span> stays.
+        </h1>
+    </div>
+
+    <!-- TRENDING -->
+    <div class="section-header">
+        <h2>Trending Destinations</h2>
+    </div>
+
+    <div class="grid">
+        <div class="card"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4"><div class="card-info"><h3>Bali Escape</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1547234935-80c7145ec969"><div class="card-info"><h3>Santorini</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c"><div class="card-info"><h3>Dubai</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9"><div class="card-info"><h3>Venice</h3></div></div>
+    </div>
+
+    <!-- WHY CHOOSE -->
+    <div class="section-header">
+        <h2>Why Choose TripEase</h2>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470"><div class="card-info"><h3>Handpicked Destinations</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7"><div class="card-info"><h3>Luxury Stays</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1526772662000-3f88f10405ff"><div class="card-info"><h3>24/7 Support</h3></div></div>
+    </div>
+
+    <!-- POPULAR EXPERIENCES -->
+    <div class="section-header">
+        <h2>Popular Experiences</h2>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"><div class="card-info"><h3>Beach Holidays</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e"><div class="card-info"><h3>Mountain Adventures</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad"><div class="card-info"><h3>City Tours</h3></div></div>
+    </div>
+
+</main>
+
+<footer style="background:#000; padding:80px 20px 40px;">
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>About</h4>
+            <a href="#">Our Vision</a>
+            <a href="#">Careers</a>
+            <a href="#">Press & Media</a>
+        </div>
+        <div class="footer-col">
+            <h4>Information</h4>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Refund Policy</a>
+        </div>
+        <div class="footer-col">
+            <h4>Support</h4>
+            <a href="#">Help Center</a>
+            <a href="#">Cancellation</a>
+            <a href="#">Safety Guidelines</a>
+        </div>
+        <div class="footer-col">
+            <h4>Contact</h4>
+            <p>Email: help@tripease.in</p>
+            <p>Phone: +91 1800 44 5555</p>
+            <p>Bengaluru, India</p>
+        </div>
+    </div>
+
+    <div style="text-align:center; color:#475569; font-size:12px;">
+        © 2025 TRIPEASE GLOBAL PARTNERS PVT LTD. ALL RIGHTS RESERVED.
+    </div>
+</footer>
+
+</body>
+</html>
 
 </body>
 </html>
