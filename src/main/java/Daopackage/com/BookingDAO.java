@@ -1,6 +1,7 @@
 package Daopackage.com;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import dtopackage.com.Booking;
 import dtopackage.com.BookingDTO;
@@ -24,5 +25,7 @@ public interface BookingDAO {
                                int destinationId,
                                Date travelDate,
                                int numOfPeople);
+
+	boolean saveServiceBooking(int userId, int destinationId, Timestamp bookingDate1, int numPeople);
 
 }

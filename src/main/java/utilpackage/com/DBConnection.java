@@ -12,10 +12,11 @@ public class DBConnection {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
             con = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/tripease?useSSL=false&serverTimezone=UTC",
-                "root",
-                "Siva@199221"
-            );
+            	    "jdbc:mysql://localhost:3306/tripease?useSSL=false&serverTimezone=Asia/Kolkata",
+            	    "root",
+            	    "Siva@199221"
+            	);
+
 
         } catch (Exception e) {
             System.out.println("❌ DATABASE CONNECTION FAILED");

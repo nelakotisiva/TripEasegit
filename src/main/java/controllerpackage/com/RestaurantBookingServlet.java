@@ -1,7 +1,6 @@
 package controllerpackage.com;
 
 import java.io.IOException;
-import java.sql.Date;
 
 import Daopackage.com.RestaurantBookingDAO;
 import Daopackage.com.RestaurantBookingDAOImpl;
@@ -29,9 +28,6 @@ public class RestaurantBookingServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        // --------------------------------------------------
-        // SESSION CHECK
-        // --------------------------------------------------
         HttpSession session = req.getSession(false);
         if (session == null || session.getAttribute("userObj") == null) {
             resp.sendRedirect("Login.jsp");
@@ -40,9 +36,6 @@ public class RestaurantBookingServlet extends HttpServlet {
 
         User user = (User) session.getAttribute("userObj");
 
-        // --------------------------------------------------
-        // READ FORM DATA
-        // --------------------------------------------------
         int restaurantId;
         int people;
 
@@ -55,24 +48,25 @@ public class RestaurantBookingServlet extends HttpServlet {
             return;
         }
 
-        // --------------------------------------------------
-        // CREATE BOOKING DTO
-        // --------------------------------------------------
+     // READ datetime from JSP
+        String bookingDateTimeStr = req.getParameter("bookingDateTime");
+
+        // IMPORTANT: treat as LOCAL time (no timezone conversion)
+        java.sql.Timestamp bookingTimestamp =
+                java.sql.Timestamp.valueOf(
+                        bookingDateTimeStr.replace("T", " ") + ":00"
+                );
+
         RestaurantBooking rb = new RestaurantBooking();
         rb.setUserId(user.getUser_id());
         rb.setRestaurantId(restaurantId);
         rb.setNumPeople(people);
-        rb.setBookingDate(new Date(System.currentTimeMillis()));
+        rb.setBookingDate1(bookingTimestamp); // ✅ USE bookingDate1
         rb.setStatus("Booked");
 
-        // --------------------------------------------------
-        // SAVE BOOKING (restaurant_booking + booking)
-        // --------------------------------------------------
+
         boolean success = bookingDAO.bookRestaurantAndMainBooking(rb);
 
-        // --------------------------------------------------
-        // RESPONSE
-        // --------------------------------------------------
         if (success) {
             session.setAttribute("msg", "🎉 Restaurant booked successfully!");
         } else {

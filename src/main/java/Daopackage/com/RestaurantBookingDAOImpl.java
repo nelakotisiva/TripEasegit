@@ -13,46 +13,47 @@ import utilpackage.com.DBConnection;
 public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
 
     // ------------------------------------------------
-    // ORIGINAL METHOD (KEEP – NO CHANGE)
+    // INSERT INTO restaurant_booking
     // ------------------------------------------------
-	@Override
-	public boolean bookRestaurant(RestaurantBooking rb) {
+    @Override
+    public boolean bookRestaurant(RestaurantBooking rb) {
 
-	    String sql = "INSERT INTO restaurant_booking " +
-	                 "(user_id, restaurant_id, booking_date, num_people, status) " +
-	                 "VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO restaurant_booking " +
+                     "(user_id, restaurant_id, booking_date, num_people, status) " +
+                     "VALUES (?,?,?,?,?)";
 
-	    try (Connection con = DBConnection.getConnector();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, rb.getUserId());
-	        ps.setInt(2, rb.getRestaurantId());
-	        ps.setDate(3, rb.getBookingDate());
-	        ps.setInt(4, rb.getNumPeople());
-	        ps.setString(5, rb.getStatus());
+            ps.setInt(1, rb.getUserId());
+            ps.setInt(2, rb.getRestaurantId());
 
-	        return ps.executeUpdate() == 1;
+            // 🔥 EXACT TIME (NO TIMEZONE CONVERSION)
+            ps.setObject(3, rb.getBookingDate1());
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
+            ps.setInt(4, rb.getNumPeople());
+            ps.setString(5, rb.getStatus());
+
+            return ps.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     // ------------------------------------------------
-    // 🔥 NEW METHOD → CONNECT TO booking TABLE
+    // INSERT INTO restaurant_booking + booking
     // ------------------------------------------------
     @Override
     public boolean bookRestaurantAndMainBooking(RestaurantBooking rb) {
-
-        Connection con = DBConnection.getConnector();
 
         try {
             // 1️⃣ Insert into restaurant_booking
             boolean ok = bookRestaurant(rb);
             if (!ok) return false;
 
-            // 2️⃣ Get destination_id from restaurant
+            // 2️⃣ Get destination_id
             int destinationId = getDestinationIdByRestaurant(rb.getRestaurantId());
 
             // 3️⃣ Insert into MAIN booking table
@@ -60,7 +61,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
             bookingDAO.saveServiceBooking(
                     rb.getUserId(),
                     destinationId,
-                    rb.getBookingDate(),
+                    rb.getBookingDate1(),   // 🔥 Timestamp preserved
                     rb.getNumPeople()
             );
 
@@ -73,7 +74,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
     }
 
     // ------------------------------------------------
-    // HELPER: restaurant → destination
+    // HELPER METHOD
     // ------------------------------------------------
     private int getDestinationIdByRestaurant(int restaurantId) {
 

@@ -196,7 +196,12 @@ if (list != null && !list.isEmpty()) {
 
     <form action="bookRestaurant" method="post">
         <input type="hidden" name="restaurantId" value="<%= r.getRestaurantId() %>">
+
         <input type="number" name="people" placeholder="Number of People" required>
+
+        <!-- Date & Time (NO past allowed) -->
+        <input type="datetime-local" name="bookingDateTime" class="dt" required>
+
         <button type="submit" class="book-btn">Book Now</button>
     </form>
 </div>
@@ -240,9 +245,21 @@ function showPopup(msg){
     document.getElementById("popupMsg").innerText = msg;
     document.getElementById("popup").style.display = "flex";
 }
+
 function closePopup(){
     document.getElementById("popup").style.display = "none";
 }
+
+/* Disable past date & time */
+window.onload = function () {
+    let now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    let minDateTime = now.toISOString().slice(0,16);
+
+    document.querySelectorAll(".dt").forEach(input => {
+        input.min = minDateTime;
+    });
+};
 </script>
 
 <!-- ---------- POPUP TRIGGER FROM SESSION ---------- -->
@@ -259,4 +276,4 @@ if (msg != null) {
 %>
 
 </body>
-</html>
+</html>  

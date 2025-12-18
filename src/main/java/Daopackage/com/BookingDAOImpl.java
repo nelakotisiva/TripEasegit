@@ -157,4 +157,35 @@ public class BookingDAOImpl implements BookingDAO {
 
         return bookings;
     }
+    
+    @Override
+    public boolean saveServiceBooking(int userId,
+                                      int destinationId,
+                                      java.sql.Timestamp bookingDate,
+                                      int people) {
+
+        String sql = "INSERT INTO booking " +
+                     "(user_id, destination_id, booking_date, num_of_people, status) " +
+                     "VALUES (?, ?, ?, ?, 'Confirmed')";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setInt(2, destinationId);
+
+            // 🔥 EXACT TIME
+            ps.setObject(3, bookingDate);
+
+            ps.setInt(4, people);
+
+            return ps.executeUpdate() == 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 }

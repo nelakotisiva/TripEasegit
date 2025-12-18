@@ -45,9 +45,13 @@ public class ResBookingDaoImpl implements ResBookingDAO{
 	            PreparedStatement ps = conn.prepareStatement(sql);
 	            ps.setInt(1, rb.getUserId());
 	            ps.setInt(2, rb.getRestaurantId());
-	            ps.setDate(3, rb.getBookingDate());
+
+	            // 🔥 EXACT TIME (no conversion)
+	            ps.setObject(3, rb.getBookingDate1());
+
 	            ps.setInt(4, rb.getNumPeople());
 	            ps.setString(5, rb.getStatus());
+
 
 	            int rows = ps.executeUpdate();
 	            status = rows > 0;
