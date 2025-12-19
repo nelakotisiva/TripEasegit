@@ -1,5 +1,7 @@
 package Daopackage.com;
 
+import java.util.List;
+
 import dtopackage.com.RestaurantBooking;
 
 public interface RestaurantBookingDAO {
@@ -8,4 +10,6 @@ public interface RestaurantBookingDAO {
 
     // 🔹 NEW → also save into main booking table
     boolean bookRestaurantAndMainBooking(RestaurantBooking rb);
+    
+    List<RestaurantBooking> getBookingsByUserId(int userId);
 }

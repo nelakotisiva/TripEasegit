@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dtopackage.com.Restaurant;
+import dtopackage.com.RestaurantBooking;
 import utilpackage.com.DBConnection;
 
 public class RestaurantDAOImpl implements RestaurantDAO {
@@ -178,39 +179,51 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         }
         return list;
     }
- // -------------------------------
- // GET RESTAURANT NAME + LOCATION
- // -------------------------------
- // -------------------------------
- // GET RESTAURANT NAME + LOCATION
- // -------------------------------
- @Override
- public String[] getRestaurantNameAndLocationById(int restaurantId) {
+    
+    @Override
+    public List<RestaurantBooking> getBookingsByUserId(int userId) {
 
-     String[] details = new String[2]; // [0]=restaurant name, [1]=location
+        List<RestaurantBooking> list = new ArrayList<>();
 
-     String sql =
-    		    "SELECT r.name AS restaurant_name, d.location AS location " +
-    		    "FROM restaurant r " +
-    		    "JOIN destination d ON r.destination_id = d.destination_id " +
-    		    "WHERE r.restaurant_id = ?";
+        String sql =
+            "SELECT rb.booking_id, rb.user_id, rb.restaurant_id, " +
+            "rb.booking_date, rb.num_people, rb.status, " +
+            "r.name AS restaurant_name, d.location AS location " +
+            "FROM restaurant_booking rb " +
+            "JOIN restaurant r ON rb.restaurant_id = r.restaurant_id " +
+            "JOIN destination d ON r.destination_id = d.destination_id " +
+            "WHERE rb.user_id = ? " +
+            "ORDER BY rb.booking_date DESC";
 
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-     try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
 
-         ps.setInt(1, restaurantId);
-         ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
 
-         if (rs.next()) {
-             details[0] = rs.getString("restaurant_name");
-             details[1] = rs.getString("location");
-         }
+                RestaurantBooking rb = new RestaurantBooking();
 
-     } catch (Exception e) {
-         e.printStackTrace();
-     }
+                rb.setBookingId(rs.getInt("booking_id"));
+                rb.setUserId(rs.getInt("user_id"));
+                rb.setRestaurantId(rs.getInt("restaurant_id"));
+                rb.setBookingDate1(rs.getTimestamp("booking_date"));
+                rb.setNumPeople(rs.getInt("num_people"));
+                rb.setStatus(rs.getString("status"));
 
-     return details;
- }
+                // ✅ FROM restaurant + destination
+                rb.setRestaurantName(rs.getString("restaurant_name"));
+                rb.setLocation(rs.getString("location"));
+
+                list.add(rb);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
 }

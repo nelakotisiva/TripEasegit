@@ -42,6 +42,25 @@ h2 {
     background:#328a74;
 }
 
+/* ✅ MY BOOKINGS BUTTON */
+.my-bookings-btn {
+    background:#1f3a3d;
+    padding:10px 16px;
+    border:none;
+    color:white;
+    cursor:pointer;
+    border-radius:8px;
+    font-size:15px;
+    font-weight:600;
+    text-decoration:none;
+    margin-left:10px;
+    transition:0.25s;
+}
+
+.my-bookings-btn:hover {
+    background:#162a2c;
+}
+
 /* Location Button */
 .location-btn {
     background:#3ba58b;
@@ -168,7 +187,10 @@ input:focus {
 
 <body>
 
+<!-- 🔹 TOP ACTION BUTTONS -->
 <a href="Dashboard.jsp" class="back-btn">⬅ Back to Dashboard</a>
+
+<a href="myRestaurantsBookings" class="my-bookings-btn">📖 My Restaurants Bookings</a>
 
 <h2>🍽 Find Restaurants Near You</h2>
 
@@ -199,7 +221,6 @@ if (list != null && !list.isEmpty()) {
 
         <input type="number" name="people" placeholder="Number of People" required>
 
-        <!-- Date & Time (NO past allowed) -->
         <input type="datetime-local" name="bookingDateTime" class="dt" required>
 
         <button type="submit" class="book-btn">Book Now</button>
@@ -262,7 +283,6 @@ window.onload = function () {
 };
 </script>
 
-<!-- ---------- POPUP TRIGGER FROM SESSION ---------- -->
 <%
 String msg = (String) session.getAttribute("msg");
 if (msg != null) {
@@ -276,4 +296,4 @@ if (msg != null) {
 %>
 
 </body>
-</html>  
+</html>

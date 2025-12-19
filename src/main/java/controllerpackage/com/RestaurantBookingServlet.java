@@ -1,11 +1,10 @@
 package controllerpackage.com;
 
 import java.io.IOException;
+import java.util.List;
 
 import Daopackage.com.RestaurantBookingDAO;
 import Daopackage.com.RestaurantBookingDAOImpl;
-import Daopackage.com.RestaurantDAO;
-import Daopackage.com.RestaurantDAOImpl;
 import dtopackage.com.RestaurantBooking;
 import dtopackage.com.User;
 import utilpackage.com.EmailUtil;
@@ -21,12 +20,10 @@ import jakarta.servlet.http.HttpSession;
 public class RestaurantBookingServlet extends HttpServlet {
 
     private RestaurantBookingDAO bookingDAO;
-    private RestaurantDAO restaurantDAO;
 
     @Override
     public void init() throws ServletException {
         bookingDAO = new RestaurantBookingDAOImpl();
-        restaurantDAO = new RestaurantDAOImpl();
     }
 
     @Override
@@ -60,6 +57,7 @@ public class RestaurantBookingServlet extends HttpServlet {
                         bookingDateTimeStr.replace("T", " ") + ":00"
                 );
 
+        // 🔹 Prepare booking object
         RestaurantBooking rb = new RestaurantBooking();
         rb.setUserId(user.getUser_id());
         rb.setRestaurantId(restaurantId);
@@ -72,10 +70,23 @@ public class RestaurantBookingServlet extends HttpServlet {
         String userEmail = user.getEmail();
         String userName  = user.getFull_name();
 
-        // 🔹 FETCH RESTAURANT NAME + LOCATION
-        String[] details = restaurantDAO.getRestaurantNameAndLocationById(restaurantId);
-        String restaurantName = details[0];
-        String restaurantLocation = details[1];
+        // 🔹 DEFAULT VALUES
+        String restaurantName = "Restaurant";
+        String restaurantLocation = "Unknown location";
+
+        // 🔹 USE EXISTING METHOD ONLY
+        if (success) {
+            List<RestaurantBooking> bookings =
+                    bookingDAO.getBookingsByUserId(user.getUser_id());
+
+            for (RestaurantBooking b : bookings) {
+                if (b.getRestaurantId() == restaurantId) {
+                    restaurantName = b.getRestaurantName();
+                    restaurantLocation = b.getLocation();
+                    break;
+                }
+            }
+        }
 
         if (success) {
 
@@ -91,7 +102,8 @@ public class RestaurantBookingServlet extends HttpServlet {
                     "— TripEase Team";
 
             EmailUtil.sendEmail(userEmail, subject, body);
-            session.setAttribute("msg", "🎉 Restaurant booked successfully! Email sent 📧");
+            session.setAttribute("msg",
+                    "🎉 Restaurant booked successfully! Email sent 📧");
 
         } else {
 
@@ -103,7 +115,8 @@ public class RestaurantBookingServlet extends HttpServlet {
                     "— TripEase Team";
 
             EmailUtil.sendEmail(userEmail, subject, body);
-            session.setAttribute("msg", "❌ Booking failed! Email notification sent 📧");
+            session.setAttribute("msg",
+                    "❌ Booking failed! Email notification sent 📧");
         }
 
         resp.sendRedirect("nearbyRestaurants");
