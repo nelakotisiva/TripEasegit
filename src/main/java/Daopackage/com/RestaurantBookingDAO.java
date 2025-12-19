@@ -1,5 +1,6 @@
 package Daopackage.com;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import dtopackage.com.RestaurantBooking;
@@ -12,4 +13,6 @@ public interface RestaurantBookingDAO {
     boolean bookRestaurantAndMainBooking(RestaurantBooking rb);
     
     List<RestaurantBooking> getBookingsByUserId(int userId);
+
+
 }
