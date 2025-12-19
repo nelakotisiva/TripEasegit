@@ -14,7 +14,7 @@ public class DBConnection {
             con = DriverManager.getConnection(
             	    "jdbc:mysql://localhost:3306/tripease?useSSL=false&serverTimezone=Asia/Kolkata",
             	    "root",
-            	    "Siva@199221"
+            	    "viswash"
             	);
 
 

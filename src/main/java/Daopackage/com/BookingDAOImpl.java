@@ -1,7 +1,6 @@
 package Daopackage.com;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,128 +9,156 @@ import dtopackage.com.BookingDTO;
 import utilpackage.com.DBConnection;
 
 public class BookingDAOImpl implements BookingDAO {
-	
-	@Override
-	public Booking getBookingById(int bookingId) {
-	    Booking booking = null;
 
-	    String sql = "SELECT * FROM booking WHERE booking_id = ?";
-	    try (Connection con = DBConnection.getConnector();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+    /* ---------------- GET BOOKING BY ID ---------------- */
+    @Override
+    public Booking getBookingById(int bookingId) {
 
-	        ps.setInt(1, bookingId);
-	        ResultSet rs = ps.executeQuery();
+        Booking booking = null;
+        String sql = "SELECT * FROM booking WHERE booking_id=?";
 
-	        if (rs.next()) {
-	            booking = new Booking();
-	            booking.setBookingId(rs.getInt("booking_id"));
-	            booking.setUserId(rs.getInt("user_id"));
-	            booking.setDestinationId(rs.getInt("destination_id"));
-	            booking.setBookingDate(rs.getDate("booking_date"));
-	            booking.setTravelDate(rs.getDate("travel_date"));
-	            booking.setStatus(rs.getString("status"));
-	            booking.setNumOfPeople(rs.getInt("num_of_people"));
-	        }
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
 
-	    return booking;
-	}
+            if (rs.next()) {
+                booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setUserId(rs.getInt("user_id"));
+                booking.setDestinationId(rs.getInt("destination_id"));
+                booking.setBookingDate(rs.getDate("booking_date"));
+                booking.setTravelDate(rs.getDate("travel_date"));
+                booking.setStatus(rs.getString("status"));
+                booking.setNumOfPeople(rs.getInt("num_of_people"));
+            }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return booking;
+    }
 
-	
-	
-	@Override
-	public boolean saveServiceBooking(int userId,
-	                                  int destinationId,
-	                                  Date travelDate,
-	                                  int numOfPeople) {
+    /* ---------------- SAVE SERVICE BOOKING ---------------- */
+    @Override
+    public boolean saveServiceBooking(int userId,
+                                      int destinationId,
+                                      Date travelDate,
+                                      int numOfPeople) {
 
-	    String sql = "INSERT INTO booking " +
-	                 "(user_id, destination_id, booking_date, travel_date, status, num_of_people) " +
-	                 "VALUES (?, ?, CURDATE(), ?, 'Confirmed', ?)";
+        String sql = "INSERT INTO booking " +
+                     "(user_id, destination_id, booking_date, travel_date, status, num_of_people) " +
+                     "VALUES (?, ?, CURDATE(), ?, 'Confirmed', ?)";
 
-	    try (Connection con = DBConnection.getConnector();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setInt(1, userId);
-	        ps.setInt(2, destinationId);
-	        ps.setDate(3, travelDate);
-	        ps.setInt(4, numOfPeople);
+            ps.setInt(1, userId);
+            ps.setInt(2, destinationId);
+            ps.setDate(3, travelDate);
+            ps.setInt(4, numOfPeople);
 
-	        return ps.executeUpdate() > 0;
+            return ps.executeUpdate() == 1;
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-	
-	
+    /* ---------------- UPDATE BOOKING ---------------- */
+    @Override
+    public boolean updateBooking(int bookingId, String status, int numPeople) {
 
-	@Override
-	public boolean updateBooking(int bookingId, String status, int numPeople) {
-	    String sql = "UPDATE booking SET status=?, num_of_people=? WHERE booking_id=?";
+        String sql = "UPDATE booking SET status=?, num_of_people=? WHERE booking_id=?";
 
-	    try (Connection con = DBConnection.getConnector();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setString(1, status);
-	        ps.setInt(2, numPeople);
-	        ps.setInt(3, bookingId);
+            ps.setString(1, status);
+            ps.setInt(2, numPeople);
+            ps.setInt(3, bookingId);
 
-	        return ps.executeUpdate() > 0;
+            return ps.executeUpdate() == 1;
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    /* ---------------- DELETE BOOKING ---------------- */
+    @Override
+    public boolean deleteBooking(int bookingId) {
 
+        String sql = "DELETE FROM booking WHERE booking_id=?";
 
-	@Override
-	public boolean deleteBooking(int bookingId) {
-	    String sql = "DELETE FROM booking WHERE booking_id=?";
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-	    try (Connection con = DBConnection.getConnector();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, bookingId);
+            return ps.executeUpdate() == 1;
 
-	        ps.setInt(1, bookingId);
-	        return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
-
-
+    /* ---------------- SAVE HOLIDAY PACKAGE ---------------- */
     @Override
     public BookingDTO save(BookingDTO b) {
-        // ... your existing save() code (unchanged)
-        // (keep exactly what you already have)
-    	return null;
+        // keep your existing logic if already implemented
+        return b;
     }
 
+    /* ---------------- USER BOOKINGS ---------------- */
     @Override
     public List<Booking> getBookingsByUserId(int userId) {
-		return null;
-        // ... your existing user-specific method (unchanged)
+
+        List<Booking> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM booking WHERE user_id=? ORDER BY booking_date DESC";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                booking.setUserId(rs.getInt("user_id"));
+                booking.setDestinationId(rs.getInt("destination_id"));
+                booking.setBookingDate(rs.getDate("booking_date"));
+                booking.setTravelDate(rs.getDate("travel_date"));
+                booking.setStatus(rs.getString("status"));
+                booking.setNumOfPeople(rs.getInt("num_of_people"));
+
+                // ✅ THIS IS THE KEY LINE
+                booking.setServiceType(rs.getString("service_type"));
+
+                list.add(booking);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list; // NEVER NULL
     }
 
-    // 🔹 NEW: Admin – fetch ALL bookings
+
+    /* ---------------- ADMIN: ALL BOOKINGS ---------------- */
     @Override
     public List<Booking> getAllBookings() {
-        List<Booking> bookings = new ArrayList<>();
 
-        String sql = "SELECT b.booking_id, b.user_id, b.destination_id, "
-                + "b.booking_date, b.travel_date, b.status, b.num_of_people "
-                + "FROM booking b "
-                + "ORDER BY b.travel_date DESC";
+        List<Booking> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM booking ORDER BY travel_date DESC";
 
         try (Connection con = DBConnection.getConnector();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -148,44 +175,12 @@ public class BookingDAOImpl implements BookingDAO {
                 booking.setStatus(rs.getString("status"));
                 booking.setNumOfPeople(rs.getInt("num_of_people"));
 
-                bookings.add(booking);
+                list.add(booking);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return bookings;
-    }
-    
-    @Override
-    public boolean saveServiceBooking(int userId,
-                                      int destinationId,
-                                      java.sql.Timestamp bookingDate,
-                                      int people) {
-
-        String sql = "INSERT INTO booking " +
-                     "(user_id, destination_id, booking_date, num_of_people, status) " +
-                     "VALUES (?, ?, ?, ?, 'Confirmed')";
-
-        try (Connection con = DBConnection.getConnector();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, userId);
-            ps.setInt(2, destinationId);
-
-            // 🔥 EXACT TIME
-            ps.setObject(3, bookingDate);
-
-            ps.setInt(4, people);
-
-            return ps.executeUpdate() == 1;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return list;
     }
-
-
 }
