@@ -145,6 +145,7 @@ public class MyBookingsServlet extends HttpServlet {
             allBookings.add(ub);
         }
 
+        
         /* ================= SEND TO JSP ================= */
         req.setAttribute("allBookings", allBookings);
         req.getRequestDispatcher("MyBooking.jsp").forward(req, resp);
