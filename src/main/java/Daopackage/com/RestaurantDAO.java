@@ -12,5 +12,6 @@ public interface RestaurantDAO {
     boolean deleteRestaurant(int id);
 	List<Restaurant> getRestaurantsByMaxPrice(double budget);
 	List<RestaurantBooking> getBookingsByUserId(int userId);
+	double getLastBookingAmountRestaurant(int userId);
 
 }

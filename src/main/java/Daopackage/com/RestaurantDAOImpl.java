@@ -179,7 +179,6 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         }
         return list;
     }
-    
     @Override
     public List<RestaurantBooking> getBookingsByUserId(int userId) {
 
@@ -188,10 +187,11 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         String sql =
             "SELECT rb.booking_id, rb.user_id, rb.restaurant_id, " +
             "rb.booking_date, rb.num_people, rb.status, " +
-            "r.name AS restaurant_name, d.location AS location " +
+            "r.name AS restaurant_name, " +
+            "c.location AS location " +
             "FROM restaurant_booking rb " +
             "JOIN restaurant r ON rb.restaurant_id = r.restaurant_id " +
-            "JOIN destination d ON r.destination_id = d.destination_id " +
+            "LEFT JOIN cab_destination c ON r.destination_id = c.destination_id " +
             "WHERE rb.user_id = ? " +
             "ORDER BY rb.booking_date DESC";
 
@@ -212,7 +212,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
                 rb.setNumPeople(rs.getInt("num_people"));
                 rb.setStatus(rs.getString("status"));
 
-                // ✅ FROM restaurant + destination
+                // ✅ THIS FIXES EMAIL NULL
                 rb.setRestaurantName(rs.getString("restaurant_name"));
                 rb.setLocation(rs.getString("location"));
 
@@ -224,6 +224,37 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         }
 
         return list;
+    }
+
+    
+    @Override
+    public double getLastBookingAmountRestaurant(int userId) {
+
+        String sql =
+            "SELECT r.price_per_person " +
+            "FROM restaurant_booking rb " +
+            "JOIN restaurant r ON rb.restaurant_id = r.restaurant_id " +
+            "WHERE rb.user_id = ? " +
+            "ORDER BY rb.booking_date DESC " +
+            "LIMIT 1";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("price_per_person");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // 🔹 No previous booking → no budget
+        return 0;
     }
 
 }

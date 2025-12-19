@@ -2,8 +2,6 @@ package controllerpackage.com;
 
 import java.io.IOException;
 import java.util.*;
-import Daopackage.com.ResBookingDAO;
-import Daopackage.com.ResBookingDaoImpl;
 import Daopackage.com.RestaurantDAO;
 import Daopackage.com.RestaurantDAOImpl;
 import dtopackage.com.Restaurant;
@@ -38,7 +36,7 @@ public class NearbyRestaurantsServlet extends HttpServlet {
         Double userLat = (latStr != null) ? Double.parseDouble(latStr) : null;
         Double userLon = (lonStr != null) ? Double.parseDouble(lonStr) : null;
 
-        double budget = restaurantDAO.getLastBookingAmountRestaurent(userId);
+        double budget = restaurantDAO.getLastBookingAmountRestaurant(userId);
 
         List<Restaurant> list =
                 (budget > 0 ? restaurantDAO.getRestaurantsByMaxPrice(budget)
