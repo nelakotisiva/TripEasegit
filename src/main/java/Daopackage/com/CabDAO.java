@@ -251,6 +251,33 @@ public class CabDAO {
         }
         return 0;
     }
+    public Cab getCabById(int rentalId) {
+        Cab cab = null;
+
+        try {
+            PreparedStatement ps = con.prepareStatement(
+                "SELECT r.*, d.location FROM cab_rental r " +
+                "JOIN cab_destination d ON r.destination_id = d.destination_id " +
+                "WHERE r.rental_id=?"
+            );
+            ps.setInt(1, rentalId);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                cab = new Cab();
+                cab.setRentalId(rs.getInt("rental_id"));
+                cab.setModel(rs.getString("model"));
+                cab.setSeaterType(rs.getString("seater_type"));
+                cab.setPricePerDay(rs.getDouble("price_per_day"));
+                cab.setLocation(rs.getString("location"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return cab;
+    }
 
     
 

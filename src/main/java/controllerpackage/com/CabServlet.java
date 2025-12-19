@@ -1,4 +1,6 @@
 package controllerpackage.com;
+import jakarta.mail.Message;
+import jakarta.mail.Transport;
 
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,6 +11,9 @@ import java.util.List;
 import Daopackage.com.CabDAO;
 import dtopackage.com.Cab;
 import dtopackage.com.User;
+
+import utilpackage.com.EmailUtil;
+
 
 @WebServlet("/VehicleListServlet")
 public class CabServlet extends HttpServlet {
@@ -81,12 +86,26 @@ public class CabServlet extends HttpServlet {
             return;
         }
 
+
         boolean ok = dao.saveBooking(user.getUser_id(), rentalId, passengers);
 
         if (ok) {
-            resp.sendRedirect("VehicleListServlet?msg=success");
+            // Fetch cab details
+            Cab cab = dao.getCabById(rentalId); // create this DAO method
+
+            EmailUtil.sendBookingMail(
+                user.getFull_name(),
+                user.getEmail(),
+                cab.getModel(),
+                cab.getSeaterType(),
+                cab.getLocation(),
+                cab.getPricePerDay()
+            );
+
+            resp.sendRedirect("VehicleListServlet?location=" + req.getParameter("location") + "&msg=success");
         } else {
-            resp.sendRedirect("VehicleListServlet?msg=fail");
+            resp.sendRedirect("VehicleListServlet?location=" + req.getParameter("location") + "&msg=fail");
         }
+
     }
 }
