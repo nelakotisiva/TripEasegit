@@ -16,7 +16,7 @@ import jakarta.servlet.http.*;
 public class NearbyRestaurantsServlet extends HttpServlet {
 
     private RestaurantDAO restaurantDAO = new RestaurantDAOImpl();
-    private ResBookingDAO bookingDAO = new ResBookingDaoImpl();
+  
     private static final double MAX_DISTANCE_KM = 10;
 
     @Override
@@ -38,7 +38,7 @@ public class NearbyRestaurantsServlet extends HttpServlet {
         Double userLat = (latStr != null) ? Double.parseDouble(latStr) : null;
         Double userLon = (lonStr != null) ? Double.parseDouble(lonStr) : null;
 
-        double budget = bookingDAO.getLastBookingAmountRestaurent(userId);
+        double budget = restaurantDAO.getLastBookingAmountRestaurent(userId);
 
         List<Restaurant> list =
                 (budget > 0 ? restaurantDAO.getRestaurantsByMaxPrice(budget)
