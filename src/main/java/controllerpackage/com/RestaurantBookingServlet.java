@@ -5,16 +5,15 @@ import java.util.List;
 
 import Daopackage.com.RestaurantBookingDAO;
 import Daopackage.com.RestaurantBookingDAOImpl;
+import Daopackage.com.RestaurantDAO;
+import Daopackage.com.RestaurantDAOImpl;
 import dtopackage.com.RestaurantBooking;
 import dtopackage.com.User;
 import utilpackage.com.EmailUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.*;
 
 @WebServlet("/bookRestaurant")
 public class RestaurantBookingServlet extends HttpServlet {
@@ -22,7 +21,7 @@ public class RestaurantBookingServlet extends HttpServlet {
     private RestaurantBookingDAO bookingDAO;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         bookingDAO = new RestaurantBookingDAOImpl();
     }
 
@@ -50,14 +49,14 @@ public class RestaurantBookingServlet extends HttpServlet {
             return;
         }
 
+        /* ---------- DATE ONLY ---------- */
         String bookingDateTimeStr = req.getParameter("bookingDateTime");
+        java.sql.Date bookingDate =
+                java.sql.Date.valueOf(bookingDateTimeStr.substring(0, 10));
 
         java.sql.Timestamp bookingTimestamp =
-                java.sql.Timestamp.valueOf(
-                        bookingDateTimeStr.replace("T", " ") + ":00"
-                );
+                new java.sql.Timestamp(bookingDate.getTime());
 
-        // 🔹 Prepare booking object
         RestaurantBooking rb = new RestaurantBooking();
         rb.setUserId(user.getUser_id());
         rb.setRestaurantId(restaurantId);
@@ -67,56 +66,40 @@ public class RestaurantBookingServlet extends HttpServlet {
 
         boolean success = bookingDAO.bookRestaurantAndMainBooking(rb);
 
-        String userEmail = user.getEmail();
-        String userName  = user.getFull_name();
-
-        // 🔹 DEFAULT VALUES
         String restaurantName = "Restaurant";
-        String restaurantLocation = "Unknown location";
+        String location = "Unknown location";
 
-        // 🔹 USE EXISTING METHOD ONLY
         if (success) {
+            RestaurantDAO dao = new RestaurantDAOImpl();
             List<RestaurantBooking> bookings =
-                    bookingDAO.getBookingsByUserId(user.getUser_id());
+                    dao.getBookingsByUserId(user.getUser_id());
 
-            for (RestaurantBooking b : bookings) {
-                if (b.getRestaurantId() == restaurantId) {
-                    restaurantName = b.getRestaurantName();
-                    restaurantLocation = b.getLocation();
-                    break;
-                }
+            if (!bookings.isEmpty()) {
+                restaurantName = bookings.get(0).getRestaurantName();
+                location = bookings.get(0).getLocation();
             }
         }
 
         if (success) {
-
-            String subject = "🍽 Restaurant Booking Confirmed | TripEase";
             String body =
-                    "Hello " + userName + ",\n\n" +
+                    "Hello " + user.getFull_name() + ",\n\n" +
                     "Your restaurant booking has been CONFIRMED ✅\n\n" +
                     "🍽 Restaurant : " + restaurantName + "\n" +
-                    "📍 Location   : " + restaurantLocation + "\n" +
+                    "📍 Location   : " + location + "\n" +
                     "👥 People     : " + people + "\n" +
-                    "🕒 Date & Time: " + bookingTimestamp + "\n\n" +
-                    "Thank you for choosing TripEase!\n\n" +
+                    "📅 Date       : " + bookingDate + "\n\n" +
                     "— TripEase Team";
 
-            EmailUtil.sendEmail(userEmail, subject, body);
+            EmailUtil.sendEmail(
+                    user.getEmail(),
+                    "🍽 Restaurant Booking Confirmed | TripEase",
+                    body
+            );
+
             session.setAttribute("msg",
                     "🎉 Restaurant booked successfully! Email sent 📧");
-
         } else {
-
-            String subject = "❌ Restaurant Booking Failed | TripEase";
-            String body =
-                    "Hello " + userName + ",\n\n" +
-                    "Unfortunately, your restaurant booking could NOT be completed.\n\n" +
-                    "Please try again later.\n\n" +
-                    "— TripEase Team";
-
-            EmailUtil.sendEmail(userEmail, subject, body);
-            session.setAttribute("msg",
-                    "❌ Booking failed! Email notification sent 📧");
+            session.setAttribute("msg", "❌ Booking failed!");
         }
 
         resp.sendRedirect("nearbyRestaurants");

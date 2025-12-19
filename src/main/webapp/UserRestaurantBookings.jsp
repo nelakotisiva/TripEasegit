@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="dtopackage.com.RestaurantBooking" %>
 
 <!DOCTYPE html>
@@ -60,6 +61,9 @@ h2{
 List<RestaurantBooking> list =
     (List<RestaurantBooking>) request.getAttribute("bookings");
 
+SimpleDateFormat sdf =
+    new SimpleDateFormat("dd MMM yyyy"); // DATE ONLY
+
 if (list != null && !list.isEmpty()) {
     for (RestaurantBooking rb : list) {
 %>
@@ -68,9 +72,17 @@ if (list != null && !list.isEmpty()) {
     <p><b>Booking ID:</b> <%= rb.getBookingId() %></p>
     <p><b>Restaurant:</b> <%= rb.getRestaurantName() %></p>
     <p><b>Location:</b> <%= rb.getLocation() %></p>
-    <p><b>Date & Time:</b> <%= rb.getBookingDate1() %></p>
+
+    <p><b>Booking Date:</b>
+        <%= rb.getBookingDate1() != null
+                ? sdf.format(rb.getBookingDate1())
+                : "N/A" %>
+    </p>
+
     <p><b>People:</b> <%= rb.getNumPeople() %></p>
-    <p><b>Status:</b> <span class="status"><%= rb.getStatus() %></span></p>
+    <p><b>Status:</b>
+        <span class="status"><%= rb.getStatus() %></span>
+    </p>
 </div>
 
 <%

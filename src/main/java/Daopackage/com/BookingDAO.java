@@ -29,5 +29,4 @@ public interface BookingDAO {
                                Date travelDate,
                                int numOfPeople);
 
-	void saveServiceBooking(int userId, int destinationId, Timestamp bookingDate1, int numPeople);
 }

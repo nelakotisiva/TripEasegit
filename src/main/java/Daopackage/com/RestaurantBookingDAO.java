@@ -14,5 +14,7 @@ public interface RestaurantBookingDAO {
     
     List<RestaurantBooking> getBookingsByUserId(int userId);
 
+	void saveServiceBooking(int userId, int destinationId, Timestamp bookingDate1, int numPeople);
+
 
 }

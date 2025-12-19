@@ -47,6 +47,7 @@ public class RestaurantBooking {
     public void setLocation(String location) {
         this.location = location;
     }
+	
 
     }
 
