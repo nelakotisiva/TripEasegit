@@ -178,4 +178,39 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         }
         return list;
     }
+ // -------------------------------
+ // GET RESTAURANT NAME + LOCATION
+ // -------------------------------
+ // -------------------------------
+ // GET RESTAURANT NAME + LOCATION
+ // -------------------------------
+ @Override
+ public String[] getRestaurantNameAndLocationById(int restaurantId) {
+
+     String[] details = new String[2]; // [0]=restaurant name, [1]=location
+
+     String sql =
+    		    "SELECT r.name AS restaurant_name, d.location AS location " +
+    		    "FROM restaurant r " +
+    		    "JOIN destination d ON r.destination_id = d.destination_id " +
+    		    "WHERE r.restaurant_id = ?";
+
+
+     try (PreparedStatement ps = con.prepareStatement(sql)) {
+
+         ps.setInt(1, restaurantId);
+         ResultSet rs = ps.executeQuery();
+
+         if (rs.next()) {
+             details[0] = rs.getString("restaurant_name");
+             details[1] = rs.getString("location");
+         }
+
+     } catch (Exception e) {
+         e.printStackTrace();
+     }
+
+     return details;
+ }
+
 }

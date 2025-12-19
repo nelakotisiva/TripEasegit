@@ -10,4 +10,6 @@ public interface RestaurantDAO {
     boolean updateRestaurant(Restaurant r);
     boolean deleteRestaurant(int id);
 	List<Restaurant> getRestaurantsByMaxPrice(double budget);
+	public String[] getRestaurantNameAndLocationById(int restaurantId);
+
 }
