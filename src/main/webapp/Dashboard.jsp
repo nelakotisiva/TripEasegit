@@ -244,15 +244,21 @@ footer{
 <nav>
     <div class="logo">✈ TripEase</div>
 
-    <div class="nav-links">
-        <a href="Dashboard.jsp">Dashboard</a>
-        <a href="HotelListServlet">Hotels</a>
-        <a href="SearchFlight">Flights</a>
-        <a href="VehicleListServlet">Cabs</a>
-        <a href="nearbyRestaurants">Restaurants</a>
-        <a href="ToursServlet">Tours</a>
-        <a href="PlacesServlet">Places</a>
-    </div>
+   <div class="nav-links">
+    <a href="Dashboard.jsp">Dashboard</a>
+    <a href="HotelListServlet">Hotels</a>
+    <a href="SearchFlight">Flights</a>
+    <a href="VehicleListServlet">Cabs</a>
+    <a href="nearbyRestaurants">Restaurants</a>
+    <a href="ToursServlet">Tours</a>
+    <a href="PlacesServlet">Places</a>
+
+    <!-- ✅ ADD THIS -->
+    <a href="MyBookingsServlet" style="font-weight:600;color:#008cff;">
+        My Bookings
+    </a>
+</div>
+
 
     <a class="logout-btn" href="LogoutServlet">Logout</a>
 </nav>
