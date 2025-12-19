@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: tripease
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -40,7 +40,7 @@ CREATE TABLE `destination` (
 
 LOCK TABLES `destination` WRITE;
 /*!40000 ALTER TABLE `destination` DISABLE KEYS */;
-INSERT INTO `destination` VALUES (1,'Goa Beach','Goa, India','Beautiful beach destination','https://images.unsplash.com/photo-1507525428034-b723cf961d3e',12000.00),(2,'Taj Mahal','Agra, India','Famous heritage monument','https://images.unsplash.com/photo-1548013146-72479768bada',8000.00),(3,'Manali','Himachal Pradesh','Hill station with snow views','https://images.unsplash.com/photo-1586016413664-864c0dd76f53',15000.00),(4,'Jaipur','Rajasthan','Pink city with forts','https://images.unsplash.com/photo-1599661046827-dacff0a1e18f?q=80&w=800&auto=format&fit=crop',10000.00),(5,'Kerala Backwaters','Kerala, India','Backwater tourism','https://images.unsplash.com/photo-1602216056096-3b40cc0c9944',18000.00);
+INSERT INTO `destination` VALUES (1,'Bangalore','Bangalore, India','IT hub','https://images.unsplash.com/photo-1596176530529-78163a4f7af2',10000.00),(2,'Chennai','Chennai, India','Coastal city','https://images.unsplash.com/photo-1582510003544-4d00b7f74220',9000.00),(3,'Hyderabad','Hyderabad, India','City of Pearls','https://images.unsplash.com/photo-1624023307905-000b1b63f77d',9500.00),(6,'Mumbai','Mumbai, India','Financial capital','https://images.unsplash.com/photo-1505739773434-c44e6c0b6c16',12000.00),(7,'Delhi','Delhi, India','Capital city','https://images.unsplash.com/photo-1587474260584-136574528ed5',11000.00),(11,'Jaipur','Jaipur, India','Pink City','https://images.unsplash.com/photo-1599661046827-dacff0a1e18f',8500.00),(12,'Pune','Pune, India','Education hub','https://images.unsplash.com/photo-1601579112948-6f1e7a5c9f4a',8000.00),(13,'Rishikesh','Rishikesh, India','Yoga capital','https://images.unsplash.com/photo-1593693397690-362cb9666fc2',7000.00),(14,'Varanasi','Varanasi, India','Spiritual city','https://images.unsplash.com/photo-1548013146-72479768bada',6000.00),(15,'Munnar','Munnar, India','Hill station','https://images.unsplash.com/photo-1602216056096-3b40cc0c9944',11000.00),(16,'Udaipur','Udaipur, India','City of Lakes','https://images.unsplash.com/photo-1518684079-2ca7d07f5d68',10000.00);
 /*!40000 ALTER TABLE `destination` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-15  0:19:50
+-- Dump completed on 2025-12-19 23:22:52
