@@ -1,10 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-
-
-
 <%@ page import="java.util.List" %>
-
 <%@ page import="dtopackage.com.User" %>
 <%@ page import="dtopackage.com.UserBooking" %>
 
@@ -23,7 +19,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>My Bookings</title>
+<title>My Bookings | TripEase</title>
 
 <style>
 body{
@@ -32,7 +28,10 @@ body{
     font-family:Poppins,sans-serif;
     background:#e8f5f3;
 }
-.wrap{ max-width:920px; margin:auto; }
+.wrap{
+    max-width:920px;
+    margin:auto;
+}
 .head{
     display:flex;
     justify-content:space-between;
@@ -46,6 +45,10 @@ body{
     margin-bottom:14px;
     box-shadow:0 6px 20px rgba(0,0,0,.08);
     cursor:pointer;
+    transition:0.2s;
+}
+.card:hover{
+    transform:translateY(-4px);
 }
 .type{
     font-weight:700;
@@ -55,6 +58,7 @@ body{
 .sub{
     color:#555;
     font-size:14px;
+    margin-top:3px;
 }
 .total{
     margin-top:8px;
@@ -81,27 +85,41 @@ body{
 
 <% if (bookings == null || bookings.isEmpty()) { %>
 
-    <div class="empty">You have no bookings yet.</div>
+    <div class="empty">
+        You have no bookings yet.
+    </div>
 
 <% } else {
     for (UserBooking b : bookings) {
 %>
 
     <div class="card" onclick="location.href='<%= b.getDetailsUrl() %>'">
+
+        <!-- BOOKING TYPE -->
         <div class="type"><%= b.getBookingType() %></div>
 
-        <div class="sub"><b><%= b.getTitle() %></b></div>
+        <!-- TITLE -->
+        <div class="sub">
+            <b><%= b.getTitle() %></b>
+        </div>
 
+        <!-- LOCATION / SUBTITLE -->
         <% if (b.getSubtitle() != null) { %>
             <div class="sub"><%= b.getSubtitle() %></div>
         <% } %>
 
-        <% if (b.getTravelDate() != null) { %>
-            <div class="sub">Date: <%= b.getTravelDate() %></div>
+        <!-- BOOKED DATE -->
+        <% if (b.getBookingDate() != null) { %>
+            <div class="sub">
+                Booked On: <%= b.getBookingDate() %>
+            </div>
         <% } %>
 
-        <div class="total">₹ <%= b.getAmount() %>
-</div>
+        <!-- PRICE -->
+        <div class="total">
+            ₹ <%= b.getAmount() %>
+        </div>
+
     </div>
 
 <% } } %>
