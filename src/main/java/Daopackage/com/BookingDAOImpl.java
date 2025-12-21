@@ -107,11 +107,39 @@ public class BookingDAOImpl implements BookingDAO {
     }
 
     /* ---------------- SAVE HOLIDAY PACKAGE ---------------- */
+    
     @Override
     public BookingDTO save(BookingDTO b) {
-        // keep your existing logic if already implemented
-        return b;
+
+        String sql =
+            "INSERT INTO tourbooking " +
+            "(user_id, destination_id, booking_date, travel_date, status, num_of_people) " +
+            "VALUES (?, ?, CURDATE(), ?, 'Confirmed', ?)";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps =
+                con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            ps.setInt(1, b.getUserId());
+            ps.setInt(2, b.getDestinationId());
+            ps.setDate(3, b.getTravelDate());
+            ps.setInt(4, b.getTravellers());
+
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                b.setId(rs.getInt(1));
+            }
+
+            return b;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
 
     /* ---------------- USER BOOKINGS ---------------- */
     @Override
