@@ -8,7 +8,9 @@ import dtopackage.com.Hotel;
 import dtopackage.com.User;
 import UserDaopackage.com.HotelBookingDAO;
 import UserDaopackage.com.HotelBookingDAOImpl;
+import UserDaopackage.com.HotelDAO;
 import UserDaopackage.com.HotelDAOImpl;
+import utilpackage.com.EmailUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,79 +22,85 @@ import jakarta.servlet.http.HttpSession;
 @WebServlet("/ConfirmHotelBooking")
 public class ConfirmHotelBookingServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("userObj") == null) {
+        if (session == null) {
             resp.sendRedirect("Login.jsp");
             return;
         }
 
         User user = (User) session.getAttribute("userObj");
+        if (user == null) {
+            resp.sendRedirect("Login.jsp");
+            return;
+        }
 
         try {
             int hotelId = Integer.parseInt(req.getParameter("hotelId"));
-            String checkinStr = req.getParameter("checkin");
-            String checkoutStr = req.getParameter("checkout");
+            String checkin = req.getParameter("checkin");
+            String checkout = req.getParameter("checkout");
             int guests = Integer.parseInt(req.getParameter("guests"));
 
-            if (checkinStr == null || checkoutStr == null ||
-                checkinStr.isEmpty() || checkoutStr.isEmpty()) {
+            LocalDate in = LocalDate.parse(checkin);
+            LocalDate out = LocalDate.parse(checkout);
 
-                req.setAttribute("error", "Please select dates.");
-                req.getRequestDispatcher("HotelBooking.jsp").forward(req, resp);
-                return;
-            }
-
-            LocalDate checkin = LocalDate.parse(checkinStr);
-            LocalDate checkout = LocalDate.parse(checkoutStr);
-
-            long nights = ChronoUnit.DAYS.between(checkin, checkout);
+            long nights = ChronoUnit.DAYS.between(in, out);
             if (nights <= 0) nights = 1;
 
-            HotelDAOImpl hotelDao = new HotelDAOImpl();
+            // ✅ Fetch hotel details
+            HotelDAO hotelDao = new HotelDAOImpl();
             Hotel hotel = hotelDao.getHotelById(hotelId);
 
-            if (hotel == null) {
-                req.setAttribute("error", "Hotel not found.");
-                req.getRequestDispatcher("hotelList.jsp").forward(req, resp);
-                return;
-            }
+            double total = hotel.getPricePerNight() * nights * guests;
 
-            double total =
-                    hotel.getPricePerNight() * nights * Math.max(1, guests);
-
-            HotelBookingDAO bookingDao = new HotelBookingDAOImpl();
-            boolean success = bookingDao.saveBooking(
+            // ✅ Save booking
+            HotelBookingDAO bookingDAO = new HotelBookingDAOImpl();
+            boolean success = bookingDAO.saveBooking(
                     user.getUser_id(),
                     hotelId,
-                    checkinStr,
-                    checkoutStr,
+                    checkin,
+                    checkout,
                     guests,
                     total
             );
 
             if (success) {
-                // ✅ SUCCESS POPUP MESSAGE
+
+                // ✅ EMAIL CONTENT (FINAL FIX)
+                String body =
+                        "Dear " + user.getFull_name() + ",\n\n" +
+                        "Your hotel booking is confirmed.\n\n" +
+                        "Hotel: " + hotel.getHotelName() + "\n" +
+                        "Check-in: " + checkin + "\n" +
+                        "Check-out: " + checkout + "\n" +
+                        "Guests: " + guests + "\n" +
+                        "Total Amount: ₹" + total + "\n\n" +
+                        "Thank you for choosing TripEase.";
+
+                EmailUtil.sendEmail(
+                        user.getEmail(),
+                        "TripEase - Hotel Booking Confirmation",
+                        body
+                );
+
+                // ✅ POPUP MESSAGE FIX (KEY MATCHES JSP)
                 session.setAttribute(
                         "bookingSuccess",
                         "Hotel booked successfully!"
                 );
 
-                // redirect to hotel list
+                // ✅ Redirect back to hotel list
                 resp.sendRedirect("HotelListServlet");
-                return;
-            } else {
-                req.setAttribute("error", "Booking failed. Try again.");
-                req.getRequestDispatcher("HotelBooking.jsp").forward(req, resp);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            req.setAttribute("error", "Invalid booking details.");
-            req.getRequestDispatcher("hotelList.jsp").forward(req, resp);
+            resp.sendRedirect("HotelListServlet");
         }
     }
 }

@@ -3,6 +3,11 @@ package UserDaopackage.com;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import dtopackage.com.Flight;
+
 import java.sql.Date;
 
 import utilpackage.com.DBConnection;
@@ -71,6 +76,45 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
         }
     }
 
+    
+    public List<Flight> getMyFlightBookings(int userId) {
+
+        List<Flight> list = new ArrayList<>();
+
+        String sql =
+            "SELECT f.flight_id, f.airline, f.source, f.destination, f.price " +
+            "FROM flight_booking fb " +
+            "JOIN flight f ON fb.flight_id = f.flight_id " +
+            "WHERE fb.user_id = ?";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Flight f = new Flight();
+                f.setFlightId(rs.getInt("flight_id"));
+                f.setAirline(rs.getString("airline"));
+                f.setSource(rs.getString("source"));
+                f.setDestination(rs.getString("destination"));
+                f.setPrice(rs.getDouble("price"));
+
+                list.add(f);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list; // ✅ NEVER NULL
+    }
+
+    
+    
+    
+    
     // Unused old method
     @Override
     public boolean bookFlight(int userId, int flightId, int seats) {

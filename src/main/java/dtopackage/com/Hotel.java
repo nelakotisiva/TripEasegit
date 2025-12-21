@@ -13,7 +13,7 @@ public class Hotel {
     private String imageUrl;
 
     // -----------------------------
-    // ✅ Getters & Setters
+    // Getters & Setters
     // -----------------------------
 
     public int getHotelId() {

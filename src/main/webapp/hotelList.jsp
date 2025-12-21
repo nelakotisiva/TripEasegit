@@ -76,7 +76,8 @@ body{
 /* BACK BUTTON */
 .back-wrap{
     display:flex;
-    justify-content:flex-start;
+    justify-content:space-between;
+    align-items:center;
     margin:25px 0 10px;
 }
 
@@ -194,9 +195,18 @@ body{
 
 <div class="container">
 
-<!-- BACK BUTTON -->
+<!-- BACK + MY HOTEL BOOKINGS -->
 <div class="back-wrap">
     <a href="Dashboard.jsp" class="back-btn-page">← Back to Dashboard</a>
+
+    <!-- ✅ NEW FUNCTIONALITY (ONLY ADDITION) -->
+    <%
+    if (session.getAttribute("userObj") != null) {
+    %>
+    <a href="MyHotelBookings" class="back-btn-page">🏨 My Hotel Bookings</a>
+    <%
+    }
+    %>
 </div>
 
 <%

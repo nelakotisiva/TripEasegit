@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.util.List;
 
 import Daopackage.com.BookingDAOImpl;
-import UserDaopackage.com.HotelBookingDAOImpl;
 import Daopackage.com.CabDAO;
-
+     // ✅ FIXED
+import UserDaopackage.com.HotelBookingDAOImpl;
 
 import dtopackage.com.Booking;
 import dtopackage.com.Bookingg;
 import dtopackage.com.Cab;
-
 import dtopackage.com.User;
 
 import jakarta.servlet.ServletException;
@@ -34,23 +33,21 @@ public class MyBookingsServlet extends HttpServlet {
         User user = (User) session.getAttribute("userObj");
         int userId = user.getUser_id();
 
-        // 🏨 Hotels
+        // 🏨 Hotels (✅ FIXED METHOD CALL)
         List<Bookingg> hotelBookings =
-                new HotelBookingDAOImpl().getBookingsByUser(userId);
+                new HotelBookingDAOImpl().getBookingsByUserId(userId);
 
-        // 🍽 Restaurants + 🗺 Places + 🚕 (from booking table)
+        // 🍽 Restaurants + 🗺 Places + others
         List<Booking> commonBookings =
                 new BookingDAOImpl().getBookingsByUserId(userId);
 
-        // 🚕 Cabs (detailed)
+        // 🚕 Cabs (✅ FIXED IMPLEMENTATION)
         List<Cab> cabBookings =
                 new CabDAO().getMyBookings(userId);
 
-        
         req.setAttribute("hotelBookings", hotelBookings);
         req.setAttribute("commonBookings", commonBookings);
         req.setAttribute("cabBookings", cabBookings);
-       
 
         req.getRequestDispatcher("MyBooking.jsp").forward(req, resp);
     }
