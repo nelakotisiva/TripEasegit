@@ -1,5 +1,5 @@
 package Daopackage.com;
-
+//h
 import java.sql.*;
 import java.util.*;
 import dtopackage.com.Cab;
@@ -69,43 +69,25 @@ public class CabDAO {
 
     // ? SAVE BOOKING
     public boolean saveBooking(int userId, int rentalId, int passengers) {
-
         try {
-            // 1️⃣ Insert into cab_booking
             PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO cab_booking(user_id, rental_id, model, seater_type, passengers, booking_date) " +
-                "SELECT ?, rental_id, model, seater_type, ?, NOW() FROM cab_rental WHERE rental_id = ?"
+                "INSERT INTO cab_booking " +
+                "(user_id, rental_id, model, seater_type, passengers) " +
+                "SELECT ?, rental_id, model, seater_type, ? " +
+                "FROM cab_rental WHERE rental_id=?"
             );
 
             ps.setInt(1, userId);
             ps.setInt(2, passengers);
             ps.setInt(3, rentalId);
 
-            int result = ps.executeUpdate();
-
-            if (result > 0) {
-
-                // 2️⃣ Get destination_id for this cab
-                int destinationId = getDestinationIdByRental(rentalId);
-
-                // 3️⃣ Insert into MAIN booking table
-                BookingDAO bookingDAO = new BookingDAOImpl();
-                bookingDAO.saveServiceBooking(
-                    userId,
-                    destinationId,
-                    new java.sql.Date(System.currentTimeMillis()),
-                    passengers
-                );
-
-                return true;
-            }
+            return ps.executeUpdate() == 1;
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
-
 
     // ? BOOKED IDS
     public List<Integer> getBookedVehicleIds(int userId) {
@@ -251,7 +233,5 @@ public class CabDAO {
         }
         return 0;
     }
+}   
 
-    
-
-}
