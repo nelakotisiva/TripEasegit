@@ -8,57 +8,90 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Edit Booking</title>
+<title>Edit Booking | TripEase Admin</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    font-family: Poppins, sans-serif;
-    background: #e8f0ff;
+body{
+    font-family:Inter,sans-serif;
+    background:#f5f2ec;
+    margin:0;
+    padding:40px;
+    color:#2f2a23;
 }
 
-.container {
-    width: 450px;
-    margin: 60px auto;
-    background: #fff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+.container{
+    width:450px;
+    margin:auto;
+    background:#ffffff;
+    padding:26px 28px;
+    border-radius:18px;
+    border:1px solid #d9d2c3;
 }
 
-h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #0032d8;
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
 }
 
-label {
-    font-weight: 600;
+.header h2{
+    margin:0;
+    font-size:22px;
+    font-weight:600;
 }
 
-input, select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    margin-top: 6px;
-    margin-bottom: 18px;
+.back-btn{
+    padding:6px 14px;
+    border-radius:8px;
+    background:#6b6256;
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    background: #0066ff;
-    color: #fff;
-    border-radius: 10px;
-    font-size: 15px;
-    cursor: pointer;
+/* FORM */
+label{
+    font-size:13px;
+    font-weight:500;
+    display:block;
+    margin-top:14px;
 }
 
-button:hover {
-    opacity: 0.9;
+input, select{
+    width:100%;
+    padding:11px 12px;
+    border-radius:10px;
+    border:1px solid #d9d2c3;
+    font-size:14px;
+    margin-top:6px;
+}
+
+input:focus, select:focus{
+    outline:none;
+    border-color:#8a9a5b;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:22px;
+    border:none;
+    background:#8a9a5b;
+    color:white;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#7b8b50;
 }
 </style>
 
@@ -66,11 +99,17 @@ button:hover {
 <body>
 
 <div class="container">
-    <h2>Edit Booking</h2>
+
+    <!-- HEADER WITH BACK BUTTON -->
+    <div class="header">
+        <h2>Edit Booking</h2>
+        <a href="ManageBookings" class="back-btn">Back</a>
+    </div>
 
     <form action="EditBooking" method="post">
 
-        <input type="hidden" name="bookingId" value="<%= booking.getBookingId() %>">
+        <input type="hidden" name="bookingId"
+               value="<%= booking.getBookingId() %>">
 
         <label>Status</label>
         <select name="status">
@@ -80,11 +119,13 @@ button:hover {
         </select>
 
         <label>No. of People</label>
-        <input type="number" name="numPeople" value="<%= booking.getNumOfPeople() %>" required>
+        <input type="number" name="numPeople"
+               value="<%= booking.getNumOfPeople() %>" required>
 
         <button type="submit">Update Booking</button>
 
     </form>
+
 </div>
 
 </body>
