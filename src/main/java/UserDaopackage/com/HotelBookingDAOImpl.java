@@ -38,7 +38,7 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
                 b.setGuests(rs.getInt("guests"));
                 b.setTotalAmount(rs.getDouble("total_amount"));
                 b.setBookingDate(rs.getTimestamp("booking_date"));
-                b.setStatus(rs.getString("status")); // ✅ FIX
+                b.setStatus(rs.getString("status"));
                 b.setHotelName(rs.getString("hotel_name"));
                 b.setHotelLocation(rs.getString("near_location"));
 
@@ -52,7 +52,37 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
         return list;
     }
 
+    // ================= SAVE HOTEL BOOKING =================
+    @Override
+    public boolean saveBooking(int userId, int hotelId, String checkin,
+                               String checkout, int guests, double total) {
+
+        String sql =
+            "INSERT INTO hotel_booking " +
+            "(user_id, hotel_id, check_in, check_out, guests, total_amount, booking_date, status) " +
+            "VALUES (?, ?, ?, ?, ?, ?, NOW(), 'Confirmed')";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setInt(2, hotelId);
+            ps.setString(3, checkin);
+            ps.setString(4, checkout);
+            ps.setInt(5, guests);
+            ps.setDouble(6, total);
+
+            return ps.executeUpdate() == 1;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     // ================= CANCEL HOTEL =================
+    @Override
     public void cancelBooking(int bookingId) {
 
         String sql = "UPDATE hotel_booking SET status='Cancelled' WHERE booking_id=?";
@@ -67,10 +97,4 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
             e.printStackTrace();
         }
     }
-
-	@Override
-	public boolean saveBooking(int userId, int hotelId, String checkin, String checkout, int guests, double total) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

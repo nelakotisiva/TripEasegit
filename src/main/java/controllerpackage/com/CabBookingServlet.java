@@ -6,6 +6,7 @@ import dtopackage.com.Cab;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public class CabBookingServlet extends HttpServlet {
         dao = new CabDAO();
     }
 
+    // ================= VIEW MY CAB BOOKINGS =================
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
@@ -39,6 +41,7 @@ public class CabBookingServlet extends HttpServlet {
         req.getRequestDispatcher("CabBookings.jsp").forward(req, resp);
     }
 
+    // ================= CANCEL CAB BOOKING =================
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -51,10 +54,10 @@ public class CabBookingServlet extends HttpServlet {
             return;
         }
 
-        int rentalId = Integer.parseInt(req.getParameter("rentalId"));
-        dao.cancelBooking(user.getUser_id(), rentalId);
+        int bookingId = Integer.parseInt(req.getParameter("bookingId"));
+
+        dao.cancelCabBooking(bookingId); // ✅ STATUS-BASED CANCEL
 
         resp.sendRedirect("CabBookingServlet");
     }
 }
-

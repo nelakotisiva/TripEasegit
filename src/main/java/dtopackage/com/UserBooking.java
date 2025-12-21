@@ -27,7 +27,7 @@ public class UserBooking {
     // 🔹 When booking was made
     private Date bookingDate;
 
-    // 🔹 Travel / usage date
+    // 🔹 Travel / usage date (optional)
     private Date travelDate;
 
     // 🔹 Amount paid

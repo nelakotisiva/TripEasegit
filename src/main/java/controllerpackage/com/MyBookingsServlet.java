@@ -2,14 +2,18 @@ package controllerpackage.com;
 
 import java.io.IOException;
 import java.util.*;
+
 import Daopackage.com.CabDAO;
 import Daopackage.com.RestaurantBookingDAO;
 import Daopackage.com.RestaurantBookingDAOImpl;
 import Daopackage.com.RestaurantDAOImpl;
 import Daopackage.com.DestinationDAOImpl;
+
 import UserDaopackage.com.FlightBookingDAOImpl;
 import UserDaopackage.com.HotelBookingDAOImpl;
+
 import dtopackage.com.*;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -33,7 +37,8 @@ public class MyBookingsServlet extends HttpServlet {
         List<UserBooking> allBookings = new ArrayList<>();
 
         /* ================= 🏨 HOTELS ================= */
-        for (Bookingg h : new HotelBookingDAOImpl().getBookingsByUser(userId)) {
+        HotelBookingDAOImpl hotelDAO = new HotelBookingDAOImpl();
+        for (Bookingg h : hotelDAO.getBookingsByUser(userId)) {
 
             UserBooking ub = new UserBooking();
             ub.setBookingId(h.getBookingId());
@@ -49,52 +54,63 @@ public class MyBookingsServlet extends HttpServlet {
         }
 
         /* ================= 🚕 CABS ================= */
-        for (Cab c : new CabDAO().getMyBookings(userId)) {
+        CabDAO cabDAO = new CabDAO();
+        for (Cab c : cabDAO.getMyBookings(userId)) {
 
             UserBooking ub = new UserBooking();
-            ub.setBookingId(c.getBookingId());      // ✅ NOT 0
+            ub.setBookingId(c.getBookingId());
             ub.setIcon("🚕");
             ub.setBookingType("CAB");
             ub.setTitle(c.getModel());
             ub.setSubtitle(c.getLocation());
-            ub.setBookingDate(new Date());
+            ub.setBookingDate(new Date()); // fallback (no date column)
             ub.setAmount(c.getPricePerDay());
-            ub.setStatus(c.getStatus());            // ✅ shows Cancelled
+            ub.setStatus(c.getStatus());
+
             allBookings.add(ub);
         }
 
-
         /* ================= ✈ FLIGHTS ================= */
-        for (Flight f : new FlightBookingDAOImpl().getMyFlightBookings(userId)) {
+        FlightBookingDAOImpl flightDAO = new FlightBookingDAOImpl();
+        for (Flight f : flightDAO.getMyFlightBookings(userId)) {
 
             UserBooking ub = new UserBooking();
-            ub.setBookingId(f.getBookingId());              // ✅ FIXED
+            ub.setBookingId(f.getBookingId());
             ub.setIcon("✈");
             ub.setBookingType("FLIGHT");
             ub.setTitle(f.getAirline());
             ub.setSubtitle(f.getSource() + " → " + f.getDestination());
-            ub.setBookingDate(new Date());
+            ub.setBookingDate(new Date()); // fallback
             ub.setAmount(f.getPrice());
-            ub.setStatus(f.getStatus());                    // ✅ FIX
+            ub.setStatus(f.getStatus());
             ub.setDetailsUrl("FlightDetails?flightId=" + f.getFlightId());
 
             allBookings.add(ub);
         }
 
         /* ================= 🍽 RESTAURANTS ================= */
-        RestaurantBookingDAO rbDAO = new RestaurantBookingDAOImpl();
-        RestaurantDAOImpl rDAO = new RestaurantDAOImpl();
-        DestinationDAOImpl dDAO = new DestinationDAOImpl();
+        RestaurantBookingDAO restaurantBookingDAO =
+                new RestaurantBookingDAOImpl();
+        RestaurantDAOImpl restaurantDAO =
+                new RestaurantDAOImpl();
+        DestinationDAOImpl destinationDAO =
+                new DestinationDAOImpl();
 
-        for (RestaurantBooking rb : rbDAO.getBookingsByUserId(userId)) {
+        List<Destination> destinations =
+                destinationDAO.getAllDestinations();
 
-            Restaurant r = rDAO.getRestaurantById(rb.getRestaurantId());
+        for (RestaurantBooking rb :
+                restaurantBookingDAO.getBookingsByUserId(userId)) {
 
-            Destination d = null;
-            if (r != null) {
-                for (Destination x : dDAO.getAllDestinations()) {
-                    if (x.getDestinationId() == r.getDestinationId()) {
-                        d = x;
+            Restaurant restaurant =
+                    restaurantDAO.getRestaurantById(rb.getRestaurantId());
+
+            Destination destination = null;
+            if (restaurant != null) {
+                for (Destination d : destinations) {
+                    if (d.getDestinationId() ==
+                            restaurant.getDestinationId()) {
+                        destination = d;
                         break;
                     }
                 }
@@ -104,17 +120,28 @@ public class MyBookingsServlet extends HttpServlet {
             ub.setBookingId(rb.getBookingId());
             ub.setIcon("🍽");
             ub.setBookingType("RESTAURANT");
-            ub.setTitle(r != null ? r.getName() : "Restaurant");
-            ub.setSubtitle(d != null ? d.getLocation() : "Unknown");
+            ub.setTitle(
+                    restaurant != null ? restaurant.getName() : "Restaurant"
+            );
+            ub.setSubtitle(
+                    destination != null
+                            ? destination.getLocation()
+                            : "Unknown location"
+            );
             ub.setBookingDate(rb.getBookingDate1());
-            ub.setAmount(r != null ? r.getAvgPrice() : 0);
-            ub.setStatus(rb.getStatus());                   // already correct
-            ub.setDetailsUrl("RestaurantDetails?restaurantId=" + rb.getRestaurantId());
+            ub.setAmount(
+                    restaurant != null ? restaurant.getAvgPrice() : 0
+            );
+            ub.setStatus(rb.getStatus());
+            ub.setDetailsUrl(
+                    "RestaurantDetails?restaurantId=" +
+                            rb.getRestaurantId()
+            );
 
             allBookings.add(ub);
         }
 
-        /* ================= SORT BY DATE ================= */
+        /* ================= SORT BY DATE (LATEST FIRST) ================= */
         Collections.sort(allBookings, (a, b) -> {
             if (a.getBookingDate() == null && b.getBookingDate() == null) return 0;
             if (a.getBookingDate() == null) return 1;
@@ -122,7 +149,9 @@ public class MyBookingsServlet extends HttpServlet {
             return b.getBookingDate().compareTo(a.getBookingDate());
         });
 
+        /* ================= SEND TO JSP ================= */
         req.setAttribute("allBookings", allBookings);
-        req.getRequestDispatcher("MyBooking.jsp").forward(req, resp);
+        req.getRequestDispatcher("MyBooking.jsp")
+           .forward(req, resp);
     }
 }

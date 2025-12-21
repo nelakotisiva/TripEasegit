@@ -70,10 +70,10 @@ public class CabDAO {
 
     /* ================= SAVE BOOKING ================= */
     public boolean saveBooking(int userId, int rentalId, int passengers) {
-
         try {
             PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO cab_booking (user_id, rental_id, model, seater_type, passengers, booking_date, status) " +
+                "INSERT INTO cab_booking " +
+                "(user_id, rental_id, model, seater_type, passengers, booking_date, status) " +
                 "SELECT ?, rental_id, model, seater_type, ?, NOW(), 'Active' " +
                 "FROM cab_rental WHERE rental_id=?"
             );
@@ -141,20 +141,6 @@ public class CabDAO {
             e.printStackTrace();
         }
         return list;
-    }
-
-    /* ================= DELETE-BASED CANCEL ================= */
-    public void cancelBooking(int userId, int rentalId) {
-        try {
-            PreparedStatement ps = con.prepareStatement(
-                "DELETE FROM cab_booking WHERE user_id=? AND rental_id=?"
-            );
-            ps.setInt(1, userId);
-            ps.setInt(2, rentalId);
-            ps.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /* ================= STATUS-BASED CANCEL ================= */

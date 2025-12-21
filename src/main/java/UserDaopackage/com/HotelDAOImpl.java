@@ -1,6 +1,9 @@
 package UserDaopackage.com;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -176,7 +179,7 @@ public class HotelDAOImpl implements HotelDAO {
     }
 
     // ---------------------------------------------------------
-    // 6️⃣ SEARCH BY CITY ✅ (FIXED)
+    // 6️⃣ SEARCH BY CITY
     // ---------------------------------------------------------
     @Override
     public List<Hotel> searchHotelsByCity(String cityName) {
