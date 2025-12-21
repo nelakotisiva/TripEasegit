@@ -199,7 +199,8 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             "rb.booking_date, rb.num_people, rb.status, " +
             "r.name AS restaurant_name, " +
             "d.location AS location " +
-            "FROM restaurant_booking rb " +
+            "FROM restaurant"
+            + "_booking rb " +
             "JOIN restaurant r ON rb.restaurant_id = r.restaurant_id " +
             "LEFT JOIN destination d ON r.destination_id = d.destination_id " +
             "WHERE rb.user_id = ? " +

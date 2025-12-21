@@ -1,6 +1,7 @@
 package controllerpackage.com;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -75,14 +76,15 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
             );
 
             if (success) {
-                // ✅ SUCCESS POPUP MESSAGE
-                session.setAttribute(
-                        "bookingSuccess",
-                        "Hotel booked successfully!"
+
+                // ✅ PASS TRIGGER FLAGS (LIKE FLIGHT & CAB)
+                String city = URLEncoder.encode(
+                        hotel.getNearLocation(), "UTF-8"
                 );
 
-                // redirect to hotel list
-                resp.sendRedirect("HotelListServlet");
+                resp.sendRedirect(
+                        "HotelListServlet?msg=success&city=" + city
+                );
                 return;
             } else {
                 req.setAttribute("error", "Booking failed. Try again.");

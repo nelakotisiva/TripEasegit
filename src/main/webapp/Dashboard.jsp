@@ -9,7 +9,6 @@
     }
 %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +16,7 @@
 <title>TripEase | Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root{
@@ -56,6 +56,11 @@ nav{
     color:var(--primary);
 }
 
+.nav-links{
+    display:flex;
+    align-items:center;
+}
+
 .nav-links a{
     margin:0 12px;
     text-decoration:none;
@@ -74,11 +79,31 @@ nav{
     font-weight:600;
 }
 
-/* HERO WITH VIDEO BACKGROUND */
+/* PROFILE ICON */
+.profile-icon{
+    font-size:20px;
+    color:#333;
+    margin-left:14px;
+    position:relative;
+}
+
+.profile-icon:hover{color:var(--primary)}
+
+.profile-icon::after{
+    content:"";
+    position:absolute;
+    top:-2px;
+    right:-2px;
+    width:8px;
+    height:8px;
+    background:#22c55e;
+    border-radius:50%;
+}
+
+/* HERO */
 .hero{
     position:relative;
     height:70vh;
-    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -88,8 +113,7 @@ nav{
 
 .hero video{
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
     width:100%;
     height:100%;
     object-fit:cover;
@@ -100,25 +124,17 @@ nav{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,0.55); /* dark overlay */
+    background:rgba(0,0,0,.55);
     z-index:-1;
 }
 
-.hero-content{
-    max-width:800px;
-    padding:20px;
-}
-
-.hero h1{
+.hero-content h1{
     font-size:38px;
-    margin-bottom:12px;
 }
 
-.hero p{
+.hero-content p{
     font-size:16px;
-    opacity:0.95;
 }
-
 
 /* SECTION */
 .section-title{
@@ -185,12 +201,12 @@ nav{
     font-size:11px;
     margin-bottom:8px;
 }
+
 /* FOOTER */
 footer{
     background:#0f172a;
     color:#cbd5e1;
     padding:50px 0 20px;
-    margin-top:40px;
 }
 
 .footer-container{
@@ -203,7 +219,6 @@ footer{
 
 .footer-col h4{
     color:white;
-    font-size:16px;
     margin-bottom:14px;
 }
 
@@ -215,16 +230,7 @@ footer{
     font-size:14px;
 }
 
-.footer-col a:hover{
-    color:#38bdf8;
-}
-
-.footer-logo{
-    font-size:22px;
-    font-weight:700;
-    color:#38bdf8;
-    margin-bottom:12px;
-}
+.footer-col a:hover{color:#38bdf8}
 
 .footer-bottom{
     border-top:1px solid #1e293b;
@@ -232,99 +238,72 @@ footer{
     padding-top:15px;
     text-align:center;
     font-size:13px;
-    color:#94a3b8;
 }
-
 </style>
-
 </head>
+
 <body>
 
 <!-- NAVBAR -->
 <nav>
     <div class="logo">✈ TripEase</div>
 
-   <div class="nav-links">
-    <a href="Dashboard.jsp">Dashboard</a>
-    <a href="HotelListServlet">Hotels</a>
-    <a href="SearchFlight">Flights</a>
-    <a href="VehicleListServlet">Cabs</a>
-    <a href="nearbyRestaurants">Restaurants</a>
-    <a href="ToursServlet">Tours</a>
-    <a href="PlacesServlet">Places</a>
+    <div class="nav-links">
+        <a href="Dashboard.jsp">Dashboard</a>
+        <a href="HotelListServlet">Hotels</a>
+        <a href="SearchFlight">Flights</a>
+        <a href="VehicleListServlet">Cabs</a>
+        <a href="nearbyRestaurants">Restaurants</a>
+        <a href="ToursServlet">Tours</a>
+        <a href="PlacesServlet">Places</a>
+        <a href="MyBookingsServlet">My Bookings</a>
 
-    <!-- ✅ ADD THIS -->
-    <a href="MyBookingsServlet" style="font-weight:600;color:#008cff;">
-        My Bookings
-    </a>
-</div>
-
+        <a href="ProfileServlet" class="profile-icon" title="My Profile">
+            <i class="fa-solid fa-user-circle"></i>
+        </a>
+    </div>
 
     <a class="logout-btn" href="LogoutServlet">Logout</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-
-    <!-- Background Video -->
     <video autoplay muted loop playsinline>
         <source src="assets/videos/travel.mp4" type="video/mp4">
-        Your browser does not support the video tag.
     </video>
-
-    <!-- Hero Content -->
     <div class="hero-content">
         <h1>Your Journey Starts Here</h1>
         <p>Book hotels, flights, cabs & unforgettable experiences</p>
     </div>
-
 </section>
-
 
 <!-- SERVICES -->
 <div class="section-title">Explore Services</div>
-
 <div class="grid">
-
     <div class="card" onclick="location.href='HotelListServlet'">
         <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945">
-        <div class="card-body">
-            <h3>Hotels</h3>
-            <p>Luxury & budget stays</p>
-        </div>
+        <div class="card-body"><h3>Hotels</h3><p>Luxury & budget stays</p></div>
     </div>
 
     <div class="card" onclick="location.href='SearchFlight'">
         <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df">
-        <div class="card-body">
-            <h3>Flights</h3>
-            <p>Best airfare deals</p>
-        </div>
+        <div class="card-body"><h3>Flights</h3><p>Best airfare deals</p></div>
     </div>
 
     <div class="card" onclick="location.href='VehicleListServlet'">
         <img src="https://images.unsplash.com/photo-1542362567-b07e54358753">
-        <div class="card-body">
-            <h3>Cabs</h3>
-            <p>Affordable rides</p>
-        </div>
+        <div class="card-body"><h3>Cabs</h3><p>Affordable rides</p></div>
     </div>
 
     <div class="card" onclick="location.href='nearbyRestaurants'">
         <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9">
-        <div class="card-body">
-            <h3>Restaurants</h3>
-            <p>Top places to eat</p>
-        </div>
+        <div class="card-body"><h3>Restaurants</h3><p>Top places to eat</p></div>
     </div>
-
 </div>
 
 <!-- TOURS -->
 <div class="section-title">Popular Tours & Packages</div>
-
 <div class="grid">
-
     <div class="card">
         <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
         <div class="card-body">
@@ -351,27 +330,14 @@ footer{
             <p>4N / 5D · From ₹15,999</p>
         </div>
     </div>
-
 </div>
+
 <!-- FOOTER -->
 <footer>
-
     <div class="footer-container">
-
         <div class="footer-col">
-            <div class="footer-logo">✈ TripEase</div>
-            <p style="font-size:14px;line-height:1.6">
-                Your one-stop platform for booking hotels, flights, cabs, restaurants
-                and unforgettable travel experiences.
-            </p>
-        </div>
-
-        <div class="footer-col">
-            <h4>Company</h4>
-            <a href="#">About Us</a>
-            <a href="#">Careers</a>
-            <a href="#">Press</a>
-            <a href="#">Investor Relations</a>
+            <h4>TripEase</h4>
+            <p>Your one-stop travel booking platform.</p>
         </div>
 
         <div class="footer-col">
@@ -385,17 +351,12 @@ footer{
         <div class="footer-col">
             <h4>Support</h4>
             <a href="#">Help Center</a>
-            <a href="#">Cancellation Policy</a>
             <a href="#">Privacy Policy</a>
             <a href="#">Terms & Conditions</a>
         </div>
-
     </div>
 
-    <div class="footer-bottom">
-        © 2025 TripEase. All rights reserved.
-    </div>
-
+     
 </footer>
 
 </body>

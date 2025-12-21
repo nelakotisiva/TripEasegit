@@ -207,15 +207,14 @@
         </div>
         <div class="footer-col">
             <h4>Contact</h4>
-            <p>Email: help@tripease.in</p>
+            <p>Email: tripeaseproject@gmail.com</p>
             <p>Phone: +91 1800 44 5555</p>
             <p>Bengaluru, India</p>
         </div>
     </div>
+          <jsp:include page="footer.jsp" />
 
-    <div style="text-align:center; color:#475569; font-size:12px;">
-        © 2025 TRIPEASE GLOBAL PARTNERS PVT LTD. ALL RIGHTS RESERVED.
-    </div>
+   
 </footer>
 
 </body>
