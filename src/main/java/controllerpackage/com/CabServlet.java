@@ -1,8 +1,12 @@
 package controllerpackage.com;
 
-import jakarta.servlet.*;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -13,16 +17,15 @@ import dtopackage.com.User;
 @WebServlet("/VehicleListServlet")
 public class CabServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     private CabDAO dao;
 
     @Override
-    public void init() {
+    public void init() throws ServletException {
         dao = new CabDAO();
     }
 
-    // -----------------------------------
-    // SHOW CABS (GET)
-    // -----------------------------------
+    /* ===================== SHOW CABS ===================== */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -40,12 +43,11 @@ public class CabServlet extends HttpServlet {
 
         List<Cab> vehicles;
         if (location != null && !location.trim().isEmpty()) {
-            vehicles = dao.getVehiclesByLocation(location);
+            vehicles = dao.getVehiclesByLocation(location.trim());
         } else {
             vehicles = dao.getAllVehicles();
         }
 
-        // Already booked cabs by this user
         List<Integer> bookedIds = dao.getBookedVehicleIds(userId);
 
         req.setAttribute("vehicles", vehicles);
@@ -55,9 +57,7 @@ public class CabServlet extends HttpServlet {
         req.getRequestDispatcher("Cabs.jsp").forward(req, resp);
     }
 
-    // -----------------------------------
-    // BOOK CAB (POST)
-    // -----------------------------------
+    /* ===================== BOOK CAB ===================== */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -76,14 +76,14 @@ public class CabServlet extends HttpServlet {
         try {
             rentalId = Integer.parseInt(req.getParameter("rentalId"));
             passengers = Integer.parseInt(req.getParameter("passengers"));
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             resp.sendRedirect("VehicleListServlet?msg=invalid");
             return;
         }
 
-        boolean ok = dao.saveBooking(user.getUser_id(), rentalId, passengers);
+        boolean success = dao.saveBooking(user.getUser_id(), rentalId, passengers);
 
-        if (ok) {
+        if (success) {
             resp.sendRedirect("VehicleListServlet?msg=success");
         } else {
             resp.sendRedirect("VehicleListServlet?msg=fail");

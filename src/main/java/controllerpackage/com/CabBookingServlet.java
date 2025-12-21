@@ -21,9 +21,6 @@ public class CabBookingServlet extends HttpServlet {
         dao = new CabDAO();
     }
 
-    // -----------------------------------
-    // SHOW MY CAB BOOKINGS
-    // -----------------------------------
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
@@ -42,9 +39,6 @@ public class CabBookingServlet extends HttpServlet {
         req.getRequestDispatcher("CabBookings.jsp").forward(req, resp);
     }
 
-    // -----------------------------------
-    // CANCEL CAB BOOKING
-    // -----------------------------------
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -57,17 +51,10 @@ public class CabBookingServlet extends HttpServlet {
             return;
         }
 
-        int rentalId;
-        try {
-            rentalId = Integer.parseInt(req.getParameter("rentalId"));
-        } catch (Exception e) {
-            resp.sendRedirect("CabBookingServlet");
-            return;
-        }
-
-        // cancel only this user's booking
+        int rentalId = Integer.parseInt(req.getParameter("rentalId"));
         dao.cancelBooking(user.getUser_id(), rentalId);
 
         resp.sendRedirect("CabBookingServlet");
     }
 }
+
