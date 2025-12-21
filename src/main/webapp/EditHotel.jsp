@@ -12,58 +12,167 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Edit Hotel</title>
+<title>Edit Hotel | TripEase Admin</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body { font-family:'Poppins',sans-serif; background:#eef3ff; padding:40px; }
-.form-box { max-width:480px; margin-left:300px; background:white; padding:25px;
-            border-radius:20px; box-shadow:0 8px 25px rgba(0,0,0,0.15); }
-input { width:100%; padding:10px; margin-top:8px; border-radius:10px; border:1px solid #ccc; }
-button { padding:12px; width:100%; background:#0032d8; color:white; font-weight:600;
-         border:none; border-radius:10px; margin-top:12px; }
+body{
+    margin:0;
+    font-family:Inter,sans-serif;
+    background:#f5f2ec;
+    padding:40px;
+    color:#2f2a23;
+}
 
-.preview-box { text-align:center; margin-bottom:15px; }
-.preview-box img { width:300px; height:180px; border-radius:15px; box-shadow:0 6px 20px rgba(0,0,0,0.2); }
+/* CONTAINER */
+.form-box{
+    max-width:520px;
+    margin:0 auto;
+    background:#ffffff;
+    padding:26px 28px;
+    border-radius:18px;
+    border:1px solid #d9d2c3;
+}
+
+/* HEADER */
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
+}
+
+.header h2{
+    margin:0;
+    font-size:24px;
+    font-weight:600;
+}
+
+.back-btn{
+    padding:6px 14px;
+    border-radius:8px;
+    background:#6b6256;
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+}
+
+/* IMAGE PREVIEW */
+.preview-box{
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.preview-box img{
+    width:100%;
+    max-width:360px;
+    height:200px;
+    object-fit:cover;
+    border-radius:14px;
+    border:1px solid #d9d2c3;
+}
+
+/* LABEL */
+label{
+    font-size:13px;
+    font-weight:500;
+    display:block;
+    margin-top:14px;
+}
+
+/* INPUTS */
+input{
+    width:100%;
+    padding:11px 12px;
+    margin-top:6px;
+    border-radius:10px;
+    border:1px solid #d9d2c3;
+    font-size:14px;
+}
+
+input:focus{
+    outline:none;
+    border-color:#8a9a5b;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:12px;
+    margin-top:20px;
+    background:#8a9a5b;
+    color:white;
+    border:none;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#7b8b50;
+}
+
+/* TIP */
+.tip{
+    font-size:12px;
+    color:#6b6256;
+    margin-top:6px;
+}
 </style>
-
 </head>
 
 <body>
 
 <div class="form-box">
-<h2>Edit Hotel</h2>
 
-<div class="preview-box">
-    <img src="<%= hotel.getImageUrl() %>" alt="Hotel Image">
-</div>
+    <!-- HEADER WITH BACK BUTTON -->
+    <div class="header">
+        <h2>Edit Hotel</h2>
+        <a href="ManageHotels" class="back-btn">Back</a>
+    </div>
 
-<form action="EditHotel" method="post">
+    <!-- IMAGE PREVIEW -->
+    <div class="preview-box">
+        <img src="<%= hotel.getImageUrl() %>" alt="Hotel Image"
+             onerror="this.src='https://via.placeholder.com/360x200?text=No+Image'">
+    </div>
 
-    <input type="hidden" name="hotelId" value="<%= hotel.getHotelId() %>">
+    <form action="EditHotel" method="post">
 
-    Hotel Name:
-    <input type="text" name="hotelName" value="<%= hotel.getHotelName() %>" required>
+        <input type="hidden" name="hotelId" value="<%= hotel.getHotelId() %>">
 
-    Location:
-    <input type="text" name="nearLocation" value="<%= hotel.getNearLocation() %>" required>
+        <label>Hotel Name</label>
+        <input type="text" name="hotelName"
+               value="<%= hotel.getHotelName() %>" required>
 
-    Price Per Night:
-    <input type="number" name="price" value="<%= hotel.getPricePerNight() %>" required>
+        <label>Location</label>
+        <input type="text" name="nearLocation"
+               value="<%= hotel.getNearLocation() %>" required>
 
-    Rooms Available:
-    <input type="number" name="rooms" value="<%= hotel.getRoomsAvailable() %>" required>
+        <label>Price Per Night</label>
+        <input type="number" name="price"
+               value="<%= hotel.getPricePerNight() %>" required>
 
-    Image URL:
-    <input type="text" name="imageUrl" value="<%= hotel.getImageUrl() %>" required>
+        <label>Rooms Available</label>
+        <input type="number" name="rooms"
+               value="<%= hotel.getRoomsAvailable() %>" required>
 
-    <small>Tip: You can paste an Unsplash URL like:<br>
-    https://source.unsplash.com/800x600/?hotel</small>
+        <label>Image URL</label>
+        <input type="text" name="imageUrl"
+               value="<%= hotel.getImageUrl() %>" required>
 
-    <button type="submit">Update Hotel</button>
+        <div class="tip">
+            Tip: You can use an Unsplash URL like<br>
+            https://source.unsplash.com/800x600/?hotel
+        </div>
 
-</form>
+        <button type="submit">Update Hotel</button>
+
+    </form>
+
 </div>
 
 </body>

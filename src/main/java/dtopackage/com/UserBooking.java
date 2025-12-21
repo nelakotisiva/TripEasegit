@@ -8,16 +8,20 @@ import java.util.Date;
  */
 public class UserBooking {
 
+    // 🔹 Unique booking id (used for cancel / details)
+    private int bookingId;
+
+    // 🔹 Icon shown in UI (🏨 🚕 ✈ 🍽)
+    private String icon;
+
     // 🔹 Booking type
-    // HOTEL / FLIGHT / CAB / RESTAURANT / TOUR / PLACE
+    // HOTEL / FLIGHT / CAB / RESTAURANT
     private String bookingType;
 
     // 🔹 Main title shown in UI
-    // Hotel Name / Flight Route / Cab Model / Restaurant Name
     private String title;
 
     // 🔹 Subtitle under title
-    // Location / Route / Short description
     private String subtitle;
 
     // 🔹 When booking was made
@@ -26,10 +30,10 @@ public class UserBooking {
     // 🔹 Travel / usage date (optional)
     private Date travelDate;
 
-    // 🔹 Amount paid (0 if free / NA)
+    // 🔹 Amount paid
     private double amount;
 
-    // 🔹 Status (CONFIRMED / CANCELLED / PENDING)
+    // 🔹 Status (Confirmed / Cancelled / Pending)
     private String status;
 
     // 🔹 URL to open booking details page
@@ -38,11 +42,11 @@ public class UserBooking {
     // -----------------------------
     // Constructors
     // -----------------------------
+    public UserBooking() {}
 
-    public UserBooking() {
-    }
-
-    public UserBooking(String bookingType,
+    public UserBooking(int bookingId,
+                       String icon,
+                       String bookingType,
                        String title,
                        String subtitle,
                        Date bookingDate,
@@ -51,6 +55,8 @@ public class UserBooking {
                        String status,
                        String detailsUrl) {
 
+        this.bookingId = bookingId;
+        this.icon = icon;
         this.bookingType = bookingType;
         this.title = title;
         this.subtitle = subtitle;
@@ -64,6 +70,22 @@ public class UserBooking {
     // -----------------------------
     // Getters & Setters
     // -----------------------------
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 
     public String getBookingType() {
         return bookingType;

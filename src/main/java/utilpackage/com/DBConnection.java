@@ -11,7 +11,9 @@ public class DBConnection {
         "&serverTimezone=Asia/Kolkata";
 
     private static final String USER = "root";
-    private static final String PASS = "sql@123";
+
+    private static final String PASS = "tiger";
+
 
     public static Connection getConnector() {
 
@@ -20,7 +22,7 @@ public class DBConnection {
             return DriverManager.getConnection(URL, USER, PASS);
 
         } catch (Exception e) {
-            System.out.println("❌ DATABASE CONNECTION FAILED – CHECK MYSQL SERVER");
+            System.out.println("â�Œ DATABASE CONNECTION FAILED â€“ CHECK MYSQL SERVER");
             e.printStackTrace();
             return null;
         }

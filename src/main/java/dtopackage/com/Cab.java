@@ -29,4 +29,28 @@ public class Cab {
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
+	private String status;
+	
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	private int bookingId;
+
+	public int getBookingId() {
+	    return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+	    this.bookingId = bookingId;
+	}
+
 }

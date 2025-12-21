@@ -14,83 +14,68 @@ List<Restaurant> list = (List<Restaurant>) request.getAttribute("list");
 <head>
 <title>Admin | Manage Restaurants</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;}
-
 body{
     margin:0;
-    font-family:'Poppins',sans-serif;
-    background:#e8f0ff;
+    font-family:Inter,sans-serif;
+    background:#f5f2ec;
     padding:30px;
+    color:#2f2a23;
 }
 
-/* ===== PAGE WRAPPER ===== */
+/* CONTAINER */
 .container{
     max-width:1200px;
     margin:auto;
 }
 
-/* ===== HEADER CARD ===== */
-.header-card{
-    background:white;
+/* HEADER */
+.header{
+    background:#ffffff;
     padding:22px 26px;
-    border-radius:18px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.12);
+    border-radius:16px;
+    border:1px solid #d9d2c3;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
-.header-card h1{
+.header h1{
     margin:0;
-    color:#0032d8;
-    font-size:30px;
-    font-weight:700;
+    font-size:26px;
+    font-weight:600;
 }
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .btn{
     padding:10px 18px;
     border-radius:10px;
     text-decoration:none;
     font-weight:600;
     font-size:14px;
-    transition:0.3s;
-}
-
-.btn-primary{
-    background:#013bff;
     color:white;
 }
-.btn-primary:hover{
-    background:#002ed1;
-}
 
-.btn-secondary{
-    background:#6c757d;
-    color:white;
-}
-.btn-secondary:hover{
-    background:#5a6268;
-}
+.btn-primary{ background:#8a9a5b; }
+.btn-secondary{ background:#6b6256; }
 
-/* ===== ACTION BAR ===== */
+.btn-primary:hover{ background:#7b8b50; }
+.btn-secondary:hover{ background:#5c554b; }
+
+/* ACTION BAR */
 .action-bar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
     margin-bottom:18px;
 }
 
-/* ===== TABLE ===== */
-.table-wrapper{
-    background:white;
-    padding:20px;
-    border-radius:18px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.12);
+/* TABLE */
+.table-box{
+    background:#ffffff;
+    padding:22px;
+    border-radius:16px;
+    border:1px solid #d9d2c3;
 }
 
 table{
@@ -99,25 +84,33 @@ table{
     font-size:14px;
 }
 
-thead{
-    background:#013bff;
-    color:white;
-}
-
-th,td{
+th{
+    background:#f1efe8;
     padding:14px;
     text-align:center;
+    font-weight:600;
 }
 
-tbody tr:nth-child(even){
-    background:#f4f6ff;
+td{
+    padding:12px;
+    text-align:center;
+    border-bottom:1px solid #eee;
 }
 
-tbody tr:hover{
-    background:#e9edff;
+tr:hover td{
+    background:#faf9f6;
 }
 
-/* ===== ACTION BUTTONS ===== */
+/* IMAGE */
+img.thumb{
+    width:90px;
+    height:65px;
+    object-fit:cover;
+    border-radius:8px;
+    border:1px solid #d9d2c3;
+}
+
+/* ACTION BUTTONS */
 .action-btn{
     padding:6px 12px;
     border-radius:8px;
@@ -128,19 +121,11 @@ tbody tr:hover{
     margin:0 3px;
 }
 
-.edit-btn{background:#007bff;}
-.delete-btn{background:#ff2e2e;}
+.edit-btn{ background:#8a9a5b; }
+.delete-btn{ background:#b94a48; }
 
 .action-btn:hover{
     opacity:0.9;
-}
-
-/* ===== IMAGE ===== */
-img.thumb{
-    width:90px;
-    height:65px;
-    object-fit:cover;
-    border-radius:8px;
 }
 </style>
 </head>
@@ -150,9 +135,11 @@ img.thumb{
 <div class="container">
 
     <!-- HEADER -->
-    <div class="header-card">
+    <div class="header">
         <h1>Manage Restaurants</h1>
-        <a href="AdminDashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="AdminDashboard.jsp" class="btn btn-secondary">
+            Back to Dashboard
+        </a>
     </div>
 
     <!-- ACTION BAR -->
@@ -163,61 +150,59 @@ img.thumb{
     </div>
 
     <!-- TABLE -->
-    <div class="table-wrapper">
+    <div class="table-box">
         <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Destination</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Rating</th>
-                    <th>Contact</th>
-                    <th>Avg Price</th>
-                    <th>Image</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
+            <tr>
+                <th>ID</th>
+                <th>Destination</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Rating</th>
+                <th>Contact</th>
+                <th>Avg Price</th>
+                <th>Image</th>
+                <th>Actions</th>
+            </tr>
 
             <% 
             if(list != null && !list.isEmpty()){ 
                 for(Restaurant r : list){ 
             %>
-                <tr>
-                    <td><%= r.getRestaurantId() %></td>
-                    <td><%= r.getDestinationId() %></td>
-                    <td><%= r.getName() %></td>
-                    <td><%= r.getType() %></td>
-                    <td><%= r.getRating() %></td>
-                    <td><%= r.getContact() %></td>
-                    <td>₹ <%= r.getAvgPrice() %></td>
-                    <td>
-                        <img class="thumb" src="<%= r.getImageUrl() %>" alt="Restaurant">
-                    </td>
-                    <td>
-                        <a class="action-btn edit-btn"
-                           href="adminRestaurant?action=edit&id=<%= r.getRestaurantId() %>">
-                           Edit
-                        </a>
+            <tr>
+                <td><%= r.getRestaurantId() %></td>
+                <td><%= r.getDestinationId() %></td>
+                <td><%= r.getName() %></td>
+                <td><%= r.getType() %></td>
+                <td><%= r.getRating() %></td>
+                <td><%= r.getContact() %></td>
+                <td>₹ <%= r.getAvgPrice() %></td>
+                <td>
+                    <img class="thumb"
+                         src="<%= r.getImageUrl() %>"
+                         onerror="this.src='https://via.placeholder.com/90x65?text=No+Image'">
+                </td>
+                <td>
+                    <a class="action-btn edit-btn"
+                       href="adminRestaurant?action=edit&id=<%= r.getRestaurantId() %>">
+                       Edit
+                    </a>
 
-                        <a class="action-btn delete-btn"
-                           href="adminRestaurant?action=delete&id=<%= r.getRestaurantId() %>"
-                           onclick="return confirm('Confirm delete?');">
-                           Delete
-                        </a>
-                    </td>
-                </tr>
+                    <a class="action-btn delete-btn"
+                       href="adminRestaurant?action=delete&id=<%= r.getRestaurantId() %>"
+                       onclick="return confirm('Confirm delete?');">
+                       Delete
+                    </a>
+                </td>
+            </tr>
             <% 
                 }
             } else { 
             %>
-                <tr>
-                    <td colspan="9">No restaurants found.</td>
-                </tr>
+            <tr>
+                <td colspan="9">No restaurants found.</td>
+            </tr>
             <% } %>
 
-            </tbody>
         </table>
     </div>
 

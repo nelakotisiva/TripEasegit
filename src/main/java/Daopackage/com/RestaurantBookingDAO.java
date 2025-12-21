@@ -16,5 +16,7 @@ public interface RestaurantBookingDAO {
 
 	void saveServiceBooking(int userId, int destinationId, Timestamp bookingDate1, int numPeople);
 
+    boolean cancelBooking(int bookingId);
+
 
 }

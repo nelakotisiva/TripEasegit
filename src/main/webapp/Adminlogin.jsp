@@ -2,40 +2,53 @@
 <html>
 <head>
 <title>Admin Login | TripEase</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-body {
-    display:flex; justify-content:center; align-items:center;
-    height:100vh; background:#f0f4ff; font-family:Poppins;
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f5f2ec;
+    font-family:Inter;
 }
-.box {
-    background:#fff; padding:25px; border-radius:12px;
-    width:320px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,.2);
+.box{
+    background:#fff;
+    padding:30px;
+    width:320px;
+    border-radius:16px;
+    border:1px solid #d9d2c3;
 }
-input { width:90%; padding:10px; margin:10px 0; border-radius:8px; border:1px solid #013bff;}
-button {
-    width:90%; padding:10px; background:#013bff; border:none; border-radius:8px;
-    color:#fff; font-size:15px; cursor:pointer;
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #d9d2c3;
 }
-button:hover{ background:#021b99; }
-.msg{ color:red; }
+button{
+    width:100%;
+    padding:12px;
+    background:#8a9a5b;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+}
 </style>
 </head>
 
 <body>
-
 <div class="box">
-    <h2>Admin Login</h2>
+<h2>Admin Login</h2>
 
-    <form action="AdminServlet" method="post">
-        <input type="text" name="username" placeholder="Enter Username" required>
-        <input type="password" name="password" placeholder="Enter Password" required>
-        <button type="submit">Login</button>
-    </form>
-
-    
+<form action="AdminServlet" method="post">
+    <input name="username" placeholder="Enter Username" required>
+    <input type="password" name="password" placeholder="Enter Password" required>
+    <button type="submit">Login</button>
+</form>
 </div>
-
 </body>
 </html>

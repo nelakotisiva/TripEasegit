@@ -3,49 +3,78 @@
 <html>
 <head>
 <title>Add User | TripEase Admin</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
-    background:#e8f0ff;
-    font-family:Poppins;
+    background:#f5f2ec;
+    font-family:Inter;
 }
-.form-container {
-    width: 450px;
-    margin: 60px auto;
+
+.form-container{
+    width:420px;
+    margin:60px auto;
     background:#fff;
-    padding: 25px;
-    border-radius:14px;
-    box-shadow:0 0 20px rgba(0,0,0,0.15);
+    padding:25px;
+    border-radius:16px;
+    border:1px solid #d9d2c3;
 }
-input,select {
-    width:95%;padding:10px;margin:8px 0;
-    border-radius:8px;border:1px solid #013bff;
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
 }
-button {
-    width:100%;padding:10px;
-    background:#013bff;color:#fff;
-    border:none;border-radius:8px;
-    cursor:pointer;
+
+.back-btn{
+    padding:6px 14px;
+    border-radius:8px;
+    background:#6b6256;
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
 }
-button:hover { background:#01199b; }
-a { text-decoration:none;color:#013bff;font-size:14px; }
+
+input,select{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #d9d2c3;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#8a9a5b;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+}
 </style>
 </head>
+
 <body>
 
 <div class="form-container">
-    <h2>Add New User</h2>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h2>Add New User</h2>
+        <a href="ManageUsers" class="back-btn">Back</a>
+    </div>
 
     <form action="ManageUsers" method="post">
         <input type="hidden" name="action" value="insert">
 
-        <input type="text" name="full_name" placeholder="Full Name" required>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <input type="number" name="phone" placeholder="Phone" required>
+        <input name="full_name" placeholder="Full Name" required>
+        <input name="username" placeholder="Username" required>
+        <input name="email" placeholder="Email" required>
+        <input name="password" placeholder="Password" required>
+        <input name="phone" placeholder="Phone" required>
 
         <select name="role" required>
             <option value="">Select Role</option>
@@ -53,8 +82,7 @@ a { text-decoration:none;color:#013bff;font-size:14px; }
             <option value="user">User</option>
         </select>
 
-        <button type="submit">Add User</button><br><br>
-        <a href="ManageUsers">⬅ Back to Manage Users</a>
+        <button>Add User</button>
     </form>
 
 </div>

@@ -12,88 +12,99 @@ public class Bookingg {
     private int guests;
     private double totalAmount;
     private Timestamp bookingDate;
+    private String status;
+
+    // Extra display fields
     private String hotelName;
     private String hotelLocation;
 
-    // ===== GETTERS =====
-    public String getHotelName() {
-        return hotelName;
+    /* ================= GETTERS & SETTERS ================= */
+
+    public int getBookingId() {
+        return bookingId;
+    }
+
+    public void setBookingId(int bookingId) {
+        this.bookingId = bookingId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getHotelId() {
+        return hotelId;
+    }
+
+    public void setHotelId(int hotelId) {
+        this.hotelId = hotelId;
     }
 
     public String getCheckin() {
         return checkin;
     }
 
+    public void setCheckin(String checkin) {
+        this.checkin = checkin;
+    }
+
     public String getCheckout() {
         return checkout;
+    }
+
+    public void setCheckout(String checkout) {
+        this.checkout = checkout;
+    }
+
+    public int getGuests() {
+        return guests;
+    }
+
+    public void setGuests(int guests) {
+        this.guests = guests;
     }
 
     public double getTotalAmount() {
         return totalAmount;
     }
 
-	public int getBookingId() {
-		return bookingId;
-	}
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
 
-	public void setBookingId(int bookingId) {
-		this.bookingId = bookingId;
-	}
+    public Timestamp getBookingDate() {
+        return bookingDate;
+    }
 
-	public int getUserId() {
-		return userId;
-	}
+    public void setBookingDate(Timestamp bookingDate) {
+        this.bookingDate = bookingDate;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public String getStatus() {
+        return status;
+    }
 
-	public int getHotelId() {
-		return hotelId;
-	}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-	public void setHotelId(int hotelId) {
-		this.hotelId = hotelId;
-	}
+    public String getHotelName() {
+        return hotelName;
+    }
 
-	public int getGuests() {
-		return guests;
-	}
+    public void setHotelName(String hotelName) {
+        this.hotelName = hotelName;
+    }
 
-	public void setGuests(int guests) {
-		this.guests = guests;
-	}
+    public String getHotelLocation() {
+        return hotelLocation;
+    }
 
-	public Timestamp getBookingDate() {
-		return bookingDate;
-	}
-
-	public void setBookingDate(Timestamp bookingDate) {
-		this.bookingDate = bookingDate;
-	}
-
-	public String getHotelLocation() {
-		return hotelLocation;
-	}
-
-	public void setHotelLocation(String hotelLocation) {
-		this.hotelLocation = hotelLocation;
-	}
-
-	public void setCheckin(String checkin) {
-		this.checkin = checkin;
-	}
-
-	public void setCheckout(String checkout) {
-		this.checkout = checkout;
-	}
-
-	public void setTotalAmount(double totalAmount) {
-		this.totalAmount = totalAmount;
-	}
-
-	public void setHotelName(String hotelName) {
-		this.hotelName = hotelName;
-	}
-
+    public void setHotelLocation(String hotelLocation) {
+        this.hotelLocation = hotelLocation;
+    }
 }

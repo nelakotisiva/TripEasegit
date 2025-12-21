@@ -1,61 +1,89 @@
 <%@ page import="dtopackage.com.User" %>
 <%
-    User u = (User) request.getAttribute("user");
+User u = (User) request.getAttribute("user");
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Edit User | TripEase Admin</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body{
-    background:#e8f0ff;
-    font-family:Poppins;
+    background:#f5f2ec;
+    font-family:Inter;
 }
-.form-container {
-    width: 450px;
-    margin: 60px auto;
+
+.form-container{
+    width:420px;
+    margin:60px auto;
     background:#fff;
-    padding: 25px;
-    border-radius:14px;
-    box-shadow:0 0 20px rgba(0,0,0,0.15);
+    padding:25px;
+    border-radius:16px;
+    border:1px solid #d9d2c3;
 }
-input {
-    width:95%;padding:10px;margin:8px 0;
-    border-radius:8px;border:1px solid #013bff;
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:16px;
 }
-button {
-    width:100%;padding:10px;
-    background:#013bff;color:#fff;
-    border:none;border-radius:8px;
-    cursor:pointer;
+
+.back-btn{
+    padding:6px 14px;
+    border-radius:8px;
+    background:#6b6256;
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
 }
-button:hover { background:#01199b; }
-a { text-decoration:none;color:#013bff;font-size:14px; }
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    border:1px solid #d9d2c3;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#8a9a5b;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-weight:600;
+}
 </style>
 </head>
+
 <body>
 
 <div class="form-container">
-    <h2>Edit User</h2>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h2>Edit User</h2>
+        <a href="ManageUsers" class="back-btn">Back</a>
+    </div>
 
     <form action="ManageUsers" method="post">
         <input type="hidden" name="action" value="update">
         <input type="hidden" name="user_id" value="<%=u.getUser_id()%>">
 
-        <input type="text" name="full_name" value="<%=u.getFull_name()%>" required>
-        <input type="text" name="username" value="<%=u.getUsername()%>" required>
-        <input type="email" name="email" value="<%=u.getEmail()%>" required>
-        <input type="number" name="phone" value="<%=u.getPhone()%>" required>
+        <input name="full_name" value="<%=u.getFull_name()%>" required>
+        <input name="username" value="<%=u.getUsername()%>" required>
+        <input name="email" value="<%=u.getEmail()%>" required>
+        <input name="phone" value="<%=u.getPhone()%>" required>
+        <input name="role" value="<%=u.getRole()%>" required>
 
-        <!-- Role Input Field -->
-        <input type="text" name="role" value="<%=u.getRole()%>" placeholder="Enter Role (ex: admin, user)" required>
-
-        <button type="submit">Update User</button><br><br>
-        <a href="ManageUsers">Back to Manage Users</a>
+        <button>Update User</button>
     </form>
+
 </div>
 
 </body>
