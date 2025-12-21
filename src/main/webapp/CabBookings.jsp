@@ -9,9 +9,9 @@
 <style>
 body{
     margin:0;
-    background:linear-gradient(135deg,#667eea,#764ba2);
-    font-family:Segoe UI;
     padding:40px;
+    background:#f1f5f9;
+    font-family:Arial, sans-serif;
 }
 
 .container{
@@ -19,120 +19,114 @@ body{
     margin:auto;
     background:#fff;
     padding:30px;
-    border-radius:18px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.25);
+    border-radius:10px;
 }
 
 h2{
     text-align:center;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
-.table{
+table{
     width:100%;
     border-collapse:collapse;
 }
 
-th,td{
+th, td{
     padding:12px;
+    border:1px solid #ddd;
     text-align:center;
 }
 
 th{
-    background:#4a00e0;
+    background:#2563eb;
     color:white;
-}
-
-tr:nth-child(even){
-    background:#f4f4f4;
-}
-
-img{
-    border-radius:10px;
 }
 
 .cancel-btn{
-    background:#ff3d3d;
+    background:#ef4444;
     color:white;
     border:none;
-    padding:8px 16px;
-    border-radius:6px;
+    padding:8px 14px;
+    border-radius:4px;
     cursor:pointer;
-    font-weight:600;
+}
+
+.hotel-btn{
+    background:#16a34a;
+    color:white;
+    border:none;
+    padding:8px 14px;
+    border-radius:4px;
+    cursor:pointer;
+    margin-left:8px;
 }
 
 .back-btn{
     display:block;
     width:200px;
-    margin:25px auto 0;
+    margin:20px auto 0;
     text-align:center;
-    text-decoration:none;
-    background:#00c6ff;
+    background:#2563eb;
     color:white;
-    padding:12px;
-    border-radius:8px;
-    font-weight:600;
+    padding:10px;
+    border-radius:6px;
+    text-decoration:none;
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="container">
-
 <h2>My Booked Cabs</h2>
 
-<table class="table">
+<table>
 <tr>
-    <th>Image</th>
     <th>Model</th>
-    <th>Seater</th>
-    <th>Price</th>
     <th>Location</th>
+    <th>Price</th>
     <th>Action</th>
 </tr>
 
 <%
-    List<Cab> list = (List<Cab>) request.getAttribute("bookedCabs");
+List<Cab> list = (List<Cab>) request.getAttribute("bookedCabs");
 
-    if (list != null && !list.isEmpty()) {
-        for (Cab c : list) {
+if(list != null && !list.isEmpty()){
+    for(Cab c : list){
 %>
-
 <tr>
-    <td>
-        <img src="<%= c.getImageUrl() %>" width="120" height="75">
-    </td>
     <td><%= c.getModel() %></td>
-    <td><%= c.getSeaterType() %></td>
-    <td>₹ <%= c.getPricePerDay() %></td>
     <td><%= c.getLocation() %></td>
+    <td>₹ <%= c.getPricePerDay() %></td>
 
     <td>
-        <form method="post" action="CabBookingServlet">
+        <!-- CANCEL -->
+        <form action="CabBookingServlet" method="post" style="display:inline;">
             <input type="hidden" name="rentalId" value="<%= c.getRentalId() %>">
-            <button class="cancel-btn">Cancel</button>
+            <button type="submit" class="cancel-btn">Cancel</button>
         </form>
+
+        <!-- BOOK HOTEL (THIS WILL SHOW & WORK) -->
+        <a href="HotelListServlet?location=<%= c.getLocation() %>">
+            <button type="button" class="hotel-btn">Book Hotel</button>
+        </a>
     </td>
 </tr>
-
-<%
-        }
-    } else {
-%>
-
-<tr>
-    <td colspan="6">No bookings found</td>
-</tr>
-
 <%
     }
+} else {
 %>
+<tr>
+    <td colspan="4">No bookings found</td>
+</tr>
+<%
+}
+%>
+
 </table>
 
-<a class="back-btn" href="VehicleListServlet">⬅ Back to Cabs</a>
-
+<a class="back-btn" href="VehicleListServlet">Back to Cabs</a>
 </div>
 
 </body>

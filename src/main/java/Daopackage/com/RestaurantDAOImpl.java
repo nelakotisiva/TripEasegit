@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dtopackage.com.Restaurant;
+import dtopackage.com.RestaurantBooking;
 import utilpackage.com.DBConnection;
 
 public class RestaurantDAOImpl implements RestaurantDAO {
@@ -29,7 +30,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
         r.setAvgPrice(rs.getDouble("avg_price"));
         r.setLatitude(rs.getDouble("latitude"));
         r.setLongitude(rs.getDouble("longitude"));
-        r.setImageUrl(rs.getString("image_url"));   // ✅ NEW
+        r.setImageUrl(rs.getString("image_url"));
         return r;
     }
 
@@ -38,6 +39,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     // -------------------------------
     @Override
     public List<Restaurant> getAllRestaurants() {
+
         List<Restaurant> list = new ArrayList<>();
         String sql = "SELECT * FROM restaurant";
 
@@ -59,8 +61,11 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     // -------------------------------
     @Override
     public boolean addRestaurant(Restaurant r) {
-        String sql = "INSERT INTO restaurant (destination_id, name, type, rating, contact, avg_price, latitude, longitude, image_url) "
-                   + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        String sql =
+            "INSERT INTO restaurant " +
+            "(destination_id, name, type, rating, contact, avg_price, latitude, longitude, image_url) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -72,12 +77,11 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             ps.setDouble(6, r.getAvgPrice());
             ps.setDouble(7, r.getLatitude());
             ps.setDouble(8, r.getLongitude());
-            ps.setString(9, r.getImageUrl()); // ✅ NEW
+            ps.setString(9, r.getImageUrl());
 
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Insert Failed!");
             e.printStackTrace();
         }
         return false;
@@ -88,8 +92,11 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     // -------------------------------
     @Override
     public boolean updateRestaurant(Restaurant r) {
-        String sql = "UPDATE restaurant SET destination_id=?, name=?, type=?, rating=?, contact=?, avg_price=?, latitude=?, longitude=?, image_url=? "
-                   + "WHERE restaurant_id=?";
+
+        String sql =
+            "UPDATE restaurant SET " +
+            "destination_id=?, name=?, type=?, rating=?, contact=?, avg_price=?, latitude=?, longitude=?, image_url=? " +
+            "WHERE restaurant_id=?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -101,13 +108,12 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             ps.setDouble(6, r.getAvgPrice());
             ps.setDouble(7, r.getLatitude());
             ps.setDouble(8, r.getLongitude());
-            ps.setString(9, r.getImageUrl()); // ✅ NEW
+            ps.setString(9, r.getImageUrl());
             ps.setInt(10, r.getRestaurantId());
 
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Update Failed!");
             e.printStackTrace();
         }
         return false;
@@ -118,6 +124,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     // -------------------------------
     @Override
     public boolean deleteRestaurant(int id) {
+
         String sql = "DELETE FROM restaurant WHERE restaurant_id=?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -126,7 +133,6 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
-            System.out.println("Delete Failed!");
             e.printStackTrace();
         }
         return false;
@@ -137,6 +143,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     // -------------------------------
     @Override
     public Restaurant getRestaurantById(int id) {
+
         String sql = "SELECT * FROM restaurant WHERE restaurant_id=?";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
@@ -155,13 +162,14 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     }
 
     // -------------------------------
-    // GET RESTAURANTS BY MAX PRICE (BUDGET FILTER)
+    // GET RESTAURANTS BY MAX PRICE
     // -------------------------------
     @Override
     public List<Restaurant> getRestaurantsByMaxPrice(double budget) {
 
         List<Restaurant> list = new ArrayList<>();
-        String sql = "SELECT * FROM restaurant WHERE avg_price <= ? ORDER BY avg_price ASC";
+        String sql =
+            "SELECT * FROM restaurant WHERE avg_price <= ? ORDER BY avg_price ASC";
 
         try (PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -173,9 +181,86 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching restaurants by budget!");
             e.printStackTrace();
         }
         return list;
+    }
+
+    // -------------------------------
+    // USER RESTAURANT BOOKINGS (JOIN)
+    // -------------------------------
+    @Override
+    public List<RestaurantBooking> getBookingsByUserId(int userId) {
+
+        List<RestaurantBooking> list = new ArrayList<>();
+
+        String sql =
+            "SELECT rb.booking_id, rb.user_id, rb.restaurant_id, " +
+            "rb.booking_date, rb.num_people, rb.status, " +
+            "r.name AS restaurant_name, " +
+            "d.location AS location " +
+            "FROM restaurant"
+            + "_booking rb " +
+            "JOIN restaurant r ON rb.restaurant_id = r.restaurant_id " +
+            "LEFT JOIN destination d ON r.destination_id = d.destination_id " +
+            "WHERE rb.user_id = ? " +
+            "ORDER BY rb.booking_date DESC";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                RestaurantBooking rb = new RestaurantBooking();
+                rb.setBookingId(rs.getInt("booking_id"));
+                rb.setUserId(rs.getInt("user_id"));
+                rb.setRestaurantId(rs.getInt("restaurant_id"));
+                rb.setBookingDate1(rs.getTimestamp("booking_date"));
+                rb.setNumPeople(rs.getInt("num_people"));
+                rb.setStatus(rs.getString("status"));
+                rb.setRestaurantName(rs.getString("restaurant_name"));
+                rb.setLocation(rs.getString("location"));
+
+                list.add(rb);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // -------------------------------
+    // LAST BOOKING AMOUNT (BUDGET)
+    // -------------------------------
+    @Override
+    public double getLastBookingAmountRestaurant(int userId) {
+
+        String sql =
+            "SELECT r.avg_price " +
+            "FROM restaurant_booking rb " +
+            "JOIN restaurant r ON rb.restaurant_id = r.restaurant_id " +
+            "WHERE rb.user_id = ? " +
+            "ORDER BY rb.booking_date DESC " +
+            "LIMIT 1";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getDouble("avg_price");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

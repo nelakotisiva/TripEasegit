@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 public class DBConnection {
 
     private static final String URL =
-        "jdbc:mysql://localhost:3306/tripease?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        "jdbc:mysql://localhost:3306/tripease" +
+        "?useSSL=false&allowPublicKeyRetrieval=true" +
+        "&serverTimezone=Asia/Kolkata";
 
     private static final String USER = "root";
     private static final String PASS = "sql@123";

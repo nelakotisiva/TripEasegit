@@ -23,13 +23,13 @@ public class UserBooking {
     // 🔹 When booking was made
     private Date bookingDate;
 
-    // 🔹 Travel / usage date
+    // 🔹 Travel / usage date (optional)
     private Date travelDate;
 
     // 🔹 Amount paid (0 if free / NA)
     private double amount;
 
-    // 🔹 Status (Confirmed / Cancelled / Pending)
+    // 🔹 Status (CONFIRMED / CANCELLED / PENDING)
     private String status;
 
     // 🔹 URL to open booking details page
@@ -39,7 +39,8 @@ public class UserBooking {
     // Constructors
     // -----------------------------
 
-    public UserBooking() {}
+    public UserBooking() {
+    }
 
     public UserBooking(String bookingType,
                        String title,

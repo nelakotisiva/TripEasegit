@@ -15,135 +15,123 @@ if(user == null){
 <meta charset="UTF-8">
 <title>TripEase | Edit Profile</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-    /* Background Animation */
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        font-family: "Poppins", sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg,#d8f3dc,#b7e4c7,#95d5b2);
-        background-size: 300% 300%;
-        animation: bgMove 8s ease-in-out infinite alternate;
-    }
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#e9f5f2,#f8fafc);
+}
 
-    @keyframes bgMove {
-        from { background-position: 0% 50%; }
-        to { background-position: 100% 50%; }
-    }
+/* CARD */
+.edit-card{
+    width:420px;
+    background:#ffffff;
+    border-radius:18px;
+    padding:30px 28px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.12);
+    animation:slideUp .6s ease;
+}
 
-    /* Glass Card */
-    .edit-card {
-        width: 420px;
-        background: rgba(255,255,255,0.18);
-        backdrop-filter: blur(12px);
-        border-radius: 18px;
-        padding: 34px 28px;
-        border: 1px solid rgba(255,255,255,0.40);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        animation: fadeIn 0.6s ease-out;
-    }
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(25px);}
+    to{opacity:1; transform:translateY(0);}
+}
 
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(20px);}
-        to {opacity: 1; transform: translateY(0);}
-    }
+/* TITLE */
+.title{
+    text-align:center;
+    font-size:24px;
+    font-weight:700;
+    color:#1f3a3d;
+    margin-bottom:22px;
+}
 
-    .title {
-        text-align: center;
-        font-size: 28px;
-        font-weight: 700;
-        color: #064e3b;
-        margin-bottom: 22px;
-    }
+/* INPUT */
+.input-box{
+    margin-bottom:14px;
+}
 
-    /* Floating Input Field */
-    .input-box {
-        position: relative;
-        margin: 14px 0;
-    }
+.input-box label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:#475569;
+    margin-bottom:6px;
+}
 
-    .input-box input,
-    select {
-        width: 100%;
-        padding: 14px 12px;
-        border-radius: 10px;
-        border: 1px solid #bbe4d3;
-        font-size: 15px;
-        background: rgba(255,255,255,0.75);
-        outline: none;
-        transition: .25s;
-    }
+.input-box input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #d1d5db;
+    font-size:14px;
+    outline:none;
+    transition:.25s;
+}
 
-    .input-box input:focus,
-    select:focus {
-        border-color: #2d6a4f;
-        background: white;
-        box-shadow: 0px 0px 10px rgba(45,106,79,0.32);
-    }
+.input-box input:focus{
+    border-color:#3ba58b;
+    box-shadow:0 0 0 3px rgba(59,165,139,.15);
+}
 
-    .input-box label {
-        position: absolute;
-        left: 12px;
-        top: 13px;
-        font-size: 15px;
-        color: #4f4f4f;
-        pointer-events: none;
-        transition: .30s;
-    }
+/* READONLY ROLE */
+.role-box{
+    background:#f1f5f9;
+    border:1px dashed #cbd5e1;
+    padding:12px;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:600;
+    color:#334155;
+}
 
-    .input-box input:focus ~ label,
-    .input-box input:valid ~ label {
-        top: -9px;
-        left: 10px;
-        font-size: 11px;
-        background: #e8f5f3;
-        padding: 2px 6px;
-        border-radius: 6px;
-        font-weight: 600;
-        color: #064e3b;
-    }
+/* BUTTONS */
+.btn-group{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+}
 
-    /* Buttons */
-    .btn {
-        width: 48%;
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        font-weight: 600;
-        font-size: 15px;
-        cursor: pointer;
-        margin-top: 22px;
-        transition: .25s;
-        color: white;
-    }
+.btn{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    text-align:center;
+    text-decoration:none;
+    transition:.25s;
+}
 
-    .save-btn {
-        background: #2d6a4f;
-    }
-    .save-btn:hover {
-        background: #1b4332;
-        transform: translateY(-2px);
-    }
+.save-btn{
+    background:#3ba58b;
+    color:#fff;
+}
+.save-btn:hover{
+    background:#2f8f77;
+    transform:translateY(-2px);
+}
 
-    .cancel-btn {
-        background: #6c757d;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-        line-height: 40px;
-    }
-    .cancel-btn:hover {
-        background: #4a5257;
-        transform: translateY(-2px);
-    }
-
+.cancel-btn{
+    background:#e5e7eb;
+    color:#374151;
+}
+.cancel-btn:hover{
+    background:#d1d5db;
+    transform:translateY(-2px);
+}
 </style>
 </head>
 
@@ -151,37 +139,44 @@ if(user == null){
 
 <div class="edit-card">
 
-    <div class="title">Edit Profile ✏️</div>
+    <div class="title">Edit Profile</div>
 
     <form action="update" method="post">
 
         <div class="input-box">
-            <input type="text" name="full_name" value="<%= user.getFull_name() %>" required>
             <label>Full Name</label>
+            <input type="text" name="full_name" value="<%= user.getFull_name() %>" required>
         </div>
 
         <div class="input-box">
-            <input type="text" name="username" value="<%= user.getUsername() %>" required>
             <label>Username</label>
+            <input type="text" name="username" value="<%= user.getUsername() %>" required>
         </div>
 
         <div class="input-box">
-            <input type="email" name="email" value="<%= user.getEmail() %>" required>
             <label>Email</label>
+            <input type="email" name="email" value="<%= user.getEmail() %>" required>
         </div>
 
         <div class="input-box">
-            <input type="text" name="phone" value="<%= user.getPhone() %>" required>
             <label>Phone Number</label>
+            <input type="text" name="phone" value="<%= user.getPhone() %>" required>
         </div>
 
-        <select name="role" required>
-            <option value="USER" <%= user.getRole().equals("USER") ? "selected" : "" %>>USER</option>
-            <option value="ADMIN" <%= user.getRole().equals("ADMIN") ? "selected" : "" %>>ADMIN</option>
-        </select>
+        <!-- ✅ ROLE (READ-ONLY) -->
+       <div class="input-box">
+    <label>Role</label>
+    <input type="text"
+           name="role"
+           value="<%= user.getRole() %>"
+           required>
+</div>
 
-        <button type="submit" class="btn save-btn">Save</button>
-        <a href="ProfileServlet" class="btn cancel-btn">Cancel</a>
+
+        <div class="btn-group">
+            <button type="submit" class="btn save-btn">Save Changes</button>
+            <a href="ProfileServlet" class="btn cancel-btn">Cancel</a>
+        </div>
 
     </form>
 
