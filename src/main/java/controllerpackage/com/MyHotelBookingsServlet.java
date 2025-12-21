@@ -39,15 +39,17 @@ public class MyHotelBookingsServlet extends HttpServlet {
             return;
         }
 
-        // ✅ Get logged-in user
         User user = (User) session.getAttribute("userObj");
         int userId = user.getUser_id();
 
-        // 🔥 Final list for JSP
-        List<UserBooking> allBookings = new ArrayList<>();
-
-        /* ================= 🏨 HOTEL BOOKINGS ================= */
+        // 🏨 Fetch hotel bookings
         List<Bookingg> hotelBookings = bookingDAO.getBookingsByUser(userId);
+
+        // 🔍 DEBUG (IMPORTANT)
+        System.out.println("🔥 Hotel bookings count = " + hotelBookings.size());
+
+        // Optional combined list
+        List<UserBooking> allBookings = new ArrayList<>();
 
         for (Bookingg h : hotelBookings) {
             UserBooking ub = new UserBooking();
@@ -65,7 +67,6 @@ public class MyHotelBookingsServlet extends HttpServlet {
         req.setAttribute("hotelBookings", hotelBookings);
         req.setAttribute("allBookings", allBookings);
 
-        req.getRequestDispatcher("MyHotelBookings.jsp")
-           .forward(req, resp);
+        req.getRequestDispatcher("MyHotelBookings.jsp").forward(req, resp);
     }
 }

@@ -37,6 +37,26 @@ body{
     transform:translateX(-4px);
 }
 
+/* ✅ MY HOTEL BOOKINGS BUTTON */
+.my-bookings-btn{
+    position:fixed;
+    top:18px;
+    right:18px;
+    z-index:10000;
+    background:linear-gradient(135deg,#06b7ff,#3ba58b);
+    color:white;
+    padding:10px 20px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:600;
+    font-size:14px;
+    box-shadow:0 8px 20px rgba(6,183,255,.35);
+    transition:.3s;
+}
+.my-bookings-btn:hover{
+    transform:translateX(4px);
+}
+
 /* HEADER */
 .header{
     height:240px;
@@ -187,6 +207,9 @@ body{
 <body>
 
 <a href="Dashboard.jsp" class="dashboard-btn">← Dashboard</a>
+
+<!-- ✅ MY HOTEL BOOKINGS BUTTON -->
+<a href="MyHotelBookings.jsp" class="my-bookings-btn">My Hotel Bookings</a>
 
 <%
 String msg = request.getParameter("msg");

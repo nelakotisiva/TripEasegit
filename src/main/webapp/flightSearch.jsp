@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.*, dtopackage.com.Flight" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.time.LocalDate" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,6 @@
   --primary:#2563eb;
   --secondary:#0ea5e9;
   --bg:#eef2ff;
-  --text:#1e293b;
 }
 
 *{box-sizing:border-box}
@@ -25,12 +25,12 @@ body{
   background:var(--bg);
 }
 
-/* BACK */
+/* NAV BUTTONS */
 .back-dashboard{
   position:fixed;
   top:18px;
   left:18px;
-  z-index:999;
+  z-index:1000;
   background:#0f172a;
   color:white;
   padding:10px 18px;
@@ -38,29 +38,51 @@ body{
   text-decoration:none;
   font-weight:600;
 }
+.my-flight-btn{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:1000;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:white;
+  padding:10px 18px;
+  border-radius:20px;
+  text-decoration:none;
+  font-weight:600;
+}
 
-/* HERO */
+/* HERO – FULL WIDTH FIX */
 .hero{
+  position:relative;
   height:240px;
-  background:
-    linear-gradient(rgba(37,99,235,.9),rgba(37,99,235,.9)),
-    url("https://images.unsplash.com/photo-1529070538774-1843cb3265df");
-  background-size:cover;
+  width:100%;
+  background:url("https://c8.alamy.com/comp/2FRH78G/travel-world-vector-banner-design-travel-and-book-now-text-in-mobile-app-with-airplane-transportation-element-for-flight-online-booking-background-2FRH78G.jpg");
+  background-size:cover;     /* ✅ FIX */
+  background-repeat:no-repeat;
   background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
 }
 .hero h1{
-  font-size:36px;
+  position:relative;
+  z-index:1;
+  color:white;
+  font-size:34px;
   font-weight:800;
+  text-shadow:0 6px 20px rgba(0,0,0,.6);
 }
 
 /* SEARCH */
 .search-wrap{
   max-width:1100px;
-  margin:-40px auto 30px;
+  margin:20px auto 30px;
   padding:0 16px;
 }
 .search-box{
@@ -87,6 +109,7 @@ body{
   padding:12px 24px;
   border-radius:12px;
   cursor:pointer;
+  font-weight:700;
 }
 
 /* GRID */
@@ -205,6 +228,7 @@ body{
 <body>
 
 <a href="Dashboard.jsp" class="back-dashboard">← Dashboard</a>
+<a href="MyFlightBookings" class="my-flight-btn">My Flight Bookings</a>
 
 <div class="hero">
   <h1>✈ Find Your Perfect Flight</h1>
@@ -215,10 +239,14 @@ body{
     <form action="SearchFlight" method="get">
       <input name="source" placeholder="From"
         value="<%=request.getAttribute("source")==null?"":request.getAttribute("source")%>" required>
+
       <input name="destination" placeholder="To"
         value="<%=request.getAttribute("destination")==null?"":request.getAttribute("destination")%>" required>
+
       <input type="date" name="date"
+        min="<%=LocalDate.now()%>"
         value="<%=request.getAttribute("date")==null?"":request.getAttribute("date")%>" required>
+
       <button>Search Flights</button>
     </form>
   </div>
@@ -265,8 +293,9 @@ for(Flight f:flights){
 <h3>Confirm Booking</h3>
 <form action="BookFlight" method="post">
   <input type="hidden" name="flightId" id="fid">
-  <input type="date" name="date" required>
+  <input type="date" name="date" min="<%=LocalDate.now()%>" required>
   <input type="number" name="seats" id="seats" min="1" required>
+
   <div class="actions">
     <button type="button" class="cancel" onclick="closeModal()">Cancel</button>
     <button class="confirm">Confirm</button>
@@ -278,11 +307,11 @@ for(Flight f:flights){
 <%
 String msg = (String)session.getAttribute("msg");
 String dest = (String)request.getAttribute("destination");
-
 if(msg!=null && msg.contains("successfully") && dest!=null){
-    String city = dest.split(" ")[0];
-    String encodedCity = URLEncoder.encode(city,"UTF-8");
+String city = dest.split(" ")[0];
+String encodedCity = URLEncoder.encode(city,"UTF-8");
 %>
+
 <div class="success-bg">
   <div class="success">
     <h2>🎉 Flight Booked!</h2>
@@ -298,6 +327,7 @@ if(msg!=null && msg.contains("successfully") && dest!=null){
     </div>
   </div>
 </div>
+
 <%
 session.removeAttribute("msg");
 }

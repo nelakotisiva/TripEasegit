@@ -47,9 +47,9 @@ public class MyBookingsServlet extends HttpServlet {
 
         List<UserBooking> allBookings = new ArrayList<>();
 
-        /* ================= 🏨 HOTELS ================= */
+//        /* ================= 🏨 HOTELS ================= */
         List<Bookingg> hotelBookings =
-                new HotelBookingDAOImpl().getBookingsByUserId(userId);
+                new HotelBookingDAOImpl().getBookingsByUser(userId);
 
         for (Bookingg h : hotelBookings) {
             UserBooking ub = new UserBooking();
