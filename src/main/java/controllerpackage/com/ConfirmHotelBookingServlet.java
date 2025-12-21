@@ -1,6 +1,7 @@
 package controllerpackage.com;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -29,16 +30,12 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = req.getSession(false);
-        if (session == null) {
+        if (session == null || session.getAttribute("userObj") == null) {
             resp.sendRedirect("Login.jsp");
             return;
         }
 
         User user = (User) session.getAttribute("userObj");
-        if (user == null) {
-            resp.sendRedirect("Login.jsp");
-            return;
-        }
 
         try {
             int hotelId = Integer.parseInt(req.getParameter("hotelId"));
@@ -52,9 +49,14 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
             long nights = ChronoUnit.DAYS.between(in, out);
             if (nights <= 0) nights = 1;
 
-            // ✅ Fetch hotel details
+            // ✅ Fetch hotel
             HotelDAO hotelDao = new HotelDAOImpl();
             Hotel hotel = hotelDao.getHotelById(hotelId);
+
+            if (hotel == null) {
+                resp.sendRedirect("HotelListServlet");
+                return;
+            }
 
             double total = hotel.getPricePerNight() * nights * guests;
 
@@ -71,7 +73,7 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
 
             if (success) {
 
-                // ✅ EMAIL CONTENT (FINAL FIX)
+                // ✅ SEND EMAIL (KEEP THIS)
                 String body =
                         "Dear " + user.getFull_name() + ",\n\n" +
                         "Your hotel booking is confirmed.\n\n" +
@@ -88,14 +90,18 @@ public class ConfirmHotelBookingServlet extends HttpServlet {
                         body
                 );
 
-                // ✅ POPUP MESSAGE FIX (KEY MATCHES JSP)
-                session.setAttribute(
-                        "bookingSuccess",
-                        "Hotel booked successfully!"
+                // ✅ TRIGGER POPUP (MATCHES JSP)
+                String city = URLEncoder.encode(
+                        hotel.getNearLocation(), "UTF-8"
                 );
 
-                // ✅ Redirect back to hotel list
-                resp.sendRedirect("HotelListServlet");
+                resp.sendRedirect(
+                        "HotelListServlet?msg=success&city=" + city
+                );
+                return;
+            } else {
+                req.setAttribute("error", "Booking failed. Try again.");
+                req.getRequestDispatcher("HotelBooking.jsp").forward(req, resp);
             }
 
         } catch (Exception e) {

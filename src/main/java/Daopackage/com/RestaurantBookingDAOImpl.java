@@ -1,70 +1,36 @@
 package Daopackage.com;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import Daopackage.com.BookingDAO;
-import Daopackage.com.BookingDAOImpl;
 import dtopackage.com.RestaurantBooking;
 import utilpackage.com.DBConnection;
 
 public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
 
-    // ------------------------------------------------
-    // ORIGINAL METHOD (KEEP – NO CHANGE)
-    // ------------------------------------------------
-	@Override
-	public boolean bookRestaurant(RestaurantBooking rb) {
-
-	    String sql = "INSERT INTO restaurant_booking " +
-	                 "(user_id, restaurant_id, booking_date, num_people, status) " +
-	                 "VALUES (?,?,?,?,?)";
-
-	    try (Connection con = DBConnection.getConnector();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
-
-	        ps.setInt(1, rb.getUserId());
-	        ps.setInt(2, rb.getRestaurantId());
-	        ps.setDate(3, rb.getBookingDate());
-	        ps.setInt(4, rb.getNumPeople());
-	        ps.setString(5, rb.getStatus());
-
-	        return ps.executeUpdate() == 1;
-
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return false;
-	}
-
-    // ------------------------------------------------
-    // 🔥 NEW METHOD → CONNECT TO booking TABLE
-    // ------------------------------------------------
     @Override
-    public boolean bookRestaurantAndMainBooking(RestaurantBooking rb) {
+    public boolean bookRestaurant(RestaurantBooking rb) {
 
-        Connection con = DBConnection.getConnector();
+        String sql =
+            "INSERT INTO restaurant_booking " +
+            "(user_id, restaurant_id, booking_date, num_people, status) " +
+            "VALUES (?,?,?,?,?)";
 
-        try {
-            // 1️⃣ Insert into restaurant_booking
-            boolean ok = bookRestaurant(rb);
-            if (!ok) return false;
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            // 2️⃣ Get destination_id from restaurant
-            int destinationId = getDestinationIdByRestaurant(rb.getRestaurantId());
+            ps.setInt(1, rb.getUserId());
+            ps.setInt(2, rb.getRestaurantId());
 
-            // 3️⃣ Insert into MAIN booking table
-            BookingDAO bookingDAO = new BookingDAOImpl();
-            bookingDAO.saveServiceBooking(
-                    rb.getUserId(),
-                    destinationId,
-                    rb.getBookingDate(),
-                    rb.getNumPeople()
-            );
+            // DATE ONLY
+            ps.setDate(3,
+                new java.sql.Date(rb.getBookingDate1().getTime()));
 
-            return true;
+            ps.setInt(4, rb.getNumPeople());
+            ps.setString(5, rb.getStatus());
+
+            return ps.executeUpdate() == 1;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,12 +38,27 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
         return false;
     }
 
-    // ------------------------------------------------
-    // HELPER: restaurant → destination
-    // ------------------------------------------------
+    @Override
+    public boolean bookRestaurantAndMainBooking(RestaurantBooking rb) {
+
+        boolean ok = bookRestaurant(rb);
+        if (!ok) return false;
+
+        int destinationId = getDestinationIdByRestaurant(rb.getRestaurantId());
+
+        saveServiceBooking(
+                rb.getUserId(),
+                destinationId,
+                rb.getBookingDate1(),
+                rb.getNumPeople()
+        );
+        return true;
+    }
+
     private int getDestinationIdByRestaurant(int restaurantId) {
 
-        String sql = "SELECT destination_id FROM restaurant WHERE restaurant_id = ?";
+        String sql =
+            "SELECT destination_id FROM restaurant WHERE restaurant_id=?";
 
         try (Connection con = DBConnection.getConnector();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -85,14 +66,70 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
             ps.setInt(1, restaurantId);
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return rs.getInt("destination_id");
+            if (rs.next()) return rs.getInt(1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public List<RestaurantBooking> getBookingsByUserId(int userId) {
+
+        List<RestaurantBooking> list = new ArrayList<>();
+
+        String sql =
+            "SELECT * FROM restaurant_booking " +
+            "WHERE user_id=? ORDER BY booking_date DESC";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                RestaurantBooking rb = new RestaurantBooking();
+                rb.setBookingId(rs.getInt("booking_id"));
+                rb.setUserId(rs.getInt("user_id"));
+                rb.setRestaurantId(rs.getInt("restaurant_id"));
+                rb.setBookingDate1(rs.getTimestamp("booking_date"));
+                rb.setNumPeople(rs.getInt("num_people"));
+                rb.setStatus(rs.getString("status"));
+                list.add(rb);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return list;
+    }
 
-        return 0;
+    @Override
+    public void saveServiceBooking(int userId,
+                                   int destinationId,
+                                   Timestamp bookingDate1,
+                                   int numPeople) {
+
+        String sql =
+            "INSERT INTO booking " +
+            "(user_id, destination_id, booking_date, status, num_of_people) " +
+            "VALUES (?, ?, ?, 'Confirmed', ?)";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setInt(2, destinationId);
+            ps.setDate(3,
+                new java.sql.Date(bookingDate1.getTime()));
+            ps.setInt(4, numPeople);
+
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

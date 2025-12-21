@@ -14,10 +14,11 @@ public class EmailUtil {
 
     public static void sendEmail(String to, String subject, String messageText) {
 
-        // 🔐 Sender email
+        // 🔐 Sender Email
         final String fromEmail = "tripeaseproject@gmail.com";
 
         // 🔐 Gmail App Password
+        // (Later you can move this to env variable)
         final String password = "tmnebphgwppuxlhw";
 
         Properties props = new Properties();
@@ -49,6 +50,7 @@ public class EmailUtil {
             System.out.println("✅ Email sent successfully");
 
         } catch (Exception e) {
+            System.out.println("❌ Email sending failed");
             e.printStackTrace();
         }
     }

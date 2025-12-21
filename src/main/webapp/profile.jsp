@@ -15,120 +15,134 @@
 <meta charset="UTF-8">
 <title>TripEase | Profile</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
 
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-family: "Poppins", sans-serif;
-        background: linear-gradient(135deg,#d8f3dc,#b7e4c7,#95d5b2);
-        background-size: 300% 300%;
-        animation: bgMove 8s ease infinite;
-    }
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#e9f5f2,#f8fafc);
+}
 
-    @keyframes bgMove {
-        0% {background-position: 0% 50%;}
-        50% {background-position: 100% 50%;}
-        100% {background-position: 0% 50%;}
-    }
+/* CARD */
+.profile-card{
+    width:420px;
+    background:#ffffff;
+    border-radius:18px;
+    padding:28px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.12);
+    animation:slideUp .6s ease;
+}
 
-    .profile-card {
-        width: 420px;
-        background: rgba(255,255,255,0.15);
-        border-radius: 20px;
-        padding: 30px;
-        text-align: center;
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255,255,255,0.35);
-        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-        animation: fadeIn 0.7s ease;
-    }
+@keyframes slideUp{
+    from{opacity:0; transform:translateY(25px);}
+    to{opacity:1; transform:translateY(0);}
+}
 
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(20px);}
-        to {opacity: 1; transform: translateY(0);}
-    }
+/* HEADER */
+.profile-header{
+    text-align:center;
+    margin-bottom:22px;
+}
 
-    .profile-title {
-        font-size: 28px;
-        font-weight: 700;
-        color: #0a3d22;
-        margin-bottom: 18px;
-    }
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:#e8f5f3;
+    margin:0 auto 12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:36px;
+    font-weight:700;
+    color:#3ba58b;
+}
 
-    .avatar {
-        width: 95px;
-        height: 95px;
-        background: #fff;
-        border-radius: 50%;
-        margin: 0 auto 18px;
-        border: 3px solid #52b788;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 40px;
-        color: #2d6a4f;
-        font-weight: 600;
-        box-shadow: 0 0 12px rgba(0,0,0,0.15);
-    }
+.profile-title{
+    font-size:24px;
+    font-weight:700;
+    color:#1f3a3d;
+}
 
-    .info {
-        text-align: left;
-        background: rgba(255,255,255,0.55);
-        padding: 10px 14px;
-        margin: 8px 0;
-        border-radius: 10px;
-        font-size: 15px;
-        border-left: 4px solid #2d6a4f;
-    }
+/* INFO */
+.info{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 14px;
+    border-radius:10px;
+    background:#f4f7f6;
+    margin-bottom:10px;
+    font-size:14px;
+}
 
-    .btn {
-        width: 48%;
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        text-align: center;
-        color: #fff;
-        margin-top: 15px;
-        transition: 0.25s;
-        display: inline-block;
-        text-decoration: none;
-    }
+.info b{
+    color:#475569;
+}
 
-    .edit-btn {
-        background: #2d6a4f;
-    }
-    .edit-btn:hover {
-        background: #1b4332;
-        transform: translateY(-2px);
-    }
+.info span{
+    font-weight:500;
+    color:#111827;
+}
 
-    .back-btn {
-        background: #6c757d;
-    }
-    .back-btn:hover {
-        background: #495057;
-        transform: translateY(-2px);
-    }
+/* MESSAGE */
+.msg-box{
+    background:#dcfce7;
+    color:#166534;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:14px;
+    margin-bottom:14px;
+    text-align:center;
+}
 
-    .msg-box {
-        background: #d4f8d4;
-        color: #145a32;
-        padding: 10px;
-        border-radius: 10px;
-        margin-bottom: 14px;
-        font-weight: 500;
-    }
+/* BUTTONS */
+.btn-group{
+    display:flex;
+    gap:12px;
+    margin-top:18px;
+}
 
+.btn{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    text-align:center;
+    text-decoration:none;
+    transition:.25s;
+}
+
+.edit-btn{
+    background:#3ba58b;
+    color:#fff;
+}
+
+.edit-btn:hover{
+    background:#2f8f77;
+    transform:translateY(-2px);
+}
+
+.back-btn{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.back-btn:hover{
+    background:#d1d5db;
+    transform:translateY(-2px);
+}
 </style>
 </head>
 
@@ -141,20 +155,21 @@
        <div class="msg-box"><%= msg %></div>
     <% } %>
 
-    <div class="profile-title">Your Profile</div>
-
-    <div class="avatar">
-        <%= user.getFull_name().charAt(0) %>
+    <div class="profile-header">
+        <div class="avatar"><%= user.getFull_name().charAt(0) %></div>
+        <div class="profile-title">My Profile</div>
     </div>
 
-    <div class="info"><b>Full Name:</b> <%= user.getFull_name() %></div>
-    <div class="info"><b>Username:</b> <%= user.getUsername() %></div>
-    <div class="info"><b>Email:</b> <%= user.getEmail() %></div>
-    <div class="info"><b>Phone:</b> <%= user.getPhone() %></div>
-    <div class="info"><b>Role:</b> <%= user.getRole() %></div>
+    <div class="info"><b>Full Name</b><span><%= user.getFull_name() %></span></div>
+    <div class="info"><b>Username</b><span><%= user.getUsername() %></span></div>
+    <div class="info"><b>Email</b><span><%= user.getEmail() %></span></div>
+    <div class="info"><b>Phone</b><span><%= user.getPhone() %></span></div>
+    <div class="info"><b>Role</b><span><%= user.getRole() %></span></div>
 
-    <a href="ProfileEditServlet" class="btn edit-btn">Edit Profile</a>
-    <a href="Dashboard.jsp" class="btn back-btn">Back</a>
+    <div class="btn-group">
+        <a href="ProfileEditServlet" class="btn edit-btn">Edit Profile</a>
+        <a href="Dashboard.jsp" class="btn back-btn">Back</a>
+    </div>
 
 </div>
 

@@ -16,6 +16,7 @@
 <title>TripEase | Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 :root{
@@ -55,6 +56,11 @@ nav{
     color:var(--primary);
 }
 
+.nav-links{
+    display:flex;
+    align-items:center;
+}
+
 .nav-links a{
     margin:0 12px;
     text-decoration:none;
@@ -73,11 +79,31 @@ nav{
     font-weight:600;
 }
 
-/* HERO WITH VIDEO BACKGROUND */
+/* PROFILE ICON */
+.profile-icon{
+    font-size:20px;
+    color:#333;
+    margin-left:14px;
+    position:relative;
+}
+
+.profile-icon:hover{color:var(--primary)}
+
+.profile-icon::after{
+    content:"";
+    position:absolute;
+    top:-2px;
+    right:-2px;
+    width:8px;
+    height:8px;
+    background:#22c55e;
+    border-radius:50%;
+}
+
+/* HERO */
 .hero{
     position:relative;
     height:70vh;
-    overflow:hidden;
     display:flex;
     align-items:center;
     justify-content:center;
@@ -87,8 +113,7 @@ nav{
 
 .hero video{
     position:absolute;
-    top:0;
-    left:0;
+    inset:0;
     width:100%;
     height:100%;
     object-fit:cover;
@@ -103,19 +128,12 @@ nav{
     z-index:-1;
 }
 
-.hero-content{
-    max-width:800px;
-    padding:20px;
-}
-
-.hero h1{
+.hero-content h1{
     font-size:38px;
-    margin-bottom:12px;
 }
 
-.hero p{
+.hero-content p{
     font-size:16px;
-    opacity:0.95;
 }
 
 /* SECTION */
@@ -173,7 +191,6 @@ nav{
     color:var(--muted);
 }
 
-/* BADGE */
 .badge{
     display:inline-block;
     background:var(--accent);
@@ -184,11 +201,10 @@ nav{
     margin-bottom:8px;
 }
 </style>
-
 </head>
+
 <body>
 
-<!-- NAVBAR -->
 <nav>
     <div class="logo">✈ TripEase</div>
 
@@ -200,68 +216,51 @@ nav{
         <a href="nearbyRestaurants">Restaurants</a>
         <a href="ToursServlet">Tours</a>
         <a href="PlacesServlet">Places</a>
+        <a href="MyBookingsServlet">My Bookings</a>
+
+        <a href="ProfileServlet" class="profile-icon" title="My Profile">
+            <i class="fa-solid fa-user-circle"></i>
+        </a>
     </div>
 
     <a class="logout-btn" href="LogoutServlet">Logout</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
     <video autoplay muted loop playsinline>
         <source src="assets/videos/travel.mp4" type="video/mp4">
-        Your browser does not support the video tag.
     </video>
-
     <div class="hero-content">
         <h1>Your Journey Starts Here</h1>
         <p>Book hotels, flights, cabs & unforgettable experiences</p>
     </div>
 </section>
 
-<!-- SERVICES -->
 <div class="section-title">Explore Services</div>
-
 <div class="grid">
-
     <div class="card" onclick="location.href='HotelListServlet'">
         <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945">
-        <div class="card-body">
-            <h3>Hotels</h3>
-            <p>Luxury & budget stays</p>
-        </div>
+        <div class="card-body"><h3>Hotels</h3><p>Luxury & budget stays</p></div>
     </div>
 
     <div class="card" onclick="location.href='SearchFlight'">
         <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df">
-        <div class="card-body">
-            <h3>Flights</h3>
-            <p>Best airfare deals</p>
-        </div>
+        <div class="card-body"><h3>Flights</h3><p>Best airfare deals</p></div>
     </div>
 
     <div class="card" onclick="location.href='VehicleListServlet'">
         <img src="https://images.unsplash.com/photo-1542362567-b07e54358753">
-        <div class="card-body">
-            <h3>Cabs</h3>
-            <p>Affordable rides</p>
-        </div>
+        <div class="card-body"><h3>Cabs</h3><p>Affordable rides</p></div>
     </div>
 
     <div class="card" onclick="location.href='nearbyRestaurants'">
         <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9">
-        <div class="card-body">
-            <h3>Restaurants</h3>
-            <p>Top places to eat</p>
-        </div>
+        <div class="card-body"><h3>Restaurants</h3><p>Top places to eat</p></div>
     </div>
-
 </div>
 
-<!-- TOURS -->
 <div class="section-title">Popular Tours & Packages</div>
-
 <div class="grid">
-
     <div class="card">
         <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e">
         <div class="card-body">
@@ -288,9 +287,10 @@ nav{
             <p>4N / 5D · From ₹15,999</p>
         </div>
     </div>
-
 </div>
-<jsp:include page="footer.jsp" />
+
+<!-- ✅ FOOTER INCLUDE (your existing footer.jsp) -->
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>
