@@ -6,6 +6,7 @@ import dtopackage.com.Cab;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -21,9 +22,7 @@ public class CabBookingServlet extends HttpServlet {
         dao = new CabDAO();
     }
 
-    // -----------------------------------
-    // SHOW MY CAB BOOKINGS
-    // -----------------------------------
+    // ================= VIEW MY CAB BOOKINGS =================
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
@@ -42,9 +41,7 @@ public class CabBookingServlet extends HttpServlet {
         req.getRequestDispatcher("CabBookings.jsp").forward(req, resp);
     }
 
-    // -----------------------------------
-    // CANCEL CAB BOOKING
-    // -----------------------------------
+    // ================= CANCEL CAB BOOKING =================
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -57,16 +54,9 @@ public class CabBookingServlet extends HttpServlet {
             return;
         }
 
-        int rentalId;
-        try {
-            rentalId = Integer.parseInt(req.getParameter("rentalId"));
-        } catch (Exception e) {
-            resp.sendRedirect("CabBookingServlet");
-            return;
-        }
+        int bookingId = Integer.parseInt(req.getParameter("bookingId"));
 
-        // cancel only this user's booking
-        dao.cancelBooking(user.getUser_id(), rentalId);
+        dao.cancelCabBooking(bookingId); // ✅ STATUS-BASED CANCEL
 
         resp.sendRedirect("CabBookingServlet");
     }

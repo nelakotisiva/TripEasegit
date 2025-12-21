@@ -11,7 +11,9 @@ public class DBConnection {
         "&serverTimezone=Asia/Kolkata";
 
     private static final String USER = "root";
-    private static final String PASS = "Siva@199221";
+
+    private static final String PASS = "viswash";
+
 
     public static Connection getConnector() {
 

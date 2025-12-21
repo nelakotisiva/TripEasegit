@@ -10,4 +10,6 @@ public interface HotelBookingDAO {
                         int guests, double total);
 
     List<Bookingg> getBookingsByUser(int userId);
+
+	void cancelBooking(int bookingId);
 }
