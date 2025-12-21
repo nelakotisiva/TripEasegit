@@ -23,8 +23,32 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
 <title>My Bookings</title>
 
 <style>
-body{background:#e8f5f3;font-family:Poppins;padding:20px;}
-.wrap{max-width:900px;margin:auto;}
+body{
+    background:#e8f5f3;
+    font-family:Poppins, sans-serif;
+    padding:20px;
+}
+
+.wrap{
+    max-width:900px;
+    margin:auto;
+}
+
+/* BACK BUTTON */
+.back-btn{
+    display:inline-block;
+    background:#008cff;
+    color:white;
+    padding:8px 16px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    margin-bottom:20px;
+}
+.back-btn:hover{
+    background:#006fd6;
+}
+
 .card{
     background:#fff;
     border-radius:14px;
@@ -32,28 +56,75 @@ body{background:#e8f5f3;font-family:Poppins;padding:20px;}
     margin-bottom:16px;
     box-shadow:0 6px 20px rgba(0,0,0,.08);
 }
-.type{font-weight:700;color:#1f3a3d;}
-.sub{color:#555;font-size:14px;}
-.total{color:#28a745;font-weight:800;margin-top:6px;}
+
+.type{
+    font-weight:700;
+    color:#1f3a3d;
+    font-size:18px;
+}
+
+.sub{
+    color:#555;
+    font-size:14px;
+    margin-top:4px;
+}
+
+.total{
+    color:#28a745;
+    font-weight:800;
+    margin-top:6px;
+}
+
 .btn{
     background:#ff5252;
     color:#fff;
     border:none;
-    padding:6px 12px;
+    padding:6px 14px;
     border-radius:8px;
     cursor:pointer;
     margin-top:10px;
+    font-weight:600;
 }
+
+.btn:hover{
+    background:#e53935;
+}
+
 .cancelled{
     color:red;
     font-weight:700;
     margin-top:8px;
 }
 </style>
+
+<script>
+/* ✅ CONFIRM BEFORE CANCEL */
+function confirmCancel() {
+    return confirm("⚠ Are you sure you want to cancel this booking?");
+}
+</script>
+
 </head>
 
 <body>
+
+<!-- ✅ SUCCESS POPUP AFTER CANCEL -->
+<%
+String cancelMsg = (String) session.getAttribute("cancelMsg");
+if (cancelMsg != null) {
+%>
+<script>
+    alert("<%= cancelMsg %>");
+</script>
+<%
+    session.removeAttribute("cancelMsg");
+}
+%>
+
 <div class="wrap">
+
+<!-- 🔙 BACK TO DASHBOARD -->
+<a href="Dashboard.jsp" class="back-btn">⬅ Back to Dashboard</a>
 
 <h2>My Bookings</h2>
 <p>Welcome, <b><%= user.getFull_name() %></b></p>
@@ -86,14 +157,14 @@ body{background:#e8f5f3;font-family:Poppins;padding:20px;}
 
     <% if (!"Cancelled".equalsIgnoreCase(b.getStatus())) { %>
 
-        <form action="CancelBookingServlet" method="post">
+        <form action="CancelBookingServlet" method="post" onsubmit="return confirmCancel();">
             <input type="hidden" name="bookingId" value="<%= b.getBookingId() %>">
             <input type="hidden" name="type" value="<%= b.getBookingType() %>">
             <button class="btn">Cancel</button>
         </form>
 
     <% } else { %>
-        <div class="cancelled">Cancelled</div>
+        <div class="cancelled">❌ Cancelled</div>
     <% } %>
 
 </div>
