@@ -1,24 +1,25 @@
 package utilpackage.com;
 
 import java.util.Properties;
-import jakarta.mail.*;
-import jakarta.mail.internet.*;
+
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 
 public class EmailUtil {
 
     public static void sendEmail(String to, String subject, String messageText) {
 
-        // 🔐 YOUR EMAIL
+        // 🔐 Sender Email
         final String fromEmail = "tripeaseproject@gmail.com";
 
-        // 🔐 READ APP PASSWORD FROM ENV VARIABLE
+        // 🔐 Gmail App Password
+        // (Later you can move this to env variable)
         final String password = "tmnebphgwppuxlhw";
-
-
-        if (password == null) {
-            System.out.println("❌ EMAIL PASSWORD NOT FOUND IN ENV VARIABLES");
-            return;
-        }
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -28,6 +29,7 @@ public class EmailUtil {
 
         Session session = Session.getInstance(props,
             new Authenticator() {
+                @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(fromEmail, password);
                 }
@@ -44,9 +46,11 @@ public class EmailUtil {
             message.setText(messageText);
 
             Transport.send(message);
-            System.out.println("✅ Email Sent Successfully");
+
+            System.out.println("✅ Email sent successfully");
 
         } catch (Exception e) {
+            System.out.println("❌ Email sending failed");
             e.printStackTrace();
         }
     }

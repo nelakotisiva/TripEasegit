@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.*, dtopackage.com.Hotel" %>
-<%@ page import="java.net.URLEncoder" %>
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +16,7 @@ body{
     color:#1f3a3d;
 }
 
-/* ✅ DASHBOARD BUTTON */
+/* DASHBOARD BUTTON */
 .dashboard-btn{
     position:fixed;
     top:18px;
@@ -35,7 +34,6 @@ body{
 }
 .dashboard-btn:hover{
     transform:translateX(-4px);
-    box-shadow:0 12px 28px rgba(59,165,139,.45);
 }
 
 /* HEADER */
@@ -52,7 +50,10 @@ body{
     justify-content:center;
     color:white;
 }
-.header h1{font-size:36px;font-weight:800}
+.header h1{
+    font-size:36px;
+    font-weight:800;
+}
 
 /* SEARCH */
 .search-box{
@@ -106,8 +107,15 @@ body{
     padding:18px;
     text-align:center;
 }
-.card-title{font-size:20px;font-weight:700}
-.price{color:#3ba58b;font-weight:800;margin-top:8px}
+.card-title{
+    font-size:20px;
+    font-weight:700;
+}
+.price{
+    color:#3ba58b;
+    font-weight:800;
+    margin-top:8px;
+}
 .book-btn{
     margin-top:14px;
     display:inline-block;
@@ -136,7 +144,10 @@ body{
     border-radius:22px;
     text-align:center;
 }
-.modal h2{color:#3ba58b;margin:0}
+.modal h2{
+    color:#3ba58b;
+    margin:0;
+}
 .actions{
     margin-top:18px;
     display:flex;
@@ -164,7 +175,6 @@ body{
 
 <body>
 
-<!-- ✅ DASHBOARD BUTTON -->
 <a href="Dashboard.jsp" class="dashboard-btn">← Dashboard</a>
 
 <%
@@ -176,7 +186,7 @@ String city = request.getParameter("city");
     <h1>🏨 Find Your Perfect Stay</h1>
     <form action="HotelListServlet" method="get" class="search-box">
         <input type="text" name="location"
-               value="<%= city==null?"":city %>"
+               value="<%= city == null ? "" : city %>"
                placeholder="Search hotels by city">
         <button>Search</button>
     </form>
@@ -187,28 +197,41 @@ String city = request.getParameter("city");
 
 <%
 List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
-if(hotels!=null){
-for(Hotel h:hotels){
+if(hotels != null && !hotels.isEmpty()){
+    for(Hotel h : hotels){
 %>
 <div class="card">
-    <img src="<%= h.getImageUrl()==null?"https://source.unsplash.com/800x600/?hotel":h.getImageUrl() %>">
+    <img src="<%= h.getImageUrl()==null
+        ? "https://source.unsplash.com/800x600/?hotel"
+        : h.getImageUrl() %>">
     <div class="card-body">
         <div class="card-title"><%= h.getHotelName() %></div>
         <div>📍 <%= h.getNearLocation() %></div>
         <div class="price">₹ <%= h.getPricePerNight() %> / night</div>
-        <a href="BookHotel?id=<%= h.getHotelId() %>" class="book-btn">Book Now</a>
+        <a href="BookHotel?id=<%= h.getHotelId() %>" class="book-btn">
+            Book Now
+        </a>
     </div>
 </div>
-<% }} %>
+<%
+    }
+} else {
+%>
+<div style="grid-column:1/-1;text-align:center;font-weight:600;">
+    🔍 Search hotels to continue
+</div>
+<%
+}
+%>
 
 </div>
 </div>
 
-<!-- ✅ HOTEL → RESTAURANT POPUP -->
+<!-- HOTEL → RESTAURANT POPUP -->
 <div class="modal-bg" id="hotelModal">
     <div class="modal">
         <h2>🎉 Hotel Booked!</h2>
-        <p>🏨 Hotel booked successfully!</p>
+        <p>Hotel booked successfully.</p>
         <p><b>Do you want to book a restaurant at <%= city %>?</b></p>
 
         <div class="actions">

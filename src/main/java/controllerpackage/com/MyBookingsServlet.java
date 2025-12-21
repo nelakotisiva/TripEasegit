@@ -24,7 +24,10 @@ import dtopackage.com.UserBooking;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/MyBookingsServlet")
 public class MyBookingsServlet extends HttpServlet {
@@ -46,7 +49,7 @@ public class MyBookingsServlet extends HttpServlet {
 
         /* ================= 🏨 HOTELS ================= */
         List<Bookingg> hotelBookings =
-                new HotelBookingDAOImpl().getBookingsByUser(userId);
+                new HotelBookingDAOImpl().getBookingsByUserId(userId);
 
         for (Bookingg h : hotelBookings) {
             UserBooking ub = new UserBooking();
@@ -90,15 +93,19 @@ public class MyBookingsServlet extends HttpServlet {
             allBookings.add(ub);
         }
 
-        /* ================= 🍽 RESTAURANTS (FIXED) ================= */
-        RestaurantBookingDAO restaurantBookingDAO = new RestaurantBookingDAOImpl();
-        RestaurantDAOImpl restaurantDAO = new RestaurantDAOImpl();
-        DestinationDAOImpl destinationDAO = new DestinationDAOImpl();
+        /* ================= 🍽 RESTAURANTS ================= */
+        RestaurantBookingDAO restaurantBookingDAO =
+                new RestaurantBookingDAOImpl();
+        RestaurantDAOImpl restaurantDAO =
+                new RestaurantDAOImpl();
+        DestinationDAOImpl destinationDAO =
+                new DestinationDAOImpl();
 
         List<RestaurantBooking> restaurantBookings =
                 restaurantBookingDAO.getBookingsByUserId(userId);
 
-        List<Destination> destinations = destinationDAO.getAllDestinations();
+        List<Destination> destinations =
+                destinationDAO.getAllDestinations();
 
         for (RestaurantBooking rb : restaurantBookings) {
 
@@ -108,7 +115,8 @@ public class MyBookingsServlet extends HttpServlet {
             Destination destination = null;
             if (restaurant != null) {
                 for (Destination d : destinations) {
-                    if (d.getDestinationId() == restaurant.getDestinationId()) {
+                    if (d.getDestinationId() ==
+                            restaurant.getDestinationId()) {
                         destination = d;
                         break;
                     }
@@ -118,20 +126,18 @@ public class MyBookingsServlet extends HttpServlet {
             UserBooking ub = new UserBooking();
             ub.setBookingType("RESTAURANT");
 
-            // ✅ Restaurant Name
             ub.setTitle(
                 restaurant != null ? restaurant.getName() : "Restaurant"
             );
 
-            // ✅ Location
             ub.setSubtitle(
-                destination != null ? destination.getLocation() : "Unknown location"
+                destination != null
+                    ? destination.getLocation()
+                    : "Unknown location"
             );
 
-            // ✅ Booking Date
             ub.setBookingDate(rb.getBookingDate1());
 
-            // ✅ Average Price
             ub.setAmount(
                 restaurant != null ? restaurant.getAvgPrice() : 0
             );
@@ -139,15 +145,16 @@ public class MyBookingsServlet extends HttpServlet {
             ub.setStatus(rb.getStatus());
 
             ub.setDetailsUrl(
-                "RestaurantDetails?restaurantId=" + rb.getRestaurantId()
+                "RestaurantDetails?restaurantId=" +
+                rb.getRestaurantId()
             );
 
             allBookings.add(ub);
         }
 
-        
         /* ================= SEND TO JSP ================= */
         req.setAttribute("allBookings", allBookings);
-        req.getRequestDispatcher("MyBooking.jsp").forward(req, resp);
+        req.getRequestDispatcher("MyBooking.jsp")
+           .forward(req, resp);
     }
 }

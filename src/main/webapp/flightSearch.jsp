@@ -7,7 +7,7 @@
 <head>
 <title>TripEase | Flights</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -22,8 +22,7 @@
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:linear-gradient(180deg,var(--bg),#ffffff);
-  color:var(--text);
+  background:var(--bg);
 }
 
 /* BACK */
@@ -47,7 +46,6 @@ body{
     linear-gradient(rgba(37,99,235,.9),rgba(37,99,235,.9)),
     url("https://images.unsplash.com/photo-1529070538774-1843cb3265df");
   background-size:cover;
-  background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -80,9 +78,8 @@ body{
 }
 .search-box button{
   background:linear-gradient(135deg,var(--primary),var(--secondary));
-  border:none;
   color:white;
-  font-weight:700;
+  border:none;
   padding:12px 24px;
   border-radius:12px;
   cursor:pointer;
@@ -136,7 +133,7 @@ body{
   display:none;
   align-items:center;
   justify-content:center;
-  z-index:2000;
+  z-index:5000;
 }
 .modal{
   background:white;
@@ -215,21 +212,18 @@ body{
 <div class="grid">
 
 <%
-List<Flight> flights=(List<Flight>)request.getAttribute("flights");
+List<Flight> flights = (List<Flight>) request.getAttribute("flights");
 if(flights!=null && !flights.isEmpty()){
 for(Flight f:flights){
 %>
 
 <div class="card">
   <div class="logo">✈</div>
-
   <div class="info">
     <h4><%=f.getAirline()%></h4>
-    <p><b><%=f.getSource()%></b> → <b><%=f.getDestination()%></b></p>
-    <p><%=f.getDepartureTime()%> • <%=f.getArrivalTime()%></p>
+    <p><%=f.getSource()%> → <%=f.getDestination()%></p>
     <p>Seats left: <%=f.getSeatsAvailable()%></p>
   </div>
-
   <div class="right">
     <div class="price">₹<%=f.getPrice()%></div>
     <button class="book-btn"
@@ -252,7 +246,7 @@ for(Flight f:flights){
 <!-- BOOK MODAL -->
 <div class="modal-bg" id="modal">
 <div class="modal">
-<h3>Confirm Flight Booking</h3>
+<h3>Confirm Booking</h3>
 <form action="BookFlight" method="post">
   <input type="hidden" name="flightId" id="fid">
   <input type="date" name="date" required>
@@ -265,27 +259,26 @@ for(Flight f:flights){
 </div>
 </div>
 
-<!-- ✅ SUCCESS + AUTO LINK FLIGHT → CAB -->
+<!-- ✅ FLIGHT → CAB POPUP -->
 <%
 String msg = (String)session.getAttribute("msg");
 String dest = (String)request.getAttribute("destination");
 
 if(msg!=null && msg.contains("successfully") && dest!=null){
     String city = dest.split(" ")[0];
-    String encodedCity = URLEncoder.encode(city, "UTF-8");
+    String encodedCity = URLEncoder.encode(city,"UTF-8");
 %>
 <div class="success-bg">
   <div class="success">
     <h2>🎉 Flight Booked!</h2>
     <p><%=msg%></p>
-    <p style="font-weight:600">Do you want to book a cab at <b><%= city %></b>?</p>
-
+    <p><b>Book a cab at <%=city%>?</b></p>
     <div style="margin-top:18px;display:flex;gap:12px;justify-content:center">
-      <a href="VehicleListServlet?location=<%= encodedCity %>">
-        <button class="my" type="button">Yes, Book Cab</button>
+      <a href="VehicleListServlet?location=<%=encodedCity%>">
+        <button class="my">Yes, Book Cab</button>
       </a>
       <a href="Dashboard.jsp">
-        <button class="back" type="button">No, Later</button>
+        <button class="back">No, Later</button>
       </a>
     </div>
   </div>
@@ -304,6 +297,7 @@ document.querySelectorAll(".book-btn").forEach(b=>{
   b.onclick=()=>{
     fid.value=b.dataset.id;
     seats.max=b.dataset.seats;
+    seats.value=1;
     modal.style.display="flex";
   }
 });

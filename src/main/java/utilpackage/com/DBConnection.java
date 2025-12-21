@@ -5,24 +5,24 @@ import java.sql.DriverManager;
 
 public class DBConnection {
 
+    private static final String URL =
+        "jdbc:mysql://localhost:3306/tripease" +
+        "?useSSL=false&allowPublicKeyRetrieval=true" +
+        "&serverTimezone=Asia/Kolkata";
+
+    private static final String USER = "root";
+    private static final String PASS = "sql@123";
+
     public static Connection getConnector() {
-        Connection con = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-
-            con = DriverManager.getConnection(
-            	    "jdbc:mysql://localhost:3306/tripease?useSSL=false&serverTimezone=Asia/Kolkata",
-            	    "root",
-            	    "Siva@199221"
-            	);
-
+            return DriverManager.getConnection(URL, USER, PASS);
 
         } catch (Exception e) {
-            System.out.println("❌ DATABASE CONNECTION FAILED");
+            System.out.println("❌ DATABASE CONNECTION FAILED – CHECK MYSQL SERVER");
             e.printStackTrace();
+            return null;
         }
-
-        return con;
     }
 }

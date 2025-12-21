@@ -38,6 +38,16 @@
   color: #aaa;
 }
 
+.footer-content a {
+  color: #aaa;
+  text-decoration: none;
+}
+
+.footer-content a:hover {
+  color: #1ec6ff;
+  text-decoration: underline;
+}
+
 .footer-content.show {
   display: block;
 }
@@ -54,24 +64,38 @@
 <footer class="footer">
   <div class="footer-container">
 
+    <!-- ABOUT TRIPEASE -->
     <div class="footer-section">
       <h3 onclick="toggleFooter(this)">ABOUT TRIPEASE</h3>
       <div class="footer-content">
-        About Us, Careers, Investor Relations, Sustainability,
-        Press & Media, CSR Policy, Partner With Us,
-        Advertise With Us, Holiday Franchise
+        <a href="info.jsp#about">About Us</a>, 
+        <a href="info.jsp#careers">Careers</a>, 
+        <a href="info.jsp#investors">Investor Relations</a>, 
+        <a href="info.jsp#sustainability">Sustainability</a>, 
+        <a href="info.jsp#press">Press & Media</a>, 
+        <a href="info.jsp#csr">CSR Policy</a>, 
+        <a href="info.jsp#partners">Partner With Us</a>, 
+        <a href="info.jsp#advertise">Advertise With Us</a>, 
+        <a href="info.jsp#franchise">Holiday Franchise</a>
       </div>
     </div>
 
+    <!-- ABOUT THE SITE -->
     <div class="footer-section">
       <h3 onclick="toggleFooter(this)">ABOUT THE SITE</h3>
       <div class="footer-content">
-        Customer Support, Payment Security, Privacy Policy,
-        Cookie Policy, User Agreement, Terms of Service,
-        Cancellation & Refund Policy, Escalation Channel
+        <a href="info.jsp#support">Customer Support</a>, 
+        <a href="info.jsp#security">Payment Security</a>, 
+        <a href="info.jsp#privacy">Privacy Policy</a>, 
+        <a href="info.jsp#cookies">Cookie Policy</a>, 
+        <a href="info.jsp#terms">User Agreement</a>, 
+        <a href="info.jsp#terms">Terms of Service</a>, 
+        <a href="info.jsp#cancellation">Cancellation & Refund Policy</a>, 
+        <a href="info.jsp#escalation">Escalation Channel</a>
       </div>
     </div>
 
+    <!-- PRODUCT OFFERINGS -->
     <div class="footer-section">
       <h3 onclick="toggleFooter(this)">PRODUCT OFFERINGS</h3>
       <div class="footer-content">
@@ -82,19 +106,25 @@
       </div>
     </div>
 
+    <!-- SUPPORT -->
     <div class="footer-section">
       <h3 onclick="toggleFooter(this)">SUPPORT</h3>
       <div class="footer-content">
-        Help Center, FAQs, Cancellation, Refund Status,
-        Safety Guidelines, 24/7 Customer Support
+        <a href="info.jsp#help">Help Center</a>, 
+        <a href="info.jsp#faq">FAQs</a>, 
+        <a href="info.jsp#cancellation">Cancellation</a>, 
+        <a href="info.jsp#refund">Refund Status</a>, 
+        <a href="info.jsp#guidelines">Safety Guidelines</a>, 
+        <a href="info.jsp#support">24/7 Customer Support</a>
       </div>
     </div>
 
+    <!-- CONTACT -->
     <div class="footer-section">
       <h3 onclick="toggleFooter(this)">CONTACT</h3>
       <div class="footer-content">
-        Email: tripeaseproject@gmail.com <br>
-        Phone: +91 80044 55555 <br>
+        Email: <a href="mailto:tripeaseproject@gmail.com">tripeaseproject@gmail.com</a><br>
+        Phone: <a href="tel:+918004455555">+91 80044 55555</a><br>
         Bengaluru, India
       </div>
     </div>

@@ -31,7 +31,6 @@
             padding:25px;
         }
 
-        /* BACK BUTTON */
         .back-wrap{
             max-width:920px;
             margin:0 auto 16px;
@@ -148,7 +147,7 @@
 
 <body>
 
-<!-- ✅ BACK TO HOTEL LIST -->
+<!-- BACK BUTTON -->
 <div class="back-wrap">
     <a href="HotelList.jsp" class="back-btn">← Back to Hotels</a>
 </div>
@@ -162,7 +161,7 @@
 
     <div class="card-body">
 
-        <!-- LEFT SIDE : HOTEL DETAILS -->
+        <!-- LEFT : HOTEL DETAILS -->
         <div>
             <div class="title"><%= hotel.getHotelName() %></div>
 
@@ -179,7 +178,7 @@
             <span class="badge">Free Cancellation</span>
         </div>
 
-        <!-- RIGHT SIDE : BOOKING FORM -->
+        <!-- RIGHT : BOOKING FORM -->
         <div class="booking-form">
 
             <% if (error != null) { %>
@@ -192,10 +191,10 @@
                        value="<%= hotel.getHotelId() %>">
 
                 <label>Check-in Date</label>
-                <input type="date" name="checkin" required>
+                <input type="date" id="checkin" name="checkin" required>
 
                 <label>Check-out Date</label>
-                <input type="date" name="checkout" required>
+                <input type="date" id="checkout" name="checkout" required>
 
                 <label>Guests</label>
                 <input type="number"
@@ -211,6 +210,23 @@
 
     </div>
 </div>
+
+<!-- ✅ DATE LOGIC (NO PAST DATES) -->
+<script>
+    const today = new Date().toISOString().split("T")[0];
+
+    const checkin = document.getElementById("checkin");
+    const checkout = document.getElementById("checkout");
+
+    // Disable past dates
+    checkin.min = today;
+    checkout.min = today;
+
+    // Checkout must be after check-in
+    checkin.addEventListener("change", function () {
+        checkout.min = this.value;
+    });
+</script>
 
 </body>
 </html>
