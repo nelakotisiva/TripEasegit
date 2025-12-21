@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Poppins',sans-serif;
@@ -16,28 +17,37 @@ body{
     color:#1f3a3d;
 }
 
-/* HEADER */
+/* ===== HEADER (ONLY THIS HAS IMAGE) ===== */
 .header{
-    height:230px;
+    height:240px;
     background:
-        linear-gradient(rgba(59,165,139,.85),rgba(59,165,139,.85)),
-        url("https://images.unsplash.com/photo-1566073771259-6a8506099945");
+        linear-gradient(
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.45)
+        ),
+        url("https://static.vecteezy.com/system/resources/previews/035/874/268/non_2x/online-holiday-travel-mobile-app-concept-suitable-for-wallpaper-banner-background-card-book-illustration-web-and-landing-page-concept-illustration-in-flat-style-vector.jpg");
+
     background-size:cover;
     background-position:center;
+
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
     color:white;
+
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
 }
 
 .header h1{
     font-size:36px;
     margin:0;
     font-weight:800;
+    text-shadow:0 6px 20px rgba(0,0,0,.6);
 }
 
-/* SEARCH */
+/* ===== SEARCH ===== */
 .search-box{
     margin-top:20px;
     background:white;
@@ -66,14 +76,14 @@ body{
     cursor:pointer;
 }
 
-/* CONTAINER */
+/* ===== CONTAINER ===== */
 .container{
     width:92%;
     max-width:1200px;
     margin:-40px auto 50px;
 }
 
-/* BACK BUTTON */
+/* ===== BACK BUTTONS ===== */
 .back-wrap{
     display:flex;
     justify-content:space-between;
@@ -93,16 +103,15 @@ body{
     font-weight:600;
     font-size:14px;
     box-shadow:0 8px 20px rgba(59,165,139,.35);
-    transition:all .3s ease;
+    transition:.3s;
 }
 
 .back-btn-page:hover{
     transform:translateX(-4px);
     box-shadow:0 12px 28px rgba(59,165,139,.45);
-    background:linear-gradient(135deg,#2f8a74,#1f6f5c);
 }
 
-/* GRID */
+/* ===== GRID ===== */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -110,7 +119,7 @@ body{
     margin-top:30px;
 }
 
-/* CARD */
+/* ===== CARD ===== */
 .card{
     background:white;
     border-radius:18px;
@@ -153,7 +162,7 @@ body{
     font-weight:700;
 }
 
-/* INFO */
+/* ===== INFO ===== */
 .info{
     text-align:center;
     font-size:20px;
@@ -166,24 +175,24 @@ body{
 
 <body>
 
-<!-- ✅ BOOKING SUCCESS POPUP -->
+<!-- BOOKING SUCCESS -->
 <%
-    String bookingSuccess = (String) session.getAttribute("bookingSuccess");
-    if (bookingSuccess != null) {
+String bookingSuccess = (String) session.getAttribute("bookingSuccess");
+if (bookingSuccess != null) {
 %>
 <script>
-    window.onload = function () {
+    window.onload = function(){
         alert("<%= bookingSuccess %>");
-    };
+    }
 </script>
 <%
-        session.removeAttribute("bookingSuccess");
-    }
+session.removeAttribute("bookingSuccess");
+}
 %>
 
 <!-- HEADER -->
 <div class="header">
-    <h1>🏨 Find Your Perfect Stay</h1>
+    <h1> Find Your Perfect Stay</h1>
 
     <form action="HotelListServlet" method="get" class="search-box">
         <input type="text" name="location"
@@ -195,11 +204,10 @@ body{
 
 <div class="container">
 
-<!-- BACK + MY HOTEL BOOKINGS -->
+<!-- BACK BUTTONS -->
 <div class="back-wrap">
     <a href="Dashboard.jsp" class="back-btn-page">← Back to Dashboard</a>
 
-    <!-- ✅ NEW FUNCTIONALITY (ONLY ADDITION) -->
     <%
     if (session.getAttribute("userObj") != null) {
     %>
@@ -213,19 +221,16 @@ body{
 List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
 String searched = (String) request.getAttribute("searched");
 
-/* BEFORE SEARCH */
 if (searched == null || searched.isEmpty()) {
 %>
     <div class="info">🔍 Search hotels by city to continue</div>
 <%
 }
-/* SEARCH BUT NO RESULTS */
 else if (hotels == null || hotels.isEmpty()) {
 %>
     <div class="info">❌ No hotels found in "<%= searched %>"</div>
 <%
 }
-/* HOTEL LIST SHOWN */
 else {
 %>
 <div class="grid">

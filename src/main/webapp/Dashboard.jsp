@@ -1,4 +1,4 @@
-<%@page import="dtopackage.com.User"%>
+<%@page import="dtopackage.com.User"%> 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
@@ -99,7 +99,7 @@ nav{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,0.55); /* dark overlay */
+    background:rgba(0,0,0,0.55);
     z-index:-1;
 }
 
@@ -117,7 +117,6 @@ nav{
     font-size:16px;
     opacity:0.95;
 }
-
 
 /* SECTION */
 .section-title{
@@ -184,56 +183,6 @@ nav{
     font-size:11px;
     margin-bottom:8px;
 }
-/* FOOTER */
-footer{
-    background:#0f172a;
-    color:#cbd5e1;
-    padding:50px 0 20px;
-    margin-top:40px;
-}
-
-.footer-container{
-    max-width:1100px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:30px;
-}
-
-.footer-col h4{
-    color:white;
-    font-size:16px;
-    margin-bottom:14px;
-}
-
-.footer-col a{
-    display:block;
-    color:#cbd5e1;
-    text-decoration:none;
-    margin-bottom:8px;
-    font-size:14px;
-}
-
-.footer-col a:hover{
-    color:#38bdf8;
-}
-
-.footer-logo{
-    font-size:22px;
-    font-weight:700;
-    color:#38bdf8;
-    margin-bottom:12px;
-}
-
-.footer-bottom{
-    border-top:1px solid #1e293b;
-    margin-top:30px;
-    padding-top:15px;
-    text-align:center;
-    font-size:13px;
-    color:#94a3b8;
-}
-
 </style>
 
 </head>
@@ -258,21 +207,16 @@ footer{
 
 <!-- HERO -->
 <section class="hero">
-
-    <!-- Background Video -->
     <video autoplay muted loop playsinline>
         <source src="assets/videos/travel.mp4" type="video/mp4">
         Your browser does not support the video tag.
     </video>
 
-    <!-- Hero Content -->
     <div class="hero-content">
         <h1>Your Journey Starts Here</h1>
         <p>Book hotels, flights, cabs & unforgettable experiences</p>
     </div>
-
 </section>
-
 
 <!-- SERVICES -->
 <div class="section-title">Explore Services</div>
@@ -346,50 +290,7 @@ footer{
     </div>
 
 </div>
-<!-- FOOTER -->
-<footer>
-
-    <div class="footer-container">
-
-        <div class="footer-col">
-            <div class="footer-logo">✈ TripEase</div>
-            <p style="font-size:14px;line-height:1.6">
-                Your one-stop platform for booking hotels, flights, cabs, restaurants
-                and unforgettable travel experiences.
-            </p>
-        </div>
-
-        <div class="footer-col">
-            <h4>Company</h4>
-            <a href="#">About Us</a>
-            <a href="#">Careers</a>
-            <a href="#">Press</a>
-            <a href="#">Investor Relations</a>
-        </div>
-
-        <div class="footer-col">
-            <h4>Explore</h4>
-            <a href="HotelListServlet">Hotels</a>
-            <a href="SearchFlight">Flights</a>
-            <a href="VehicleListServlet">Cabs</a>
-            <a href="ToursServlet">Tours</a>
-        </div>
-
-        <div class="footer-col">
-            <h4>Support</h4>
-            <a href="#">Help Center</a>
-            <a href="#">Cancellation Policy</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        © 2025 TripEase. All rights reserved.
-    </div>
-
-</footer>
+<jsp:include page="footer.jsp" />
 
 </body>
 </html>

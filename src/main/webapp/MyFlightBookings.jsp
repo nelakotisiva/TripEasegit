@@ -44,10 +44,27 @@
             margin-bottom: 18px;
         }
 
+        .head-left{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+
         .title {
             font-size: 24px;
             color: #1f2d4f;
             font-weight: 700;
+        }
+
+        /* ✅ BACK BUTTON (ONLY ADDITION) */
+        .back-btn{
+            text-decoration:none;
+            padding:8px 14px;
+            background:#1f2d4f;
+            color:#ffffff;
+            border-radius:8px;
+            font-size:13px;
+            font-weight:600;
         }
 
         .card {
@@ -97,8 +114,11 @@
 <div class="wrap">
 
     <div class="head">
-        <!-- ❌ airplane symbol removed -->
-        <div class="title">My Flight Bookings</div>
+        <div class="head-left">
+            <a href="Dashboard.jsp" class="back-btn">← Back</a>
+            <div class="title">My Flight Bookings</div>
+        </div>
+
         <div>Welcome <strong><%= user.getFull_name() %></strong></div>
     </div>
 

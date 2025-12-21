@@ -9,10 +9,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 
 <style>
+/* ===== BODY ===== */
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
-  background:#eef2ff;
+  background:#eef2ff;   /* light background below hero */
 }
 
 /* ===== TOP CENTER ===== */
@@ -41,20 +42,34 @@ body{
   background:#0f172a;
 }
 
-/* ===== HERO ===== */
+/* ===== HERO (ONLY THIS HAS IMAGE) ===== */
 .hero{
-  height:240px;
-  background:linear-gradient(rgba(37,99,235,.85),rgba(37,99,235,.85)),
-  url("https://images.unsplash.com/photo-1529070538774-1843cb3265df");
+  height:260px;
+  background:
+    linear-gradient(
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.45)
+    ),
+    url("https://c8.alamy.com/comp/2FRH78G/travel-world-vector-banner-design-travel-and-book-now-text-in-mobile-app-with-airplane-transportation-element-for-flight-online-booking-background-2FRH78G.jpg");
+
   background-size:cover;
+  background-position:center;
+
   display:flex;
   align-items:center;
   justify-content:center;
   color:white;
-}
-.hero h1{font-size:36px;font-weight:800}
 
-/* ===== SEARCH ===== */
+  border-bottom-left-radius:30px;
+  border-bottom-right-radius:30px;
+}
+.hero h1{
+  font-size:36px;
+  font-weight:800;
+  text-shadow:0 6px 20px rgba(0,0,0,0.6);
+}
+
+/* ===== SEARCH BOX ===== */
 .search-box{
   max-width:1000px;
   margin:-40px auto 30px;
@@ -82,8 +97,12 @@ body{
   font-weight:700;
 }
 
-/* ===== CARDS ===== */
-.container{max-width:1100px;margin:auto;padding:20px}
+/* ===== FLIGHT CARDS ===== */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
@@ -97,7 +116,11 @@ body{
   gap:16px;
   box-shadow:0 18px 45px rgba(0,0,0,.12);
 }
-.price{font-size:22px;font-weight:900;color:#2563eb}
+.price{
+  font-size:22px;
+  font-weight:900;
+  color:#2563eb;
+}
 .book-btn{
   padding:10px 18px;
   border:none;
@@ -148,10 +171,12 @@ body{
   </div>
 </div>
 
+<!-- HERO -->
 <div class="hero">
   <h1>✈ Find Your Perfect Flight</h1>
 </div>
 
+<!-- SEARCH -->
 <div class="search-box">
 <form action="SearchFlight" method="get">
   <input name="source" placeholder="From" required>
@@ -161,6 +186,7 @@ body{
 </form>
 </div>
 
+<!-- FLIGHTS -->
 <div class="container">
 <div class="grid">
 
@@ -231,6 +257,7 @@ document.addEventListener("DOMContentLoaded",function(){
   const fid=document.getElementById("fid");
   const seats=document.getElementById("seats");
   const today=new Date().toISOString().split("T")[0];
+
   document.getElementById("searchDate").min=today;
   document.getElementById("travelDate").min=today;
 

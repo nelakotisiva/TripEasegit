@@ -4,17 +4,14 @@ import java.sql.Date;
 import java.util.List;
 
 import dtopackage.com.Flight;
-import dtopackage.com.FlightBooking;
 
 public interface FlightBookingDAO {
 
-	boolean bookFlight(int userId, int flightId, int seats, Date travelDate);
+    boolean bookFlight(int userId, int flightId, int seats, Date travelDate);
 
-	List<Flight> getMyFlightBookings(int userId);
+    List<Flight> getMyFlightBookings(int userId);
 
-	boolean bookFlight(int userId, int flightId, int seats);
+    Flight getFlightById(int flightId);   // ✅ NEW METHOD
 
-	
-    
-
+    boolean bookFlight(int userId, int flightId, int seats);
 }
