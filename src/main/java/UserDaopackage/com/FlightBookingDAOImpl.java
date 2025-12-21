@@ -1,50 +1,120 @@
 package UserDaopackage.com;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import dtopackage.com.Flight;
 import utilpackage.com.DBConnection;
 
 public class FlightBookingDAOImpl implements FlightBookingDAO {
 
-    /* ================= BOOK FLIGHT ================= */
+    /* ================= BOOK FLIGHT WITH DATE ================= */
     @Override
-    public boolean bookFlight(int userId, int flightId, int seats, java.sql.Date travelDate) {
+    public boolean bookFlight(int userId, int flightId, int seats, Date travelDate) {
 
-        String sql =
-            "INSERT INTO flight_booking " +
-            "(user_id, flight_id, num_seats, travel_date, status) " +
-            "VALUES (?, ?, ?, ?, 'CONFIRMED')";
+        Connection con = null;
 
-        try (Connection con = DBConnection.getConnector();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try {
+            con = DBConnection.getConnector();
+            con.setAutoCommit(false);
 
-            ps.setInt(1, userId);
-            ps.setInt(2, flightId);
-            ps.setInt(3, seats);        // 🔥 maps to num_seats
-            ps.setDate(4, travelDate);
+            // 1️⃣ Check available seats
+            PreparedStatement ps1 = con.prepareStatement(
+                "SELECT seats_available FROM flight WHERE flight_id=? FOR UPDATE"
+            );
+            ps1.setInt(1, flightId);
 
-            return ps.executeUpdate() == 1;
+            ResultSet rs = ps1.executeQuery();
+            if (!rs.next()) {
+                con.rollback();
+                return false;
+            }
+
+            int availableSeats = rs.getInt("seats_available");
+            if (availableSeats < seats) {
+                con.rollback();
+                return false;
+            }
+
+            // 2️⃣ Insert booking
+            PreparedStatement ps2 = con.prepareStatement(
+                "INSERT INTO flight_booking (user_id, flight_id, num_seats, travel_date, status) " +
+                "VALUES (?, ?, ?, ?, 'CONFIRMED')"
+            );
+            ps2.setInt(1, userId);
+            ps2.setInt(2, flightId);
+            ps2.setInt(3, seats);
+            ps2.setDate(4, travelDate);
+            ps2.executeUpdate();
+
+            // 3️⃣ Update seat count
+            PreparedStatement ps3 = con.prepareStatement(
+                "UPDATE flight SET seats_available = seats_available - ? WHERE flight_id=?"
+            );
+            ps3.setInt(1, seats);
+            ps3.setInt(2, flightId);
+            ps3.executeUpdate();
+
+            con.commit();
+            return true;
 
         } catch (Exception e) {
+            try {
+                if (con != null) con.rollback();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             e.printStackTrace();
         }
         return false;
     }
 
-    /* ================= OVERLOAD ================= */
+    /* ================= OVERLOADED BOOK FLIGHT ================= */
     @Override
     public boolean bookFlight(int userId, int flightId, int seats) {
         return bookFlight(
             userId,
             flightId,
             seats,
-            new java.sql.Date(System.currentTimeMillis())
+            new Date(System.currentTimeMillis())
         );
     }
 
-    /* ================= FETCH USER FLIGHTS ================= */
+    /* ================= GET FLIGHT BY ID ================= */
+    @Override
+    public Flight getFlightById(int flightId) {
+
+        Flight f = null;
+
+        String sql = "SELECT airline, source, destination, price FROM flight WHERE flight_id=?";
+
+        try (Connection con = DBConnection.getConnector();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, flightId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                f = new Flight();
+                f.setFlightId(flightId);
+                f.setAirline(rs.getString("airline"));
+                f.setSource(rs.getString("source"));
+                f.setDestination(rs.getString("destination"));
+                f.setPrice(rs.getDouble("price"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return f;
+    }
+
+    /* ================= GET USER BOOKINGS ================= */
     @Override
     public List<Flight> getMyFlightBookings(int userId) {
 
@@ -78,13 +148,14 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
 
-    /* ================= CANCEL FLIGHT ================= */
+    /* ================= CANCEL BOOKING ================= */
     public void cancelBooking(int bookingId) {
 
-        String sql = "UPDATE flight_booking SET status='Cancelled' WHERE booking_id=?";
+        String sql = "UPDATE flight_booking SET status='CANCELLED' WHERE booking_id=?";
 
         try (Connection con = DBConnection.getConnector();
              PreparedStatement ps = con.prepareStatement(sql)) {

@@ -46,12 +46,16 @@ body{
     linear-gradient(rgba(37,99,235,.9),rgba(37,99,235,.9)),
     url("https://images.unsplash.com/photo-1529070538774-1843cb3265df");
   background-size:cover;
+  background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
   color:white;
 }
-.hero h1{font-size:36px;font-weight:800}
+.hero h1{
+  font-size:36px;
+  font-weight:800;
+}
 
 /* SEARCH */
 .search-wrap{
@@ -86,7 +90,11 @@ body{
 }
 
 /* GRID */
-.container{max-width:1150px;margin:auto;padding:0 16px 60px}
+.container{
+  max-width:1150px;
+  margin:auto;
+  padding:0 16px 60px;
+}
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
@@ -103,7 +111,8 @@ body{
   box-shadow:0 16px 40px rgba(0,0,0,.12);
 }
 .logo{
-  width:60px;height:60px;
+  width:60px;
+  height:60px;
   border-radius:14px;
   background:#eef2ff;
   display:flex;
@@ -114,7 +123,11 @@ body{
 .info h4{margin:0}
 .info p{margin:4px 0;font-size:13px;color:#475569}
 .right{text-align:right}
-.price{font-size:22px;font-weight:900;color:var(--primary)}
+.price{
+  font-size:22px;
+  font-weight:900;
+  color:var(--primary);
+}
 .book-btn{
   margin-top:8px;
   padding:8px 16px;
@@ -128,7 +141,8 @@ body{
 
 /* MODAL */
 .modal-bg{
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
   background:rgba(0,0,0,.55);
   display:none;
   align-items:center;
@@ -139,7 +153,8 @@ body{
   background:white;
   padding:24px;
   border-radius:20px;
-  width:90%;max-width:420px;
+  width:90%;
+  max-width:420px;
 }
 .modal input{
   width:100%;
@@ -159,7 +174,8 @@ body{
 
 /* SUCCESS */
 .success-bg{
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
   background:rgba(0,0,0,.55);
   display:flex;
   align-items:center;
@@ -195,17 +211,17 @@ body{
 </div>
 
 <div class="search-wrap">
-<div class="search-box">
-<form action="SearchFlight" method="get">
-  <input name="source" placeholder="From"
-    value="<%=request.getAttribute("source")==null?"":request.getAttribute("source")%>" required>
-  <input name="destination" placeholder="To"
-    value="<%=request.getAttribute("destination")==null?"":request.getAttribute("destination")%>" required>
-  <input type="date" name="date"
-    value="<%=request.getAttribute("date")==null?"":request.getAttribute("date")%>" required>
-  <button>Search Flights</button>
-</form>
-</div>
+  <div class="search-box">
+    <form action="SearchFlight" method="get">
+      <input name="source" placeholder="From"
+        value="<%=request.getAttribute("source")==null?"":request.getAttribute("source")%>" required>
+      <input name="destination" placeholder="To"
+        value="<%=request.getAttribute("destination")==null?"":request.getAttribute("destination")%>" required>
+      <input type="date" name="date"
+        value="<%=request.getAttribute("date")==null?"":request.getAttribute("date")%>" required>
+      <button>Search Flights</button>
+    </form>
+  </div>
 </div>
 
 <div class="container">
@@ -259,7 +275,6 @@ for(Flight f:flights){
 </div>
 </div>
 
-<!-- ✅ FLIGHT → CAB POPUP -->
 <%
 String msg = (String)session.getAttribute("msg");
 String dest = (String)request.getAttribute("destination");

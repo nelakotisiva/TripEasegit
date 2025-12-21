@@ -1,4 +1,4 @@
-<%@page import="dtopackage.com.User"%>
+<%@page import="dtopackage.com.User"%> 
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
@@ -124,7 +124,7 @@ nav{
     content:"";
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,.55);
+    background:rgba(0,0,0,0.55);
     z-index:-1;
 }
 
@@ -191,7 +191,6 @@ nav{
     color:var(--muted);
 }
 
-/* BADGE */
 .badge{
     display:inline-block;
     background:var(--accent);
@@ -201,50 +200,11 @@ nav{
     font-size:11px;
     margin-bottom:8px;
 }
-
-/* FOOTER */
-footer{
-    background:#0f172a;
-    color:#cbd5e1;
-    padding:50px 0 20px;
-}
-
-.footer-container{
-    max-width:1100px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:30px;
-}
-
-.footer-col h4{
-    color:white;
-    margin-bottom:14px;
-}
-
-.footer-col a{
-    display:block;
-    color:#cbd5e1;
-    text-decoration:none;
-    margin-bottom:8px;
-    font-size:14px;
-}
-
-.footer-col a:hover{color:#38bdf8}
-
-.footer-bottom{
-    border-top:1px solid #1e293b;
-    margin-top:30px;
-    padding-top:15px;
-    text-align:center;
-    font-size:13px;
-}
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <nav>
     <div class="logo">✈ TripEase</div>
 
@@ -266,7 +226,6 @@ footer{
     <a class="logout-btn" href="LogoutServlet">Logout</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
     <video autoplay muted loop playsinline>
         <source src="assets/videos/travel.mp4" type="video/mp4">
@@ -277,7 +236,6 @@ footer{
     </div>
 </section>
 
-<!-- SERVICES -->
 <div class="section-title">Explore Services</div>
 <div class="grid">
     <div class="card" onclick="location.href='HotelListServlet'">
@@ -301,7 +259,6 @@ footer{
     </div>
 </div>
 
-<!-- TOURS -->
 <div class="section-title">Popular Tours & Packages</div>
 <div class="grid">
     <div class="card">
@@ -332,32 +289,8 @@ footer{
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer>
-    <div class="footer-container">
-        <div class="footer-col">
-            <h4>TripEase</h4>
-            <p>Your one-stop travel booking platform.</p>
-        </div>
-
-        <div class="footer-col">
-            <h4>Explore</h4>
-            <a href="HotelListServlet">Hotels</a>
-            <a href="SearchFlight">Flights</a>
-            <a href="VehicleListServlet">Cabs</a>
-            <a href="ToursServlet">Tours</a>
-        </div>
-
-        <div class="footer-col">
-            <h4>Support</h4>
-            <a href="#">Help Center</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-        </div>
-    </div>
-
-     
-</footer>
+<!-- ✅ FOOTER INCLUDE (your existing footer.jsp) -->
+<jsp:include page="footer.jsp"/>
 
 </body>
 </html>

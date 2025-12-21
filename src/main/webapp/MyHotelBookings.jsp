@@ -43,6 +43,7 @@
         .head {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 18px;
         }
 
@@ -50,6 +51,17 @@
             font-size: 24px;
             font-weight: 700;
             color: #1f3a3d;
+        }
+
+        /* ✅ BACK BUTTON */
+        .back-btn {
+            text-decoration: none;
+            padding: 8px 14px;
+            background: #1f3a3d;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         .card {
@@ -81,7 +93,6 @@
             gap: 8px;
         }
 
-        /* 🔥 INCREASED LOCATION ICON SIZE */
         .location-icon {
             width: 40px;
             height: 40px;
@@ -110,7 +121,12 @@
 
     <div class="head">
         <div class="title">My Hotel Bookings</div>
-        <div>Welcome, <strong><%= user.getFull_name() %></strong></div>
+
+        <div>
+            <a href="Dashboard.jsp" class="back-btn">← Back to Dashboard</a>
+            &nbsp;&nbsp;
+            Welcome, <strong><%= user.getFull_name() %></strong>
+        </div>
     </div>
 
     <% if (bookings.isEmpty()) { %>
@@ -132,10 +148,9 @@
                         <%= b.getHotelName() %>
                     </div>
 
-                    <!-- 📍 TRENDING LOCATION IMAGE (BIG) -->
                     <div class="sub">
                         <img
-                            src="https://external-preview.redd.it/i-quit-my-job-to-create-a-travel-itinerary-app-travigate-is-v0-FPHxWuyB7_x_DX942QmUv4NmTPJpE6WI2HzzaQ_fMo8.jpg?width=1080&crop=smart&auto=webp&s=27d92bc34d196f32e3551d3f2515508ec71ae6c4"
+                            src="https://external-preview.redd.it/i-quit-my-job-to-create-a-travel-itinerary-app-navigate-is-v0-FPHxWuyB7_x_DX942QmUv4NmTPJpE6WI2HzzaQ_fMo8.jpg?width=1080&crop=smart&auto=webp&s=27d92bc34d196f32e3551d3f2515508ec71ae6c4"
                             alt="Trending Location"
                             class="location-icon">
                         <%= b.getHotelLocation() %>

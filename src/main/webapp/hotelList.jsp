@@ -9,6 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Poppins',sans-serif;
@@ -38,10 +39,13 @@ body{
 
 /* HEADER */
 .header{
-    height:230px;
+    height:240px;
     background:
-        linear-gradient(rgba(59,165,139,.85),rgba(59,165,139,.85)),
-        url("https://images.unsplash.com/photo-1566073771259-6a8506099945");
+        linear-gradient(
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.45)
+        ),
+        url("https://static.vecteezy.com/system/resources/previews/035/874/268/non_2x/online-holiday-travel-mobile-app-concept-suitable-for-wallpaper-banner-background-card-book-illustration-web-and-landing-page-concept-illustration-in-flat-style-vector.jpg");
     background-size:cover;
     background-position:center;
     display:flex;
@@ -49,10 +53,13 @@ body{
     align-items:center;
     justify-content:center;
     color:white;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
 }
 .header h1{
     font-size:36px;
     font-weight:800;
+    text-shadow:0 6px 20px rgba(0,0,0,.6);
 }
 
 /* SEARCH */
@@ -80,18 +87,22 @@ body{
     border-radius:12px;
 }
 
-/* GRID */
+/* CONTAINER */
 .container{
     width:92%;
     max-width:1200px;
     margin:-40px auto 50px;
 }
+
+/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:24px;
     margin-top:30px;
 }
+
+/* CARD */
 .card{
     background:white;
     border-radius:18px;
@@ -200,6 +211,7 @@ List<Hotel> hotels = (List<Hotel>) request.getAttribute("hotels");
 if(hotels != null && !hotels.isEmpty()){
     for(Hotel h : hotels){
 %>
+
 <div class="card">
     <img src="<%= h.getImageUrl()==null
         ? "https://source.unsplash.com/800x600/?hotel"
@@ -213,6 +225,7 @@ if(hotels != null && !hotels.isEmpty()){
         </a>
     </div>
 </div>
+
 <%
     }
 } else {
