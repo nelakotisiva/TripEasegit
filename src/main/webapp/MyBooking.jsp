@@ -1,76 +1,53 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="dtopackage.com.User" %>
 <%@ page import="dtopackage.com.UserBooking" %>
 
 <%
-    User user = (User) session.getAttribute("userObj");
-    if (user == null) {
-        response.sendRedirect("Login.jsp");
-        return;
-    }
+User user = (User) session.getAttribute("userObj");
+if (user == null) {
+    response.sendRedirect("Login.jsp");
+    return;
+}
 
-    List<UserBooking> bookings =
-        (List<UserBooking>) request.getAttribute("allBookings");
+List<UserBooking> bookings =
+    (List<UserBooking>) request.getAttribute("allBookings");
+
+SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>My Bookings | TripEase</title>
+<title>My Bookings</title>
 
 <style>
-body{
-    margin:0;
-    padding:20px;
-    font-family:Poppins,sans-serif;
-    background:#e8f5f3;
-}
-.wrap{
-    max-width:920px;
-    margin:auto;
-}
-.head{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:20px;
-}
+body{background:#e8f5f3;font-family:Poppins;padding:20px;}
+.wrap{max-width:900px;margin:auto;}
 .card{
     background:#fff;
     border-radius:14px;
     padding:16px;
-    margin-bottom:14px;
+    margin-bottom:16px;
     box-shadow:0 6px 20px rgba(0,0,0,.08);
+}
+.type{font-weight:700;color:#1f3a3d;}
+.sub{color:#555;font-size:14px;}
+.total{color:#28a745;font-weight:800;margin-top:6px;}
+.btn{
+    background:#ff5252;
+    color:#fff;
+    border:none;
+    padding:6px 12px;
+    border-radius:8px;
     cursor:pointer;
-    transition:0.2s;
+    margin-top:10px;
 }
-.card:hover{
-    transform:translateY(-4px);
-}
-.type{
+.cancelled{
+    color:red;
     font-weight:700;
-    color:#1f3a3d;
-    margin-bottom:6px;
-}
-.sub{
-    color:#555;
-    font-size:14px;
-    margin-top:3px;
-}
-.total{
     margin-top:8px;
-    color:#28a745;
-    font-weight:800;
-}
-.empty{
-    text-align:center;
-    padding:40px;
-    background:#fff;
-    border-radius:12px;
-    color:#555;
 }
 </style>
 </head>
@@ -78,49 +55,48 @@ body{
 <body>
 <div class="wrap">
 
-    <div class="head">
-        <h2>My Bookings</h2>
-        <div>Welcome, <b><%= user.getFull_name() %></b></div>
-    </div>
+<h2>My Bookings</h2>
+<p>Welcome, <b><%= user.getFull_name() %></b></p>
 
 <% if (bookings == null || bookings.isEmpty()) { %>
 
-    <div class="empty">
-        You have no bookings yet.
-    </div>
+    <p>No bookings found.</p>
 
 <% } else {
-    for (UserBooking b : bookings) {
+   for (UserBooking b : bookings) {
 %>
 
-    <div class="card" onclick="location.href='<%= b.getDetailsUrl() %>'">
+<div class="card">
 
-        <!-- BOOKING TYPE -->
-        <div class="type"><%= b.getBookingType() %></div>
-
-        <!-- TITLE -->
-        <div class="sub">
-            <b><%= b.getTitle() %></b>
-        </div>
-
-        <!-- LOCATION / SUBTITLE -->
-        <% if (b.getSubtitle() != null) { %>
-            <div class="sub"><%= b.getSubtitle() %></div>
-        <% } %>
-
-        <!-- BOOKED DATE -->
-        <% if (b.getBookingDate() != null) { %>
-            <div class="sub">
-                Booked On: <%= b.getBookingDate() %>
-            </div>
-        <% } %>
-
-        <!-- PRICE -->
-        <div class="total">
-            ₹ <%= b.getAmount() %>
-        </div>
-
+    <div class="type">
+        <%= b.getIcon() != null ? b.getIcon() : "" %>
+        <%= b.getBookingType() %>
     </div>
+
+    <div class="sub"><b><%= b.getTitle() %></b></div>
+    <div class="sub"><%= b.getSubtitle() %></div>
+
+    <% if (b.getBookingDate() != null) { %>
+        <div class="sub">
+            Booked On: <%= sdf.format(b.getBookingDate()) %>
+        </div>
+    <% } %>
+
+    <div class="total">₹ <%= b.getAmount() %></div>
+
+    <% if (!"Cancelled".equalsIgnoreCase(b.getStatus())) { %>
+
+        <form action="CancelBookingServlet" method="post">
+            <input type="hidden" name="bookingId" value="<%= b.getBookingId() %>">
+            <input type="hidden" name="type" value="<%= b.getBookingType() %>">
+            <button class="btn">Cancel</button>
+        </form>
+
+    <% } else { %>
+        <div class="cancelled">Cancelled</div>
+    <% } %>
+
+</div>
 
 <% } } %>
 

@@ -11,8 +11,38 @@ public class Booking {
     private Date travelDate;
     private String status;
     private int numOfPeople;
-    private String serviceType;   // ✅ ADD THIS
 
+    // 🔹 VERY IMPORTANT
+    // RESTAURANT / TOUR / PLACE / CAB / HOTEL
+    private String serviceType;
+
+    // -------------------------
+    // Constructors
+    // -------------------------
+    public Booking() {}
+
+    public Booking(int bookingId,
+                   int userId,
+                   int destinationId,
+                   Date bookingDate,
+                   Date travelDate,
+                   String status,
+                   int numOfPeople,
+                   String serviceType) {
+
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.destinationId = destinationId;
+        this.bookingDate = bookingDate;
+        this.travelDate = travelDate;
+        this.status = status;
+        this.numOfPeople = numOfPeople;
+        this.serviceType = serviceType;
+    }
+
+    // -------------------------
+    // Getters & Setters
+    // -------------------------
     public int getBookingId() {
         return bookingId;
     }

@@ -106,6 +106,41 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
         return list;
     }
 
+    
+    @Override
+    public boolean cancelBooking(int bookingId) {
+
+        String sql1 =
+            "UPDATE restaurant_booking SET status='Cancelled' WHERE booking_id=?";
+
+        String sql2 =
+            "UPDATE booking SET status='Cancelled' " +
+            "WHERE booking_id=? AND service_type='RESTAURANT'";
+
+        try (Connection con = DBConnection.getConnector()) {
+
+            // 🔹 Cancel in restaurant_booking
+            try (PreparedStatement ps1 = con.prepareStatement(sql1)) {
+                ps1.setInt(1, bookingId);
+                ps1.executeUpdate();
+            }
+
+            // 🔹 Cancel in main booking table
+            try (PreparedStatement ps2 = con.prepareStatement(sql2)) {
+                ps2.setInt(1, bookingId);
+                ps2.executeUpdate();
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    
+    
     @Override
     public void saveServiceBooking(int userId,
                                    int destinationId,
