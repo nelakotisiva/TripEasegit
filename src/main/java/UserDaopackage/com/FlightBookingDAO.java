@@ -7,11 +7,15 @@ import dtopackage.com.Flight;
 
 public interface FlightBookingDAO {
 
+    // Book flight with travel date
     boolean bookFlight(int userId, int flightId, int seats, Date travelDate);
 
+    // Optional overloaded method (without travel date)
+    boolean bookFlight(int userId, int flightId, int seats);
+
+    // Get all bookings of a user
     List<Flight> getMyFlightBookings(int userId);
 
-    Flight getFlightById(int flightId);   // ✅ NEW METHOD
-
-    boolean bookFlight(int userId, int flightId, int seats);
+    // Get flight details by ID
+    Flight getFlightById(int flightId);
 }

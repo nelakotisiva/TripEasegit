@@ -1,4 +1,3 @@
-<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%
@@ -8,263 +7,270 @@
         return;
     }
 
-    int totalUsers         = session.getAttribute("totalUsers") != null ? (int)session.getAttribute("totalUsers") : 0;
-    int totalBookings      = session.getAttribute("totalBookings") != null ? (int)session.getAttribute("totalBookings") : 0;
-    int totalHotels        = session.getAttribute("totalHotels") != null ? (int)session.getAttribute("totalHotels") : 0;
-    int totalRestaurants   = session.getAttribute("totalRestaurants") != null ? (int)session.getAttribute("totalRestaurants") : 0;
-    int totalCabs          = session.getAttribute("totalCabs") != null ? (int)session.getAttribute("totalCabs") : 0;
+    int totalUsers       = session.getAttribute("totalUsers") != null ? (int)session.getAttribute("totalUsers") : 0;
+    int totalBookings    = session.getAttribute("totalBookings") != null ? (int)session.getAttribute("totalBookings") : 0;
+    int totalHotels      = session.getAttribute("totalHotels") != null ? (int)session.getAttribute("totalHotels") : 0;
+    int totalRestaurants = session.getAttribute("totalRestaurants") != null ? (int)session.getAttribute("totalRestaurants") : 0;
+    int totalCabs        = session.getAttribute("totalCabs") != null ? (int)session.getAttribute("totalCabs") : 0;
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <title>TripEase | Admin Dashboard</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to bottom right, #e8f0ff, #cdd9ff);
-    overflow-x: hidden;
+:root{
+    /* EARTHY PREMIUM PALETTE */
+    --panel:#ffffff;
+    --panel-soft:#ffffff;
+    --text:#2f2a23;
+    --muted:#5f574a;
+    --accent:#8a9a5b;
+    --border:#d9d2c3;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:'Inter',sans-serif;
+    background:
+        linear-gradient(
+            rgba(245,240,230,0.45),
+            rgba(245,240,230,0.45)
+        ),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1900&q=80");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    color:var(--text);
+}
+
+/* LAYOUT */
+.layout{
+    display:grid;
+    grid-template-columns:240px 1fr;
+    min-height:100vh;
 }
 
 /* SIDEBAR */
-.sidebar {
-    width: 250px;
-    height: 100vh;
-    background: rgba(1, 59, 255, 0.95);
-    color: white;
-    position: fixed;
-    padding: 32px 22px;
-    box-shadow: 6px 0 20px rgba(0,0,0,0.2);
-    border-radius: 0 20px 20px 0;
-    backdrop-filter: blur(10px);
+.sidebar{
+    background:var(--panel);
+    border-right:1px solid var(--border);
+    padding:32px 22px;
 }
 
-.sidebar h2 {
-    font-size: 28px;
-    margin-bottom: 35px;
-    font-weight: 700;
-    text-align: center;
+.brand{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:34px;
+    color:var(--accent);
 }
 
-.sidebar a {
-    display: block;
-    text-decoration: none;
-    padding: 14px;
-    margin: 12px 0;
-    border-radius: 12px;
-    color: #fff;
-    background: rgba(255,255,255,0.08);
-    transition: 0.35s ease;
-    font-weight: 500;
-    letter-spacing: 0.3px;
+.nav a{
+    display:block;
+    padding:10px 14px;
+    margin-bottom:8px;
+    text-decoration:none;
+    color:var(--muted);
+    border-radius:10px;
+    font-size:14px;
+    transition:.25s ease;
 }
 
-.sidebar a:hover, .sidebar .active {
-    background: rgba(255,255,255,0.25);
-    transform: translateX(8px);
+.nav a:hover{
+    background:rgba(138,154,91,0.15);
+    color:var(--text);
 }
 
-/* MAIN CONTENT */
-.main {
-    margin-left: 280px;
-    padding: 30px;
+.logout{
+    margin-top:26px;
+    color:#a94442 !important;
 }
 
-.welcome {
-    font-size: 30px;
-    font-weight: 700;
-    color: #0032d8;
-    margin-bottom: 30px;
-    animation: fadeIn 0.8s ease-in-out;
+/* MAIN */
+.main{
+    padding:38px 44px;
 }
 
-/* CARDS */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
+/* HEADER (FIXED & VISIBLE) */
+.header{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:22px 26px;
+    margin-bottom:30px;
 }
 
-.card {
-    background: rgba(255,255,255,0.5);
-    padding: 28px;
-    border-radius: 22px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.10);
-    backdrop-filter: blur(12px);
-    text-align: left;
-    position: relative;
-    overflow: hidden;
-    transition: 0.35s ease;
+.header h1{
+    font-size:26px;
+    font-weight:700;
+    color:var(--text);
 }
 
-.card:hover {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 18px 32px rgba(0, 0, 0, 0.25);
+.header p{
+    font-size:14px;
+    color:var(--muted);
+    margin-top:6px;
 }
 
-.emoji {
-    font-size: 44px;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    opacity: 0.20;
-    transition: 0.25s;
+/* KPI GRID */
+.kpis{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-bottom:40px;
 }
 
-.card:hover .emoji {
-    opacity: 0.45;
-    transform: scale(1.15);
+.kpi{
+    background:var(--panel-soft);
+    border-radius:18px;
+    padding:22px;
+    border:1px solid var(--border);
+    transition:.3s ease;
 }
 
-.card-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #0032d8;
-    margin-bottom: 10px;
+.kpi:hover{
+    transform:translateY(-4px);
+    box-shadow:0 18px 30px rgba(120,110,90,0.18);
 }
 
-.card-value {
-    font-size: 32px;
-    font-weight: 700;
-    color: #111;
+.kpi span{
+    font-size:12px;
+    color:var(--muted);
 }
 
-/* CHART BOX */
-.chart-box {
-    margin-top: 45px;
-    background: white;
-    padding: 30px;
-    border-radius: 25px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    animation: slideUp 0.7s ease-in-out;
+.kpi h2{
+    margin-top:6px;
+    font-size:26px;
+    font-weight:600;
+    color:var(--accent);
 }
 
-/* ANIMATIONS */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+/* ANALYTICS */
+.analytics{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:24px;
 }
 
-@media (max-width: 850px) {
-    .sidebar {
-        width: 220px;
-    }
-    .main {
-        margin-left: 240px;
-    }
+.panel{
+    background:var(--panel);
+    border-radius:20px;
+    padding:26px;
+    border:1px solid var(--border);
 }
-@media (max-width: 650px) {
-    .sidebar {
-        position: static;
-        width: 100%;
-        height: auto;
-        display: flex;
-        gap: 10px;
-        border-radius: 0;
-    }
-    .main {
-        margin-left: 0;
-        padding: 20px;
-    }
+
+.panel h3{
+    font-size:16px;
+    font-weight:600;
+    margin-bottom:16px;
+    color:var(--accent);
+}
+
+/* INSIGHTS */
+.insight{
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    font-size:13px;
+    border-bottom:1px solid var(--border);
+}
+
+.insight:last-child{border:none}
+.insight span{color:var(--muted)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+    .layout{grid-template-columns:1fr}
+    .sidebar{display:none}
+    .analytics{grid-template-columns:1fr}
 }
 </style>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </head>
+
 <body>
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <h2>⚙ Admin</h2>
-    <a href="AdminDashboard.jsp">Dashboard</a>
-    <a href="ManageUsers">👤 Manage Users</a>
-    <a href="ManageBookings">📦 Manage Bookings</a>
-    <a href="ManageHotels">🏨 Manage Hotels</a>
-<a href="AdminManageCabs">🚕 Manage Cab Rentals</a>
-    <a href="adminRestaurant?action=list">🍽 Manage Restaurants</a>
-    <a href="AdminLogoutServlet" style="background:#ff2e2e;margin-top:20px;">🚪 Logout</a>
-</div>
+<div class="layout">
 
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand">TripEase</div>
+        <nav class="nav">
+            <a href="AdminDashboard.jsp">Dashboard</a>
+            <a href="ManageUsers">Users</a>
+            <a href="ManageBookings">Bookings</a>
+            <a href="ManageHotels">Hotels</a>
+            <a href="AdminManageCabs">Cab Rentals</a>
+            <a href="adminRestaurant?action=list">Restaurants</a>
+            <a href="AdminLogoutServlet" class="logout">Logout</a>
+        </nav>
+    </aside>
 
-<!-- MAIN CONTENT -->
-<div class="main">
-    <div class="welcome">Welcome back, Admin 👋</div>
+    <!-- MAIN -->
+    <main class="main">
 
-    <div class="cards">
-
-        <div class="card">
-            <div class="emoji">👤</div>
-            <div class="card-title">Total Users</div>
-            <div class="card-value"><%= totalUsers %></div>
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Admin Dashboard</h1>
+            <p>Operational overview of the TripEase platform</p>
         </div>
 
-        <div class="card">
-            <div class="emoji">📦</div>
-            <div class="card-title">Total Bookings</div>
-            <div class="card-value"><%= totalBookings %></div>
-        </div>
+        <!-- KPI -->
+        <section class="kpis">
+            <div class="kpi"><span>Total Users</span><h2><%=totalUsers%></h2></div>
+            <div class="kpi"><span>Total Bookings</span><h2><%=totalBookings%></h2></div>
+            <div class="kpi"><span>Total Hotels</span><h2><%=totalHotels%></h2></div>
+            <div class="kpi"><span>Total Restaurants</span><h2><%=totalRestaurants%></h2></div>
+            <div class="kpi"><span>Total Cab Rentals</span><h2><%=totalCabs%></h2></div>
+        </section>
 
-        <div class="card">
-            <div class="emoji">🏨</div>
-            <div class="card-title">Total Hotels</div>
-            <div class="card-value"><%= totalHotels %></div>
-        </div>
+        <!-- ANALYTICS -->
+        <section class="analytics">
 
-        <div class="card">
-            <div class="emoji">🍽</div>
-            <div class="card-title">Total Restaurants</div>
-            <div class="card-value"><%= totalRestaurants %></div>
-        </div>
+            <div class="panel">
+                <h3>Platform Usage</h3>
+                <canvas id="chart"></canvas>
+            </div>
 
-        <div class="card">
-            <div class="emoji">🚕</div>
-            <div class="card-title">Total Cab Rentals</div>
-            <div class="card-value"><%= totalCabs %></div>
-        </div>
+            <div class="panel">
+                <h3>System Health</h3>
+                <div class="insight"><span>User Activity</span><strong>Normal</strong></div>
+                <div class="insight"><span>Booking Load</span><strong>Stable</strong></div>
+                <div class="insight"><span>Inventory Status</span><strong>Healthy</strong></div>
+                <div class="insight"><span>Service Availability</span><strong>Operational</strong></div>
+            </div>
 
-    </div>
+        </section>
 
-    <div class="chart-box">
-        <h3 style="margin-bottom:15px;">📊 System Overview</h3>
-        <canvas id="overviewChart"></canvas>
-    </div>
+    </main>
 
 </div>
 
 <script>
-const ctx = document.getElementById("overviewChart");
-
-new Chart(ctx, {
-    type: "bar",
-    data: {
-        labels: ["Users","Bookings","Hotels","Restaurants","Cabs"],
-        datasets: [{
-            label: "Counts",
-            data: [
-                <%= totalUsers %>,
-                <%= totalBookings %>,
-                <%= totalHotels %>,
-                <%= totalRestaurants %>,
-                <%= totalCabs %>
+new Chart(document.getElementById("chart"),{
+    type:"bar",
+    data:{
+        labels:["Users","Bookings","Hotels","Restaurants","Cabs"],
+        datasets:[{
+            data:[
+                <%=totalUsers%>,
+                <%=totalBookings%>,
+                <%=totalHotels%>,
+                <%=totalRestaurants%>,
+                <%=totalCabs%>
             ],
-            backgroundColor: "rgba(1,59,255,0.2)",
-            borderColor: "rgba(1,59,255,0.8)",
-            borderWidth: 2
+            backgroundColor:"#8a9a5b",
+            borderRadius:6
         }]
     },
-    options: {
-        responsive: true,
-        scales: { y: { beginAtZero: true } }
+    options:{
+        plugins:{legend:{display:false}},
+        scales:{y:{beginAtZero:true}}
     }
 });
 </script>

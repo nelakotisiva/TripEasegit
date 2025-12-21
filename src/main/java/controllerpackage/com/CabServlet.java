@@ -1,18 +1,21 @@
 package controllerpackage.com;
 
-import jakarta.servlet.*;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
+
 import java.io.IOException;
 import java.util.List;
 
 import Daopackage.com.CabDAO;
 import dtopackage.com.Cab;
 import dtopackage.com.User;
+import utilpackage.com.EmailUtil;
 
 @WebServlet("/VehicleListServlet")
 public class CabServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     private CabDAO dao;
 
     @Override
@@ -20,9 +23,7 @@ public class CabServlet extends HttpServlet {
         dao = new CabDAO();
     }
 
-    // -----------------------------------
-    // SHOW CABS (GET)
-    // -----------------------------------
+    /* ===================== SHOW CABS ===================== */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -35,18 +36,17 @@ public class CabServlet extends HttpServlet {
             return;
         }
 
-        int userId = user.getUser_id();
         String location = req.getParameter("location");
 
         List<Cab> vehicles;
         if (location != null && !location.trim().isEmpty()) {
-            vehicles = dao.getVehiclesByLocation(location);
+            vehicles = dao.getVehiclesByLocation(location.trim());
         } else {
             vehicles = dao.getAllVehicles();
         }
 
-        // Already booked cabs by this user
-        List<Integer> bookedIds = dao.getBookedVehicleIds(userId);
+        // 🔒 Block already booked cabs for this user
+        List<Integer> bookedIds = dao.getBookedVehicleIds(user.getUser_id());
 
         req.setAttribute("vehicles", vehicles);
         req.setAttribute("bookedIds", bookedIds);
@@ -55,9 +55,7 @@ public class CabServlet extends HttpServlet {
         req.getRequestDispatcher("Cabs.jsp").forward(req, resp);
     }
 
-    // -----------------------------------
-    // BOOK CAB (POST)
-    // -----------------------------------
+    /* ===================== BOOK CAB ===================== */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -76,17 +74,35 @@ public class CabServlet extends HttpServlet {
         try {
             rentalId = Integer.parseInt(req.getParameter("rentalId"));
             passengers = Integer.parseInt(req.getParameter("passengers"));
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             resp.sendRedirect("VehicleListServlet?msg=invalid");
             return;
         }
 
-        boolean ok = dao.saveBooking(user.getUser_id(), rentalId, passengers);
+        String location = req.getParameter("location");
 
-        if (ok) {
-            resp.sendRedirect("VehicleListServlet?msg=success");
+        // 🔹 SAVE CAB BOOKING
+        boolean booked = dao.saveBooking(user.getUser_id(), rentalId, passengers);
+
+        if (booked) {
+
+            /* ================= EMAIL NOTIFICATION ================= */
+            String subject = "🚕 New Cab Booking - TripEase";
+
+            String message =
+                    "New Cab Booking Received\n\n" +
+                    "User Name   : " + user.getFull_name() + "\n" +
+                    "User Email  : " + user.getEmail() + "\n" +
+                    "Cab ID      : " + rentalId + "\n" +
+                    "Passengers  : " + passengers + "\n\n" +
+                    "Please login to admin panel for details.";
+
+            // ⚠️ currently sending to user email
+            EmailUtil.sendEmail(user.getEmail(), subject, message);
+
+            resp.sendRedirect("VehicleListServlet?location=" + location + "&msg=success");
         } else {
-            resp.sendRedirect("VehicleListServlet?msg=fail");
+            resp.sendRedirect("VehicleListServlet?location=" + location + "&msg=fail");
         }
     }
 }

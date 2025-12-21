@@ -2,6 +2,7 @@ package dtopackage.com;
 
 public class Flight {
 
+    // ===== Flight master data =====
     private int flightId;
     private String airline;
     private String source;
@@ -12,7 +13,12 @@ public class Flight {
     private double price;
     private int seatsAvailable;
 
-    // Getters & Setters
+    // ===== Booking-specific data =====
+    private int bookingId;
+    private String status;
+
+    // ---------------- Getters & Setters ----------------
+
     public int getFlightId() { return flightId; }
     public void setFlightId(int flightId) { this.flightId = flightId; }
 
@@ -39,4 +45,11 @@ public class Flight {
 
     public int getSeatsAvailable() { return seatsAvailable; }
     public void setSeatsAvailable(int seatsAvailable) { this.seatsAvailable = seatsAvailable; }
+
+    // ===== Booking info =====
+    public int getBookingId() { return bookingId; }
+    public void setBookingId(int bookingId) { this.bookingId = bookingId; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

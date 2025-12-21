@@ -2,6 +2,9 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
+encoding//src/main/java/controllerpackage/com/Bookserv.java=UTF-8
+encoding//src/main/java/dtopackage/com/BookingDTO.java=UTF-8
+encoding//src/main/java/utilpackage/com/DBConnection.java=UTF-8
 encoding//src/main/webapp/AdminHotels.jsp=UTF-8
 encoding//src/main/webapp/AdminManageCabs.jsp=UTF-8
 encoding//src/main/webapp/BookingSuccess.jsp=UTF-8

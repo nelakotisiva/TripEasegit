@@ -214,7 +214,7 @@ nav{
         <a href="SearchFlight">Flights</a>
         <a href="VehicleListServlet">Cabs</a>
         <a href="nearbyRestaurants">Restaurants</a>
-        <a href="ToursServlet">Tours</a>
+        <a href="tourpackage.jsp">Tours</a>
         <a href="PlacesServlet">Places</a>
         <a href="MyBookingsServlet">My Bookings</a>
 
