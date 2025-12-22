@@ -149,7 +149,7 @@
 
 <!-- BACK BUTTON -->
 <div class="back-wrap">
-    <a href="HotelList.jsp" class="back-btn">← Back to Hotels</a>
+    <a href="hotelList.jsp" class="back-btn">← Back to Hotels</a>
 </div>
 
 <div class="card">
