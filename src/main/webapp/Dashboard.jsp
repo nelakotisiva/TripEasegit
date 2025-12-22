@@ -215,7 +215,7 @@ nav{
         <a href="VehicleListServlet">Cabs</a>
         <a href="nearbyRestaurants">Restaurants</a>
         <a href="tourpackage.jsp">Tours</a>
-        <a href="PlacesServlet">Places</a>
+       
         <a href="MyBookingsServlet">My Bookings</a>
 
         <a href="ProfileServlet" class="profile-icon" title="My Profile">
