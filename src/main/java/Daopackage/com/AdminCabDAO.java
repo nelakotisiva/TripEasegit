@@ -8,7 +8,7 @@ import utilpackage.com.DBConnection;
 
 public class AdminCabDAO {
 
-    Connection con = DBConnection.getConnector();
+    Connection con = DBConnection.getConnection();
 
     public List<Cab> getAllCabs() {
         List<Cab> list = new ArrayList<>();

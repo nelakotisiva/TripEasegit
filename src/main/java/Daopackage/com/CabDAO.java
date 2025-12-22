@@ -8,7 +8,7 @@ import utilpackage.com.DBConnection;
 
 public class CabDAO {
 
-    private Connection con = DBConnection.getConnector();
+    private Connection con = DBConnection.getConnection();
 
     /* ================= SEARCH BY LOCATION ================= */
     public List<Cab> getVehiclesByLocation(String location) {
@@ -146,16 +146,17 @@ public class CabDAO {
     /* ================= STATUS-BASED CANCEL ================= */
     public void cancelCabBooking(int bookingId) {
 
-        String sql = "UPDATE cab_booking SET status='Cancelled' WHERE booking_id=?";
+        String sql = "DELETE FROM cab_booking WHERE booking_id = ?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, bookingId);
-            ps.executeUpdate();
+            ps.executeUpdate();   // 🔥 PERMANENT DELETE
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

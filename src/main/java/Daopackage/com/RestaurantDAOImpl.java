@@ -13,7 +13,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
     private Connection con;
 
     public RestaurantDAOImpl() {
-        con = DBConnection.getConnector();
+        con = DBConnection.getConnection();
     }
 
     // -------------------------------
@@ -206,7 +206,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             "WHERE rb.user_id = ? " +
             "ORDER BY rb.booking_date DESC";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
@@ -247,7 +247,7 @@ public class RestaurantDAOImpl implements RestaurantDAO {
             "ORDER BY rb.booking_date DESC " +
             "LIMIT 1";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);

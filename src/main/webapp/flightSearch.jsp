@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.*, dtopackage.com.Flight" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.time.LocalDate" %>
 
 <!DOCTYPE html>
 <html>
@@ -14,24 +15,33 @@
   --primary:#2563eb;
   --secondary:#0ea5e9;
   --bg:#eef2ff;
-  --text:#1e293b;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
   background:var(--bg);
 }
 
-/* BACK */
+/* NAV */
 .back-dashboard{
   position:fixed;
   top:18px;
   left:18px;
-  z-index:999;
+  z-index:1000;
   background:#0f172a;
+  color:white;
+  padding:10px 18px;
+  border-radius:20px;
+  text-decoration:none;
+  font-weight:600;
+}
+.my-flight-btn{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:1000;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
   color:white;
   padding:10px 18px;
   border-radius:20px;
@@ -41,26 +51,33 @@ body{
 
 /* HERO */
 .hero{
+  position:relative;
   height:240px;
-  background:
-    linear-gradient(rgba(37,99,235,.9),rgba(37,99,235,.9)),
-    url("https://images.unsplash.com/photo-1529070538774-1843cb3265df");
+  width:100%;
+  background:url("https://c8.alamy.com/comp/2FRH78G/travel-world-vector-banner-design-travel-and-book-now-text-in-mobile-app-with-airplane-transportation-element-for-flight-online-booking-background-2FRH78G.jpg");
   background-size:cover;
   background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.35);
 }
 .hero h1{
-  font-size:36px;
+  position:relative;
+  color:white;
+  font-size:34px;
   font-weight:800;
 }
 
 /* SEARCH */
 .search-wrap{
   max-width:1100px;
-  margin:-40px auto 30px;
+  margin:20px auto 30px;
   padding:0 16px;
 }
 .search-box{
@@ -87,6 +104,7 @@ body{
   padding:12px 24px;
   border-radius:12px;
   cursor:pointer;
+  font-weight:700;
 }
 
 /* GRID */
@@ -139,7 +157,7 @@ body{
   cursor:pointer;
 }
 
-/* MODAL */
+/* BOOK MODAL */
 .modal-bg{
   position:fixed;
   inset:0;
@@ -172,7 +190,7 @@ body{
 .cancel{background:#e5e7eb}
 .confirm{background:var(--primary);color:white}
 
-/* SUCCESS */
+/* SUCCESS POPUP */
 .success-bg{
   position:fixed;
   inset:0;
@@ -180,7 +198,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:3000;
+  z-index:6000;
 }
 .success{
   background:white;
@@ -204,26 +222,35 @@ body{
 
 <body>
 
+<!-- NAV -->
 <a href="Dashboard.jsp" class="back-dashboard">← Dashboard</a>
+<a href="MyFlightBookings" class="my-flight-btn">My Flight Bookings</a>
 
+<!-- HERO -->
 <div class="hero">
   <h1>✈ Find Your Perfect Flight</h1>
 </div>
 
+<!-- SEARCH -->
 <div class="search-wrap">
   <div class="search-box">
     <form action="SearchFlight" method="get">
       <input name="source" placeholder="From"
         value="<%=request.getAttribute("source")==null?"":request.getAttribute("source")%>" required>
+
       <input name="destination" placeholder="To"
         value="<%=request.getAttribute("destination")==null?"":request.getAttribute("destination")%>" required>
+
       <input type="date" name="date"
+        min="<%=LocalDate.now()%>"
         value="<%=request.getAttribute("date")==null?"":request.getAttribute("date")%>" required>
+
       <button>Search Flights</button>
     </form>
   </div>
 </div>
 
+<!-- FLIGHTS -->
 <div class="container">
 <div class="grid">
 
@@ -259,14 +286,15 @@ for(Flight f:flights){
 </div>
 </div>
 
-<!-- BOOK MODAL -->
+<!-- BOOK FLIGHT MODAL -->
 <div class="modal-bg" id="modal">
 <div class="modal">
 <h3>Confirm Booking</h3>
 <form action="BookFlight" method="post">
   <input type="hidden" name="flightId" id="fid">
-  <input type="date" name="date" required>
+  <input type="date" name="date" min="<%=LocalDate.now()%>" required>
   <input type="number" name="seats" id="seats" min="1" required>
+
   <div class="actions">
     <button type="button" class="cancel" onclick="closeModal()">Cancel</button>
     <button class="confirm">Confirm</button>
@@ -275,21 +303,23 @@ for(Flight f:flights){
 </div>
 </div>
 
+<!-- SUCCESS → ASK CAB -->
 <%
-String msg = (String)session.getAttribute("msg");
-String dest = (String)request.getAttribute("destination");
+String booked = request.getParameter("booked");
+String dest = request.getParameter("dest");
 
-if(msg!=null && msg.contains("successfully") && dest!=null){
-    String city = dest.split(" ")[0];
-    String encodedCity = URLEncoder.encode(city,"UTF-8");
+if("true".equals(booked) && dest != null){
+String encodedCity = URLEncoder.encode(dest,"UTF-8");
 %>
+
 <div class="success-bg">
   <div class="success">
     <h2>🎉 Flight Booked!</h2>
-    <p><%=msg%></p>
-    <p><b>Book a cab at <%=city%>?</b></p>
+    <p>Your flight booking is confirmed.</p>
+    <p><b>Do you want to book a cab at <%= dest %>?</b></p>
+
     <div style="margin-top:18px;display:flex;gap:12px;justify-content:center">
-      <a href="VehicleListServlet?location=<%=encodedCity%>">
+      <a href="VehicleListServlet?location=<%= encodedCity %>">
         <button class="my">Yes, Book Cab</button>
       </a>
       <a href="Dashboard.jsp">
@@ -298,10 +328,8 @@ if(msg!=null && msg.contains("successfully") && dest!=null){
     </div>
   </div>
 </div>
-<%
-session.removeAttribute("msg");
-}
-%>
+
+<% } %>
 
 <script>
 const modal=document.getElementById("modal");

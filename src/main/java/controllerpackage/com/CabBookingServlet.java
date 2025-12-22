@@ -15,6 +15,7 @@ import Daopackage.com.CabDAO;
 @WebServlet("/CabBookingServlet")
 public class CabBookingServlet extends HttpServlet {
 
+    private static final long serialVersionUID = 1L;
     private CabDAO dao;
 
     @Override
@@ -54,10 +55,21 @@ public class CabBookingServlet extends HttpServlet {
             return;
         }
 
-        int bookingId = Integer.parseInt(req.getParameter("bookingId"));
+        String bookingIdStr = req.getParameter("bookingId");
 
-        dao.cancelCabBooking(bookingId); // ✅ STATUS-BASED CANCEL
+        if (bookingIdStr == null) {
+            resp.sendRedirect("CabBookingServlet?msg=invalid");
+            return;
+        }
 
-        resp.sendRedirect("CabBookingServlet");
+        try {
+            int bookingId = Integer.parseInt(bookingIdStr);
+            dao.cancelCabBooking(bookingId);
+        } catch (NumberFormatException e) {
+            resp.sendRedirect("CabBookingServlet?msg=invalid");
+            return;
+        }
+
+        resp.sendRedirect("CabBookingServlet?msg=cancelled");
     }
 }

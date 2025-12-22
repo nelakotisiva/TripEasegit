@@ -37,9 +37,10 @@ public class MyBookingsServlet extends HttpServlet {
         List<UserBooking> allBookings = new ArrayList<>();
 
         /* ================= 🏨 HOTELS ================= */
-        HotelBookingDAOImpl hotelDAO = new HotelBookingDAOImpl();
-        for (Bookingg h : hotelDAO.getBookingsByUser(userId)) {
+        List<Bookingg> hotelBookings =
+                new HotelBookingDAOImpl().getBookingsByUser(userId);
 
+        for (Bookingg h : hotelBookings) {
             UserBooking ub = new UserBooking();
             ub.setBookingId(h.getBookingId());
             ub.setIcon("🏨");
@@ -63,7 +64,7 @@ public class MyBookingsServlet extends HttpServlet {
             ub.setBookingType("CAB");
             ub.setTitle(c.getModel());
             ub.setSubtitle(c.getLocation());
-            ub.setBookingDate(new Date()); // fallback (no date column)
+            ub.setBookingDate(new Date()); // fallback
             ub.setAmount(c.getPricePerDay());
             ub.setStatus(c.getStatus());
 
@@ -141,7 +142,7 @@ public class MyBookingsServlet extends HttpServlet {
             allBookings.add(ub);
         }
 
-        /* ================= SORT BY DATE (LATEST FIRST) ================= */
+        /* ================= SORT BY DATE ================= */
         Collections.sort(allBookings, (a, b) -> {
             if (a.getBookingDate() == null && b.getBookingDate() == null) return 0;
             if (a.getBookingDate() == null) return 1;
@@ -152,6 +153,6 @@ public class MyBookingsServlet extends HttpServlet {
         /* ================= SEND TO JSP ================= */
         req.setAttribute("allBookings", allBookings);
         req.getRequestDispatcher("MyBooking.jsp")
-           .forward(req, resp);
+                .forward(req, resp);
     }
 }

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import Daopackage.com.CabDAO;
@@ -38,14 +39,11 @@ public class CabServlet extends HttpServlet {
 
         String location = req.getParameter("location");
 
-        List<Cab> vehicles;
-        if (location != null && !location.trim().isEmpty()) {
-            vehicles = dao.getVehiclesByLocation(location.trim());
-        } else {
-            vehicles = dao.getAllVehicles();
-        }
+        List<Cab> vehicles =
+                (location != null && !location.trim().isEmpty())
+                        ? dao.getVehiclesByLocation(location.trim())
+                        : dao.getAllVehicles();
 
-        // 🔒 Block already booked cabs for this user
         List<Integer> bookedIds = dao.getBookedVehicleIds(user.getUser_id());
 
         req.setAttribute("vehicles", vehicles);
@@ -68,39 +66,47 @@ public class CabServlet extends HttpServlet {
             return;
         }
 
+        String rentalIdStr = req.getParameter("rentalId");
+        String passengersStr = req.getParameter("passengers");
+        String location = req.getParameter("location");
+
+        if (rentalIdStr == null || passengersStr == null) {
+            resp.sendRedirect("VehicleListServlet?msg=invalid");
+            return;
+        }
+
         int rentalId;
         int passengers;
 
         try {
-            rentalId = Integer.parseInt(req.getParameter("rentalId"));
-            passengers = Integer.parseInt(req.getParameter("passengers"));
+            rentalId = Integer.parseInt(rentalIdStr);
+            passengers = Integer.parseInt(passengersStr);
         } catch (NumberFormatException e) {
             resp.sendRedirect("VehicleListServlet?msg=invalid");
             return;
         }
 
-        String location = req.getParameter("location");
-
-        // 🔹 SAVE CAB BOOKING
         boolean booked = dao.saveBooking(user.getUser_id(), rentalId, passengers);
 
         if (booked) {
 
-            /* ================= EMAIL NOTIFICATION ================= */
-            String subject = "🚕 New Cab Booking - TripEase";
+            String subject = "🚕 TripEase - Cab Booking Confirmation";
 
             String message =
-                    "New Cab Booking Received\n\n" +
-                    "User Name   : " + user.getFull_name() + "\n" +
-                    "User Email  : " + user.getEmail() + "\n" +
+                    "Hello " + user.getFull_name() + ",\n\n" +
+                    "Your cab booking is CONFIRMED.\n\n" +
                     "Cab ID      : " + rentalId + "\n" +
                     "Passengers  : " + passengers + "\n\n" +
-                    "Please login to admin panel for details.";
+                    "Thank you for choosing TripEase.\n\n" +
+                    "Regards,\nTripEase Team";
 
-            // ⚠️ currently sending to user email
             EmailUtil.sendEmail(user.getEmail(), subject, message);
 
-            resp.sendRedirect("VehicleListServlet?location=" + location + "&msg=success");
+            String loc = (location != null)
+                    ? URLEncoder.encode(location, "UTF-8")
+                    : "";
+
+            resp.sendRedirect("VehicleListServlet?location=" + loc + "&msg=success");
         } else {
             resp.sendRedirect("VehicleListServlet?location=" + location + "&msg=fail");
         }

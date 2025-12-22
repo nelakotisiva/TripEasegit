@@ -23,7 +23,6 @@
             color: var(--text-main);
         }
 
-        /* ===== HEADER ===== */
         header {
             position: fixed;
             top: 0;
@@ -89,7 +88,6 @@
             padding: 0 20px;
         }
 
-        /* ===== HERO ===== */
         .hero-banner {
             height: 220px;
             border-radius: 24px;
@@ -119,11 +117,7 @@
             font-weight: 800;
         }
 
-        /* ===== SECTIONS ===== */
         .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             margin-bottom: 20px;
         }
 
@@ -194,7 +188,6 @@
 
 <main>
 
-    <!-- HERO -->
     <div class="hero-banner">
         <video class="hero-bg-video" autoplay muted loop playsinline>
             <source src="assets/videos/Trip.mp4" type="video/mp4">
@@ -205,33 +198,30 @@
         </h1>
     </div>
 
-    <!-- TRENDING -->
     <div class="section-header">
         <h2>Trending Destinations</h2>
     </div>
 
     <div class="grid">
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4">
-            <div class="card-info"><h3>Bali Escape</h3></div>
-        </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1547234935-80c7145ec969">
-            <div class="card-info"><h3>Santorini</h3></div>
-        </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c">
-            <div class="card-info"><h3>Dubai</h3></div>
-        </div>
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9">
-            <div class="card-info"><h3>Venice</h3></div>
-        </div>
+        <!-- ORIGINAL 8 -->
+        <div class="card"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4"><div class="card-info"><h3>Bali Escape</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1547234935-80c7145ec969"><div class="card-info"><h3>Santorini</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c"><div class="card-info"><h3>Dubai</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9"><div class="card-info"><h3>Venice</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e"><div class="card-info"><h3>Maldives</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1505761671935-60b3a7427bad"><div class="card-info"><h3>Paris</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1541417904950-b855846fe074"><div class="card-info"><h3>Switzerland</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1"><div class="card-info"><h3>Thailand</h3></div></div>
+
+        <!-- EXTRA 4 (London image changed) -->
+        <div class="card"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee"><div class="card-info"><h3>New York</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1488747279002-c8523379faaa"><div class="card-info"><h3>London</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf"><div class="card-info"><h3>Tokyo</h3></div></div>
+        <div class="card"><img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34"><div class="card-info"><h3>Rome</h3></div></div>
     </div>
 
 </main>
 
-<!-- ✅ COMMON FOOTER -->
 <jsp:include page="footer.jsp" />
 
 </body>

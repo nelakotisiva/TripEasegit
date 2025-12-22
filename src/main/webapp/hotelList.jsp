@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="java.util.*, dtopackage.com.Hotel" %>
+<%@ page import="java.net.URLEncoder" %>
 
 <!DOCTYPE html>
 <html>
@@ -9,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* ===== BODY ===== */
 body{
     margin:0;
     font-family:'Poppins',sans-serif;
@@ -29,22 +29,28 @@ body{
     border-radius:999px;
     text-decoration:none;
     font-weight:600;
-    font-size:14px;
     box-shadow:0 8px 20px rgba(59,165,139,.35);
-    transition:.3s;
 }
-.dashboard-btn:hover{
-    transform:translateX(-4px);
+
+/* MY BOOKINGS */
+.my-bookings-btn{
+    position:fixed;
+    top:18px;
+    right:18px;
+    z-index:10000;
+    background:linear-gradient(135deg,#06b7ff,#3ba58b);
+    color:white;
+    padding:10px 20px;
+    border-radius:999px;
+    text-decoration:none;
+    font-weight:600;
 }
 
 /* HEADER */
 .header{
     height:240px;
     background:
-        linear-gradient(
-            rgba(0,0,0,0.45),
-            rgba(0,0,0,0.45)
-        ),
+        linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)),
         url("https://static.vecteezy.com/system/resources/previews/035/874/268/non_2x/online-holiday-travel-mobile-app-concept-suitable-for-wallpaper-banner-background-card-book-illustration-web-and-landing-page-concept-illustration-in-flat-style-vector.jpg");
     background-size:cover;
     background-position:center;
@@ -59,7 +65,6 @@ body{
 .header h1{
     font-size:36px;
     font-weight:800;
-    text-shadow:0 6px 20px rgba(0,0,0,.6);
 }
 
 /* SEARCH */
@@ -68,7 +73,6 @@ body{
     background:white;
     padding:14px;
     border-radius:18px;
-    box-shadow:0 15px 35px rgba(0,0,0,.15);
     display:flex;
     gap:10px;
 }
@@ -87,14 +91,12 @@ body{
     border-radius:12px;
 }
 
-/* CONTAINER */
+/* GRID */
 .container{
     width:92%;
     max-width:1200px;
     margin:-40px auto 50px;
 }
-
-/* GRID */
 .grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
@@ -179,7 +181,6 @@ body{
     border:none;
     padding:10px 18px;
     border-radius:12px;
-    font-weight:700;
 }
 </style>
 </head>
@@ -187,10 +188,12 @@ body{
 <body>
 
 <a href="Dashboard.jsp" class="dashboard-btn">← Dashboard</a>
+<a href="MyHotelBookings.jsp" class="my-bookings-btn">My Hotel Bookings</a>
 
 <%
-String msg = request.getParameter("msg");
-String city = request.getParameter("city");
+String city = request.getParameter("location");
+String booked = request.getParameter("booked");
+String encodedCity = city == null ? "" : URLEncoder.encode(city,"UTF-8");
 %>
 
 <div class="header">
@@ -226,31 +229,29 @@ if(hotels != null && !hotels.isEmpty()){
     </div>
 </div>
 
-<%
-    }
-} else {
-%>
+<% } } else { %>
 <div style="grid-column:1/-1;text-align:center;font-weight:600;">
     🔍 Search hotels to continue
 </div>
-<%
-}
-%>
+<% } %>
 
 </div>
 </div>
 
-<!-- HOTEL → RESTAURANT POPUP -->
+<!-- ✅ HOTEL BOOKED → ASK RESTAURANT -->
 <div class="modal-bg" id="hotelModal">
     <div class="modal">
         <h2>🎉 Hotel Booked!</h2>
-        <p>Hotel booked successfully.</p>
+        <p>Your hotel booking is confirmed.</p>
         <p><b>Do you want to book a restaurant at <%= city %>?</b></p>
 
         <div class="actions">
-            <a href="nearbyRestaurants">
+            <!-- YES → RESTAURANTS -->
+            <a href="nearbyRestaurants?location=<%= encodedCity %>">
                 <button class="yes">Yes, Book Restaurant</button>
             </a>
+
+            <!-- NO → DASHBOARD -->
             <a href="Dashboard.jsp">
                 <button class="no">No, Later</button>
             </a>
@@ -258,7 +259,7 @@ if(hotels != null && !hotels.isEmpty()){
     </div>
 </div>
 
-<% if("success".equals(msg)){ %>
+<% if ("true".equals(booked)) { %>
 <script>
 document.getElementById("hotelModal").style.display="flex";
 </script>
