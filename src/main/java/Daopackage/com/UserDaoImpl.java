@@ -15,7 +15,7 @@ public class UserDaoImpl implements UserDao {
 
         String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (con == null) return false;
@@ -43,7 +43,7 @@ public class UserDaoImpl implements UserDao {
         User user = null;
         String sql = "SELECT * FROM user WHERE username=? AND password=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (con == null) return null;
@@ -77,7 +77,7 @@ public class UserDaoImpl implements UserDao {
         User user = null;
         String sql = "SELECT * FROM user WHERE user_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (con == null) return null;
@@ -109,7 +109,7 @@ public class UserDaoImpl implements UserDao {
 
         String sql = "UPDATE user SET full_name=?, username=?, email=?, phone=?, role=? WHERE user_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (con == null) return false;
@@ -136,7 +136,7 @@ public class UserDaoImpl implements UserDao {
         List<User> list = new ArrayList<>();
         String sql = "SELECT * FROM user";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -166,7 +166,7 @@ public class UserDaoImpl implements UserDao {
 
         String sql = "INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (con == null) return false;
@@ -193,7 +193,7 @@ public class UserDaoImpl implements UserDao {
 
         String sql = "DELETE FROM user WHERE user_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (con == null) return false;

@@ -15,7 +15,7 @@ public class HotelDAOImpl implements HotelDAO {
     private Connection con;
 
     public HotelDAOImpl() {
-        con = DBConnection.getConnector();
+        con = DBConnection.getConnection();
         if (con == null) {
             System.out.println("❌ DB connection failed");
         } else {

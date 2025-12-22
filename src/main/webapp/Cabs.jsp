@@ -4,20 +4,23 @@
 <%@ page import="java.net.URLEncoder" %>
 
 <%
-    User user = (User) session.getAttribute("userObj");
-    if(user == null){
-        response.sendRedirect("Login.jsp");
-        return;
-    }
+User user = (User) session.getAttribute("userObj");
+if(user == null){
+    response.sendRedirect("Login.jsp");
+    return;
+}
 
-    List<Cab> list = (List<Cab>) request.getAttribute("vehicles");
-    List<Integer> booked = (List<Integer>) request.getAttribute("bookedIds");
+List<Cab> list = (List<Cab>) request.getAttribute("vehicles");
+List<Integer> booked =
+        request.getAttribute("bookedIds") == null
+        ? new ArrayList<>()
+        : (List<Integer>) request.getAttribute("bookedIds");
 
-    String location = request.getAttribute("location") == null
-            ? request.getParameter("location")
-            : request.getAttribute("location").toString();
+String location = request.getAttribute("location") == null
+        ? request.getParameter("location")
+        : request.getAttribute("location").toString();
 
-    String msg = request.getParameter("msg");
+String msg = request.getParameter("msg");
 %>
 
 <!DOCTYPE html>
@@ -29,7 +32,6 @@
 
 <style>
 *{box-sizing:border-box;font-family:'Poppins',sans-serif;}
-
 body{
     margin:0;
     background:linear-gradient(135deg,#667eea,#764ba2);
@@ -45,12 +47,27 @@ body{
     justify-content:space-between;
     align-items:center;
     border-radius:14px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+}
+.left-actions{
+    display:flex;
+    gap:12px;
+    align-items:center;
 }
 .logo{
     font-size:24px;
     font-weight:700;
     color:#4a00e0;
+}
+.back-dashboard{
+    background:#374151;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+}
+.back-dashboard:hover{
+    background:#1f2937;
 }
 
 /* SEARCH */
@@ -60,24 +77,13 @@ body{
     padding:20px;
     width:60%;
     border-radius:14px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.2);
     display:flex;
     gap:12px;
 }
-.search-box input{
-    flex:1;
-    padding:12px;
-    border-radius:8px;
-    border:1px solid #ccc;
-}
+.search-box input{flex:1;padding:12px;}
 .search-box button{
     background:linear-gradient(90deg,#ff512f,#dd2476);
-    color:#fff;
-    border:none;
-    padding:12px 22px;
-    border-radius:8px;
-    cursor:pointer;
-    font-weight:600;
+    color:#fff;border:none;padding:12px 22px;
 }
 
 /* GRID */
@@ -87,45 +93,25 @@ body{
     grid-template-columns:repeat(3,1fr);
     gap:25px;
 }
-@media(max-width:1100px){.cab-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:700px){.cab-grid{grid-template-columns:1fr;}}
-
-/* CARD */
 .cab-card{
     background:#fff;
     padding:20px;
     border-radius:16px;
-    box-shadow:0 12px 28px rgba(0,0,0,0.25);
 }
 .cab-img{
-    width:100%;
-    height:260px;
-    object-fit:cover;
-    border-radius:14px;
+    width:100%;height:260px;
+    object-fit:cover;border-radius:14px;
 }
-.price{
-    font-size:20px;
-    font-weight:700;
-    color:#4a00e0;
-}
+.price{font-size:20px;font-weight:700;color:#4a00e0;}
 .book-form{
     margin-top:15px;
     display:flex;
     gap:8px;
 }
-.book-form input{
-    width:80px;
-    padding:8px;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
+.book-form input{width:80px;padding:8px;}
 .book-form button{
-    flex:1;
-    background:linear-gradient(90deg,#00c6ff,#0072ff);
-    color:#fff;
-    border:none;
-    border-radius:6px;
-    font-weight:600;
+    flex:1;background:#0072ff;
+    color:#fff;border:none;border-radius:6px;
 }
 .booked{
     margin-top:10px;
@@ -133,11 +119,11 @@ body{
     color:#b30000;
 }
 
-/* ===== POPUP (CAB → HOTEL) ===== */
+/* POPUP */
 .modal-bg{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.6);
+    background:rgba(0,0,0,0.6);
     display:none;
     align-items:center;
     justify-content:center;
@@ -145,37 +131,30 @@ body{
 }
 .modal{
     background:#fff;
-    padding:26px;
-    width:360px;
+    padding:28px;
+    width:380px;
     border-radius:20px;
     text-align:center;
 }
-.modal h2{
-    margin:0;
-    color:#2563eb;
-}
-.modal p{
-    margin:10px 0;
-}
 .actions{
-    margin-top:18px;
+    margin-top:20px;
     display:flex;
     gap:12px;
     justify-content:center;
 }
-.yes{
+.yes-btn{
     background:#2563eb;
     color:white;
     border:none;
-    padding:10px 16px;
+    padding:10px 18px;
     border-radius:10px;
     font-weight:600;
 }
-.no{
+.no-btn{
     background:#6b7280;
     color:white;
     border:none;
-    padding:10px 16px;
+    padding:10px 18px;
     border-radius:10px;
     font-weight:600;
 }
@@ -184,8 +163,14 @@ body{
 
 <body>
 
+<!-- HEADER -->
 <div class="header">
-    <div class="logo">TripEase Cabs</div>
+    <div class="left-actions">
+        <!-- ✅ BACK TO DASHBOARD (BEFORE BOOKING) -->
+        <a href="Dashboard.jsp" class="back-dashboard"> Dashboard</a>
+        <div class="logo">TripEase Cabs</div>
+    </div>
+
     <a href="CabBookingServlet"
        style="text-decoration:none;background:#00c6ff;color:white;
               padding:10px 18px;border-radius:8px;font-weight:600;">
@@ -193,14 +178,15 @@ body{
     </a>
 </div>
 
+<!-- SEARCH -->
 <form class="search-box" method="get" action="VehicleListServlet">
     <input type="text" name="location" placeholder="Enter Pickup Location"
            value="<%= location==null?"":location %>" required>
     <button>Search Cabs</button>
 </form>
 
+<!-- CAB LIST -->
 <div class="cab-grid">
-
 <%
 if(list!=null && !list.isEmpty()){
 for(Cab c:list){
@@ -229,23 +215,22 @@ for(Cab c:list){
 <% }} else { %>
 <h2 style="color:white;text-align:center;width:100%;">No Cabs Found</h2>
 <% } %>
-
 </div>
 
-<!-- ✅ CAB BOOKED → HOTEL POPUP -->
+<!-- POPUP AFTER SUCCESS -->
 <div class="modal-bg" id="cabHotelModal">
     <div class="modal">
-        <h2>🚕 Cab Booked!</h2>
-        <p>Cab booked successfully!</p>
-        <p><b>Do you want to book a hotel at <%= location %>?</b></p>
+        <h2>🚕 Cab Booked Successfully!</h2>
+        <p>Do you want to book a hotel at <%= location %>?</p>
 
         <div class="actions">
             <a href="HotelListServlet?location=<%= URLEncoder.encode(location==null?"":location,"UTF-8") %>">
-                <button class="yes" type="button">Yes, Book Hotel</button>
+                <button class="yes-btn" type="button">Yes, Book Hotel</button>
             </a>
-            <a href="Dashboard.jsp">
-                <button class="no" type="button">No, Later</button>
-            </a>
+            <button class="no-btn" type="button"
+                    onclick="document.getElementById('cabHotelModal').style.display='none'">
+                No, Later
+            </button>
         </div>
     </div>
 </div>

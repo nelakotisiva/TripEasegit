@@ -10,7 +10,7 @@ public class FlightDAOImpl implements FlightDAO {
     private final Connection con;
 
     public FlightDAOImpl() {
-        con = DBConnection.getConnector();
+        con = DBConnection.getConnection();
     }
 
     @Override

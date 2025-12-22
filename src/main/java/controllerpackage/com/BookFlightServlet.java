@@ -1,6 +1,7 @@
 package controllerpackage.com;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.sql.Date;
 
 import UserDaopackage.com.FlightBookingDAO;
@@ -34,46 +35,53 @@ public class BookFlightServlet extends HttpServlet {
 
         User user = (User) session.getAttribute("userObj");
 
-        int flightId = Integer.parseInt(req.getParameter("flightId"));
-        int seats = Integer.parseInt(req.getParameter("seats"));
-        Date travelDate = Date.valueOf(req.getParameter("date"));
+        try {
+            int flightId = Integer.parseInt(req.getParameter("flightId"));
+            int seats = Integer.parseInt(req.getParameter("seats"));
+            Date travelDate = Date.valueOf(req.getParameter("date"));
 
-        // ✅ FETCH FLIGHT DETAILS FROM DB
-        Flight flight = bookingDAO.getFlightById(flightId);
+            // 🔹 Fetch flight details
+            Flight flight = bookingDAO.getFlightById(flightId);
 
-        boolean success = bookingDAO.bookFlight(
-                user.getUser_id(),
-                flightId,
-                seats,
-                travelDate
-        );
+            boolean success = bookingDAO.bookFlight(
+                    user.getUser_id(),
+                    flightId,
+                    seats,
+                    travelDate
+            );
 
-        if (success && flight != null) {
+            if (success && flight != null) {
 
-            double totalPrice = flight.getPrice() * seats;
+                double totalPrice = flight.getPrice() * seats;
 
-            String subject = "Flight Booking Confirmation - TripEase";
+                // ✅ SEND EMAIL AFTER SUCCESS
+                String subject = "TripEase - Flight Booking Confirmation";
+                String body =
+                        "Hello " + user.getFull_name() + ",\n\n" +
+                        "Your flight booking is CONFIRMED.\n\n" +
+                        "Airline: " + flight.getAirline() + "\n" +
+                        "Route: " + flight.getSource() + " - " + flight.getDestination() + "\n" +
+                        "Travel Date: " + travelDate + "\n" +
+                        "Seats Booked: " + seats + "\n" +
+                        "Total Price: ₹" + totalPrice + "\n\n" +
+                        "Thank you for choosing TripEase.\n\n" +
+                        "Regards,\nTripEase Team";
 
-            String message =
-                "Hello " + user.getFull_name() + ",\n\n" +
-                "🎉 Your flight booking is CONFIRMED!\n\n" +
-                "Airline: " + flight.getAirline() + "\n" +
-                "Route: " + flight.getSource() + " - " + flight.getDestination() + "\n" +
-                "Travel Date: " + travelDate + "\n" +
-                "Seats Booked: " + seats + "\n" +
-                "Total Price: ₹" + totalPrice + "\n\n" +
-                "Thank you for booking with TripEase.\n" +
-                "Have a safe and pleasant journey!\n\n" +
-                "Regards,\nTripEase Team";
+                EmailUtil.sendEmail(user.getEmail(), subject, body);
 
-            EmailUtil.sendEmail(user.getEmail(), subject, message);
+                // ✅ IMPORTANT: redirect to SERVLET, NOT JSP
+                String dest = URLEncoder.encode(flight.getDestination(), "UTF-8");
 
-            session.setAttribute("msg", "Flight booked successfully! Confirmation email sent.");
+                resp.sendRedirect("SearchFlight?booked=true&dest=" + dest);
+                return;
+            }
 
-        } else {
-            session.setAttribute("msg", "Booking failed. Seats not available.");
+            // ❌ Booking failed
+            resp.sendRedirect("SearchFlight?msg=failed");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.sendRedirect("SearchFlight?msg=error");
         }
-
-        resp.sendRedirect("SearchFlight");
     }
 }

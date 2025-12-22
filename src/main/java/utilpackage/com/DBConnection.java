@@ -11,18 +11,15 @@ public class DBConnection {
         "&serverTimezone=Asia/Kolkata";
 
     private static final String USER = "root";
+    private static final String PASS = "sql@123";
 
-    private static final String PASS = "tiger";
-
-
-    public static Connection getConnector() {
-
+    // 🔥 FIXED METHOD NAME
+    public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(URL, USER, PASS);
-
         } catch (Exception e) {
-            System.out.println("â�Œ DATABASE CONNECTION FAILED â€“ CHECK MYSQL SERVER");
+            System.out.println("❌ DATABASE CONNECTION FAILED");
             e.printStackTrace();
             return null;
         }

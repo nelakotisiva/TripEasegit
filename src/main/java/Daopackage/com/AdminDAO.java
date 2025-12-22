@@ -10,7 +10,7 @@ public class AdminDAO {
     public Admin adminLogin(String uname, String pass) {
         Admin admin = null;
         try {
-            Connection con = DBConnection.getConnector();
+            Connection con = DBConnection.getConnection();
             PreparedStatement ps = con.prepareStatement(
                 "SELECT * FROM admin WHERE username=? AND password=?");
             ps.setString(1, uname);
@@ -34,7 +34,7 @@ public class AdminDAO {
     public int count(String table) {
         int count = 0;
         try {
-            Connection con = DBConnection.getConnector();
+            Connection con = DBConnection.getConnection();
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM " + table);
             if (rs.next()) count = rs.getInt(1);

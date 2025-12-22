@@ -15,7 +15,7 @@ public class DestinationDAOImpl implements DestinationDAO {
         List<Destination> list = new ArrayList<>();
         String sql = "SELECT * FROM destination";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -44,7 +44,7 @@ public class DestinationDAOImpl implements DestinationDAO {
         List<Destination> list = new ArrayList<>();
         String sql = "SELECT * FROM destination WHERE name LIKE ? OR location LIKE ?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             String k = "%" + keyword + "%";

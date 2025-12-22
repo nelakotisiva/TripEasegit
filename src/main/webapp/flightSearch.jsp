@@ -16,16 +16,14 @@
   --secondary:#0ea5e9;
   --bg:#eef2ff;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:'Poppins',sans-serif;
   background:var(--bg);
 }
 
-/* NAV BUTTONS */
+/* NAV */
 .back-dashboard{
   position:fixed;
   top:18px;
@@ -51,14 +49,13 @@ body{
   font-weight:600;
 }
 
-/* HERO – FULL WIDTH FIX */
+/* HERO */
 .hero{
   position:relative;
   height:240px;
   width:100%;
   background:url("https://c8.alamy.com/comp/2FRH78G/travel-world-vector-banner-design-travel-and-book-now-text-in-mobile-app-with-airplane-transportation-element-for-flight-online-booking-background-2FRH78G.jpg");
-  background-size:cover;     /* ✅ FIX */
-  background-repeat:no-repeat;
+  background-size:cover;
   background-position:center;
   display:flex;
   align-items:center;
@@ -72,11 +69,9 @@ body{
 }
 .hero h1{
   position:relative;
-  z-index:1;
   color:white;
   font-size:34px;
   font-weight:800;
-  text-shadow:0 6px 20px rgba(0,0,0,.6);
 }
 
 /* SEARCH */
@@ -162,7 +157,7 @@ body{
   cursor:pointer;
 }
 
-/* MODAL */
+/* BOOK MODAL */
 .modal-bg{
   position:fixed;
   inset:0;
@@ -195,7 +190,7 @@ body{
 .cancel{background:#e5e7eb}
 .confirm{background:var(--primary);color:white}
 
-/* SUCCESS */
+/* SUCCESS POPUP */
 .success-bg{
   position:fixed;
   inset:0;
@@ -203,7 +198,7 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:3000;
+  z-index:6000;
 }
 .success{
   background:white;
@@ -227,13 +222,16 @@ body{
 
 <body>
 
+<!-- NAV -->
 <a href="Dashboard.jsp" class="back-dashboard">← Dashboard</a>
 <a href="MyFlightBookings" class="my-flight-btn">My Flight Bookings</a>
 
+<!-- HERO -->
 <div class="hero">
   <h1>✈ Find Your Perfect Flight</h1>
 </div>
 
+<!-- SEARCH -->
 <div class="search-wrap">
   <div class="search-box">
     <form action="SearchFlight" method="get">
@@ -252,6 +250,7 @@ body{
   </div>
 </div>
 
+<!-- FLIGHTS -->
 <div class="container">
 <div class="grid">
 
@@ -287,7 +286,7 @@ for(Flight f:flights){
 </div>
 </div>
 
-<!-- BOOK MODAL -->
+<!-- BOOK FLIGHT MODAL -->
 <div class="modal-bg" id="modal">
 <div class="modal">
 <h3>Confirm Booking</h3>
@@ -304,21 +303,23 @@ for(Flight f:flights){
 </div>
 </div>
 
+<!-- SUCCESS → ASK CAB -->
 <%
-String msg = (String)session.getAttribute("msg");
-String dest = (String)request.getAttribute("destination");
-if(msg!=null && msg.contains("successfully") && dest!=null){
-String city = dest.split(" ")[0];
-String encodedCity = URLEncoder.encode(city,"UTF-8");
+String booked = request.getParameter("booked");
+String dest = request.getParameter("dest");
+
+if("true".equals(booked) && dest != null){
+String encodedCity = URLEncoder.encode(dest,"UTF-8");
 %>
 
 <div class="success-bg">
   <div class="success">
     <h2>🎉 Flight Booked!</h2>
-    <p><%=msg%></p>
-    <p><b>Book a cab at <%=city%>?</b></p>
+    <p>Your flight booking is confirmed.</p>
+    <p><b>Do you want to book a cab at <%= dest %>?</b></p>
+
     <div style="margin-top:18px;display:flex;gap:12px;justify-content:center">
-      <a href="VehicleListServlet?location=<%=encodedCity%>">
+      <a href="VehicleListServlet?location=<%= encodedCity %>">
         <button class="my">Yes, Book Cab</button>
       </a>
       <a href="Dashboard.jsp">
@@ -328,10 +329,7 @@ String encodedCity = URLEncoder.encode(city,"UTF-8");
   </div>
 </div>
 
-<%
-session.removeAttribute("msg");
-}
-%>
+<% } %>
 
 <script>
 const modal=document.getElementById("modal");

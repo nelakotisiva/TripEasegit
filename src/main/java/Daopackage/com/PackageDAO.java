@@ -13,7 +13,7 @@ public class PackageDAO {
 	public List<dtopackage.com.PackageDTO> getByDestination(String dest) {
 		List<dtopackage.com.PackageDTO> list = new ArrayList<>();
 		String sql = "SELECT * FROM packages WHERE destination = ?";
-		try (Connection con = DBConnection.getConnector(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, dest);
 			try (ResultSet rs = ps.executeQuery()) {
 				while (rs.next()) {
@@ -36,7 +36,7 @@ public class PackageDAO {
 
 	public dtopackage.com.PackageDTO findById(int id) {
 		String sql = "SELECT * FROM packages WHERE id=?";
-		try (Connection con = DBConnection.getConnector(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = DBConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setInt(1, id);
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {

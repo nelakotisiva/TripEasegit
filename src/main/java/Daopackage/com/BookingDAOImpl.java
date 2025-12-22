@@ -17,7 +17,7 @@ public class BookingDAOImpl implements BookingDAO {
         Booking booking = null;
         String sql = "SELECT * FROM booking WHERE booking_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, bookingId);
@@ -51,7 +51,7 @@ public class BookingDAOImpl implements BookingDAO {
                      "(user_id, destination_id, booking_date, travel_date, status, num_of_people) " +
                      "VALUES (?, ?, CURDATE(), ?, 'Confirmed', ?)";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
@@ -73,7 +73,7 @@ public class BookingDAOImpl implements BookingDAO {
 
         String sql = "UPDATE booking SET status=?, num_of_people=? WHERE booking_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, status);
@@ -94,7 +94,7 @@ public class BookingDAOImpl implements BookingDAO {
 
         String sql = "DELETE FROM booking WHERE booking_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, bookingId);
@@ -116,7 +116,7 @@ public class BookingDAOImpl implements BookingDAO {
             "(user_id, destination_id, booking_date, travel_date, status, num_of_people) " +
             "VALUES (?, ?, CURDATE(), ?, 'Confirmed', ?)";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps =
                 con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -149,7 +149,7 @@ public class BookingDAOImpl implements BookingDAO {
 
         String sql = "SELECT * FROM booking WHERE user_id=? ORDER BY booking_date DESC";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
@@ -188,7 +188,7 @@ public class BookingDAOImpl implements BookingDAO {
 
         String sql = "SELECT * FROM booking ORDER BY travel_date DESC";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();

@@ -13,7 +13,6 @@ body{
     background:#f1f5f9;
     font-family:Arial, sans-serif;
 }
-
 .container{
     max-width:1100px;
     margin:auto;
@@ -21,28 +20,14 @@ body{
     padding:30px;
     border-radius:10px;
 }
-
-h2{
-    text-align:center;
-    margin-bottom:20px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
+h2{text-align:center;margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;}
 th, td{
     padding:12px;
     border:1px solid #ddd;
     text-align:center;
 }
-
-th{
-    background:#2563eb;
-    color:white;
-}
-
+th{background:#2563eb;color:white;}
 .cancel-btn{
     background:#ef4444;
     color:white;
@@ -51,7 +36,6 @@ th{
     border-radius:4px;
     cursor:pointer;
 }
-
 .hotel-btn{
     background:#16a34a;
     color:white;
@@ -61,7 +45,6 @@ th{
     cursor:pointer;
     margin-left:8px;
 }
-
 .back-btn{
     display:block;
     width:200px;
@@ -101,13 +84,13 @@ if(list != null && !list.isEmpty()){
     <td>₹ <%= c.getPricePerDay() %></td>
 
     <td>
-        <!-- CANCEL -->
+        <!-- ✅ CANCEL (FIXED PARAM NAME) -->
         <form action="CabBookingServlet" method="post" style="display:inline;">
-            <input type="hidden" name="rentalId" value="<%= c.getRentalId() %>">
+            <input type="hidden" name="bookingId" value="<%= c.getBookingId() %>">
             <button type="submit" class="cancel-btn">Cancel</button>
         </form>
 
-        <!-- BOOK HOTEL (THIS WILL SHOW & WORK) -->
+        <!-- BOOK HOTEL -->
         <a href="HotelListServlet?location=<%= c.getLocation() %>">
             <button type="button" class="hotel-btn">Book Hotel</button>
         </a>

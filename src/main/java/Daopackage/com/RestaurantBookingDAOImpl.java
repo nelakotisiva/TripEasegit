@@ -17,7 +17,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
             "(user_id, restaurant_id, booking_date, num_people, status) " +
             "VALUES (?,?,?,?,?)";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, rb.getUserId());
@@ -60,7 +60,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
         String sql =
             "SELECT destination_id FROM restaurant WHERE restaurant_id=?";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, restaurantId);
@@ -83,7 +83,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
             "SELECT * FROM restaurant_booking " +
             "WHERE user_id=? ORDER BY booking_date DESC";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
@@ -117,7 +117,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
             "UPDATE booking SET status='Cancelled' " +
             "WHERE booking_id=? AND service_type='RESTAURANT'";
 
-        try (Connection con = DBConnection.getConnector()) {
+        try (Connection con = DBConnection.getConnection()) {
 
             // 🔹 Cancel in restaurant_booking
             try (PreparedStatement ps1 = con.prepareStatement(sql1)) {
@@ -152,7 +152,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
             "(user_id, destination_id, booking_date, status, num_of_people) " +
             "VALUES (?, ?, ?, 'Confirmed', ?)";
 
-        try (Connection con = DBConnection.getConnector();
+        try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
