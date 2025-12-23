@@ -33,6 +33,7 @@
         </p>
 
         <a href="tourpackage.jsp" class="btn">Book another package</a>
+         <a href="Dashboard.jsp" class="btn">Dashboard</a>
 <%
     }
 %>
