@@ -23,7 +23,7 @@ public interface BookingDAO {
 
     boolean deleteBooking(int bookingId);
 
-    // ✅ ONE service booking method ONLY
+    // âœ… ONE service booking method ONLY
     boolean saveServiceBooking(int userId,
                                int destinationId,
                                Date travelDate,
