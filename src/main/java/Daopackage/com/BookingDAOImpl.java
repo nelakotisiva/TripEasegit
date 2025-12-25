@@ -166,7 +166,7 @@ public class BookingDAOImpl implements BookingDAO {
                 booking.setStatus(rs.getString("status"));
                 booking.setNumOfPeople(rs.getInt("num_of_people"));
 
-                // ✅ THIS IS THE KEY LINE
+                // âœ… THIS IS THE KEY LINE
                 booking.setServiceType(rs.getString("service_type"));
 
                 list.add(booking);

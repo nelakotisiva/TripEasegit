@@ -67,7 +67,15 @@
 				    }
 				%>
 				</div>
+				<script>
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date().toISOString().split("T")[0];
+
+    // Set minimum date for travel and return dates
+    document.querySelector('input[name="travelDate"]').setAttribute("min", today);
+    document.querySelector('input[name="returnDate"]').setAttribute("min", today);
+</script>
+				
 
 				</body>
 				</html>
-				    
