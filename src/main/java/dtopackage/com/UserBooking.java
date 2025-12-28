@@ -150,4 +150,15 @@ public class UserBooking {
     public void setDetailsUrl(String detailsUrl) {
         this.detailsUrl = detailsUrl;
     }
+    
+    private String serviceType; // HOTEL / FLIGHT / CAB / RESTAURANT
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
 }

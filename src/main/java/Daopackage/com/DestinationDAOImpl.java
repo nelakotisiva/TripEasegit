@@ -71,4 +71,28 @@ public class DestinationDAOImpl implements DestinationDAO {
 
         return list;
     }
+    public Destination getDestinationById(int destinationId) {
+
+        String sql = "SELECT * FROM destination WHERE destination_id=?";
+        Destination d = null;
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, destinationId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                d = new Destination();
+                d.setDestinationId(rs.getInt("destination_id"));
+                d.setLocation(rs.getString("location"));
+                d.setImageUrl(rs.getString("image_url"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
+
 }

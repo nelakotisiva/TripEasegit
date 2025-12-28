@@ -143,16 +143,26 @@ public class CabDAO {
         return list;
     }
 
-    /* ================= STATUS-BASED CANCEL ================= */
     public void cancelCabBooking(int bookingId) {
 
-        String sql = "DELETE FROM cab_booking WHERE booking_id = ?";
+        String sql1 =
+            "UPDATE cab_booking SET status='Cancelled' WHERE booking_id=?";
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql2 =
+            "UPDATE booking SET status='Cancelled' " +
+            "WHERE booking_id=? AND service_type='CAB'";
 
-            ps.setInt(1, bookingId);
-            ps.executeUpdate();   // 🔥 PERMANENT DELETE
+        try (Connection con = DBConnection.getConnection()) {
+
+            try (PreparedStatement ps1 = con.prepareStatement(sql1)) {
+                ps1.setInt(1, bookingId);
+                ps1.executeUpdate();
+            }
+
+            try (PreparedStatement ps2 = con.prepareStatement(sql2)) {
+                ps2.setInt(1, bookingId);
+                ps2.executeUpdate();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,12 +43,14 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
 
     @Override
     public List<Flight> getMyFlightBookings(int userId) {
+
         List<Flight> list = new ArrayList<>();
 
         String sql =
-            "SELECT f.* FROM flight_booking fb " +
+            "SELECT fb.booking_id, fb.status, fb.travel_date, f.* " +
+            "FROM flight_booking fb " +
             "JOIN flight f ON fb.flight_id = f.flight_id " +
-            "WHERE fb.user_id = ? ORDER BY fb.booking_id DESC";
+            "WHERE fb.user_id=? ORDER BY fb.booking_id DESC";
 
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -57,19 +60,23 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
 
             while (rs.next()) {
                 Flight f = new Flight();
+                f.setBookingId(rs.getInt("booking_id"));
+                f.setStatus(rs.getString("status"));
+                f.setBookingDate(rs.getDate("travel_date"));
                 f.setFlightId(rs.getInt("flight_id"));
-                f.setAirline(rs.getString("airline"));   // 🔥 FIXED
+                f.setAirline(rs.getString("airline"));
                 f.setSource(rs.getString("source"));
                 f.setDestination(rs.getString("destination"));
                 f.setPrice(rs.getDouble("price"));
                 list.add(f);
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         return list;
     }
+
 
     @Override
     public Flight getFlightById(int flightId) {
@@ -101,13 +108,26 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
     
     public void cancelBooking(int bookingId) {
 
-        String sql = "DELETE FROM flight_booking WHERE booking_id = ?";
+        String sql1 =
+            "UPDATE flight_booking SET status='Cancelled' WHERE booking_id=?";
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql2 =
+            "UPDATE booking SET status='Cancelled' " +
+            "WHERE booking_id=? AND service_type='FLIGHT'";
 
-            ps.setInt(1, bookingId);
-            ps.executeUpdate();
+        try (Connection con = DBConnection.getConnection()) {
+
+            // 🔹 Cancel flight_booking
+            try (PreparedStatement ps1 = con.prepareStatement(sql1)) {
+                ps1.setInt(1, bookingId);
+                ps1.executeUpdate();
+            }
+
+            // 🔹 Cancel main booking
+            try (PreparedStatement ps2 = con.prepareStatement(sql2)) {
+                ps2.setInt(1, bookingId);
+                ps2.executeUpdate();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

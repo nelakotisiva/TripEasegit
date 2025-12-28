@@ -28,6 +28,7 @@ th, td{
     text-align:center;
 }
 th{background:#2563eb;color:white;}
+
 .cancel-btn{
     background:#ef4444;
     color:white;
@@ -36,15 +37,12 @@ th{background:#2563eb;color:white;}
     border-radius:4px;
     cursor:pointer;
 }
-.hotel-btn{
-    background:#16a34a;
-    color:white;
-    border:none;
-    padding:8px 14px;
-    border-radius:4px;
-    cursor:pointer;
-    margin-left:8px;
+
+.cancelled{
+    color:red;
+    font-weight:bold;
 }
+
 .back-btn{
     display:block;
     width:200px;
@@ -62,13 +60,14 @@ th{background:#2563eb;color:white;}
 <body>
 
 <div class="container">
-<h2>My Booked Cabs</h2>
+<h2>🚕 My Booked Cabs</h2>
 
 <table>
 <tr>
     <th>Model</th>
     <th>Location</th>
     <th>Price</th>
+    <th>Status</th>
     <th>Action</th>
 </tr>
 
@@ -83,17 +82,21 @@ if(list != null && !list.isEmpty()){
     <td><%= c.getLocation() %></td>
     <td>₹ <%= c.getPricePerDay() %></td>
 
+    <!-- STATUS -->
     <td>
-        <!-- ✅ CANCEL (FIXED PARAM NAME) -->
-        <form action="CabBookingServlet" method="post" style="display:inline;">
-            <input type="hidden" name="bookingId" value="<%= c.getBookingId() %>">
-            <button type="submit" class="cancel-btn">Cancel</button>
-        </form>
+        <%= c.getStatus() %>
+    </td>
 
-        <!-- BOOK HOTEL -->
-        <a href="HotelListServlet?location=<%= c.getLocation() %>">
-            <button type="button" class="hotel-btn">Book Hotel</button>
-        </a>
+    <!-- ACTION -->
+    <td>
+        <% if(!"Cancelled".equalsIgnoreCase(c.getStatus())){ %>
+            <form action="CabBookingServlet" method="post">
+                <input type="hidden" name="bookingId" value="<%= c.getBookingId() %>">
+                <button type="submit" class="cancel-btn">Cancel</button>
+            </form>
+        <% } else { %>
+            <span class="cancelled">❌ Cancelled</span>
+        <% } %>
     </td>
 </tr>
 <%
@@ -101,15 +104,14 @@ if(list != null && !list.isEmpty()){
 } else {
 %>
 <tr>
-    <td colspan="4">No bookings found</td>
+    <td colspan="5">No bookings found</td>
 </tr>
 <%
 }
 %>
-
 </table>
 
-<a class="back-btn" href="VehicleListServlet">Back to Cabs</a>
+<a class="back-btn" href="Dashboard.jsp">⬅ Back to Dashboard</a>
 </div>
 
 </body>

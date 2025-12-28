@@ -30,67 +30,38 @@ public class CancelBookingServlet extends HttpServlet {
 
         User user = (User) session.getAttribute("userObj");
 
-        try {
-            int bookingId = Integer.parseInt(req.getParameter("bookingId"));
-            String type = req.getParameter("type").toUpperCase();
+        String bookingIdStr = req.getParameter("bookingId");
+        String serviceType  = req.getParameter("serviceType");
 
-            /* ================= CANCEL LOGIC ================= */
-            switch (type) {
-
-                case "HOTEL":
-                    new HotelBookingDAOImpl().cancelBooking(bookingId);
-                    break;
-
-                case "CAB":
-                    new CabDAO().cancelCabBooking(bookingId);
-                    break;
-
-                case "FLIGHT":
-                    new FlightBookingDAOImpl().cancelBooking(bookingId);
-                    break;
-
-                case "RESTAURANT":
-                    new RestaurantBookingDAOImpl().cancelBooking(bookingId);
-                    break;
-
-                default:
-                    session.setAttribute("cancelMsg", "❌ Invalid booking type!");
-                    resp.sendRedirect("MyBookingsServlet");
-                    return;
-            }
-
-            /* ================= EMAIL NOTIFICATION ================= */
-            String subject = "❌ " + type + " Booking Cancelled | TripEase";
-
-            String emailBody =
-                    "Hello " + user.getFull_name() + ",\n\n" +
-                    "Your booking has been successfully CANCELLED ❌\n\n" +
-                    "📌 Booking Type : " + type + "\n" +
-                    "🆔 Booking ID   : " + bookingId + "\n" +
-                    "📅 Status       : Cancelled\n\n" +
-                    "We’re sorry to see you cancel. We hope to serve you again soon!\n\n" +
-                    "— TripEase Team";
-
-            EmailUtil.sendEmail(
-                    user.getEmail(),
-                    subject,
-                    emailBody
-            );
-
-            /* ================= UI POPUP MESSAGE ================= */
-            session.setAttribute(
-                    "cancelMsg",
-                    "✅ " + type + " booking cancelled successfully! Email sent 📧"
-            );
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            session.setAttribute(
-                    "cancelMsg",
-                    "❌ Cancellation failed. Please try again."
-            );
+        if (bookingIdStr == null || serviceType == null) {
+            session.setAttribute("cancelMsg","❌ Invalid cancellation request.");
+            resp.sendRedirect("MyBookingsServlet");
+            return;
         }
 
+        int bookingId = Integer.parseInt(bookingIdStr);
+        serviceType = serviceType.toUpperCase();
+
+        switch (serviceType) {
+            case "HOTEL": new HotelBookingDAOImpl().cancelBooking(bookingId); break;
+            case "FLIGHT": new FlightBookingDAOImpl().cancelBooking(bookingId); break;
+            case "CAB": new CabDAO().cancelCabBooking(bookingId); break;
+            case "RESTAURANT": new RestaurantBookingDAOImpl().cancelBooking(bookingId); break;
+            default:
+                session.setAttribute("cancelMsg","❌ Invalid booking type.");
+                resp.sendRedirect("MyBookingsServlet");
+                return;
+        }
+
+        EmailUtil.sendEmail(
+            user.getEmail(),
+            "❌ Booking Cancelled | TripEase",
+            "Hello "+user.getFull_name()+
+            ",\n\nYour "+serviceType+" booking has been cancelled."
+        );
+
+        session.setAttribute("cancelMsg",
+            "✅ "+serviceType+" booking cancelled successfully!");
         resp.sendRedirect("MyBookingsServlet");
     }
 }

@@ -18,4 +18,5 @@ public interface FlightBookingDAO {
 
     // Get flight details by ID
     Flight getFlightById(int flightId);
+
 }

@@ -2,12 +2,13 @@ package UserDaopackage.com;
 
 import java.sql.*;
 import java.util.*;
+
 import dtopackage.com.Bookingg;
 import utilpackage.com.DBConnection;
 
 public class HotelBookingDAOImpl implements HotelBookingDAO {
 
-    // ================= SAVE BOOKING =================
+    /* ================= SAVE BOOKING ================= */
     @Override
     public boolean saveBooking(int userId, int hotelId, String checkin,
                                String checkout, int guests, double total) {
@@ -27,10 +28,7 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
             ps.setInt(5, guests);
             ps.setDouble(6, total);
 
-            int rows = ps.executeUpdate();
-            System.out.println("✅ Hotel booking inserted rows = " + rows);
-
-            return rows > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,7 +36,7 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
         return false;
     }
 
-    // ================= GET BOOKINGS =================
+    /* ================= GET BOOKINGS BY USER ================= */
     @Override
     public List<Bookingg> getBookingsByUser(int userId) {
 
@@ -46,7 +44,8 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
 
         String sql =
             "SELECT hb.booking_id, hb.user_id, hb.hotel_id, " +
-            "hb.check_in, hb.check_out, hb.guests, hb.total_amount, hb.booking_date, " +
+            "hb.check_in, hb.check_out, hb.guests, hb.total_amount, " +
+            "hb.booking_date, hb.status, " +          // 🔥 IMPORTANT
             "h.hotel_name, h.near_location " +
             "FROM hotel_booking hb " +
             "JOIN hotel h ON hb.hotel_id = h.hotel_id " +
@@ -69,6 +68,7 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
                 b.setGuests(rs.getInt("guests"));
                 b.setTotalAmount(rs.getDouble("total_amount"));
                 b.setBookingDate(rs.getTimestamp("booking_date"));
+                b.setStatus(rs.getString("status"));      // 🔥 FIX
                 b.setHotelName(rs.getString("hotel_name"));
                 b.setHotelLocation(rs.getString("near_location"));
 
@@ -82,9 +82,21 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
         return list;
     }
 
-	@Override
-	public void cancelBooking(int bookingId) {
-		// TODO Auto-generated method stub
-		
-	}
+    /* ================= CANCEL BOOKING ================= */
+    @Override
+    public void cancelBooking(int bookingId) {
+
+        String sql =
+            "UPDATE hotel_booking SET status='Cancelled' WHERE booking_id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

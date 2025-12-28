@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.*" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="dtopackage.com.User" %>
 <%@ page import="dtopackage.com.UserBooking" %>
@@ -21,12 +21,13 @@ SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy, hh:mm a");
 <html>
 <head>
 <title>My Bookings</title>
-
 <style>
+*{box-sizing:border-box}
+
 body{
-    background:#e8f5f3;
-    font-family:Poppins, sans-serif;
-    padding:20px;
+    background:#e8f5f3;                 /* SAME */
+    font-family:Poppins,sans-serif;
+    padding:30px;
 }
 
 .wrap{
@@ -37,139 +38,123 @@ body{
 /* BACK BUTTON */
 .back-btn{
     display:inline-block;
-    background:#008cff;
-    color:white;
-    padding:8px 16px;
-    border-radius:8px;
+    background:#008cff;                 /* SAME */
+    color:#fff;
+    padding:10px 18px;
+    border-radius:10px;
     text-decoration:none;
     font-weight:600;
-    margin-bottom:20px;
-}
-.back-btn:hover{
-    background:#006fd6;
+    margin-bottom:22px;
 }
 
+/* CARD */
 .card{
-    background:#fff;
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:16px;
-    box-shadow:0 6px 20px rgba(0,0,0,.08);
+    background:#fff;                    /* SAME */
+    border-radius:18px;
+    padding:20px 22px;
+    margin-bottom:18px;
+    box-shadow:0 10px 28px rgba(0,0,0,.10);
+    transition:transform .15s ease, box-shadow .15s ease;
 }
 
-.type{
-    font-weight:700;
-    color:#1f3a3d;
+.card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 36px rgba(0,0,0,.14);
+}
+
+.card h3{
+    margin:0 0 8px;
     font-size:18px;
+    font-weight:700;
 }
 
-.sub{
-    color:#555;
+.card p{
+    margin:4px 0;
     font-size:14px;
-    margin-top:4px;
+    line-height:1.4;
 }
 
-.total{
-    color:#28a745;
+/* PRICE */
+.price{
+    margin-top:8px;
+    font-size:18px;
     font-weight:800;
-    margin-top:6px;
+    color:#28a745;                      /* SAME */
 }
 
+/* BUTTON */
 .btn{
-    background:#ff5252;
+    margin-top:12px;
+    background:#ff5252;                 /* SAME */
     color:#fff;
     border:none;
-    padding:6px 14px;
-    border-radius:8px;
+    padding:8px 20px;
+    border-radius:20px;
     cursor:pointer;
-    margin-top:10px;
-    font-weight:600;
+    font-weight:700;
+    font-size:13px;
 }
 
 .btn:hover{
-    background:#e53935;
+    background:#e53935;                 /* SAME */
 }
 
+/* CANCELLED */
 .cancelled{
-    color:red;
+    margin-top:10px;
     font-weight:700;
-    margin-top:8px;
+    color:red;                          /* SAME */
 }
 </style>
 
+
 <script>
-/* ✅ CONFIRM BEFORE CANCEL */
-function confirmCancel() {
+function confirmCancel(){
     return confirm("⚠ Are you sure you want to cancel this booking?");
 }
 </script>
-
 </head>
 
 <body>
 
-<!-- ✅ SUCCESS POPUP AFTER CANCEL -->
 <%
-String cancelMsg = (String) session.getAttribute("cancelMsg");
-if (cancelMsg != null) {
+String msg = (String) session.getAttribute("cancelMsg");
+if (msg != null) {
 %>
-<script>
-    alert("<%= cancelMsg %>");
-</script>
+<script>alert("<%= msg %>");</script>
 <%
-    session.removeAttribute("cancelMsg");
+session.removeAttribute("cancelMsg");
 }
 %>
 
 <div class="wrap">
 
-<!-- 🔙 BACK TO DASHBOARD -->
 <a href="Dashboard.jsp" class="back-btn">⬅ Back to Dashboard</a>
 
 <h2>My Bookings</h2>
-<p>Welcome, <b><%= user.getFull_name() %></b></p>
 
-<% if (bookings == null || bookings.isEmpty()) { %>
-
-    <p>No bookings found.</p>
-
-<% } else {
-   for (UserBooking b : bookings) {
-%>
+<% for(UserBooking b : bookings){ %>
 
 <div class="card">
+    <h3><%= b.getIcon() %> <%= b.getBookingType() %></h3>
+    <p><b><%= b.getTitle() %></b></p>
+    <p><%= b.getSubtitle() %></p>
+    <p>Booked On: <%= sdf.format(b.getBookingDate()) %></p>
+    <div class="price">₹ <%= b.getAmount() %></div>
 
-    <div class="type">
-        <%= b.getIcon() != null ? b.getIcon() : "" %>
-        <%= b.getBookingType() %>
-    </div>
-
-    <div class="sub"><b><%= b.getTitle() %></b></div>
-    <div class="sub"><%= b.getSubtitle() %></div>
-
-    <% if (b.getBookingDate() != null) { %>
-        <div class="sub">
-            Booked On: <%= sdf.format(b.getBookingDate()) %>
-        </div>
-    <% } %>
-
-    <div class="total">₹ <%= b.getAmount() %></div>
-
-    <% if (!"Cancelled".equalsIgnoreCase(b.getStatus())) { %>
-
-        <form action="CancelBookingServlet" method="post" onsubmit="return confirmCancel();">
-            <input type="hidden" name="bookingId" value="<%= b.getBookingId() %>">
-            <input type="hidden" name="type" value="<%= b.getBookingType() %>">
-            <button class="btn">Cancel</button>
-        </form>
-
+    <% if(!"Cancelled".equalsIgnoreCase(b.getStatus())){ %>
+    <form action="CancelBookingServlet" method="post"
+          onsubmit="return confirmCancel();">
+        <input type="hidden" name="bookingId" value="<%= b.getBookingId() %>">
+        <input type="hidden" name="serviceType" value="<%= b.getServiceType() %>">
+        <button class="btn">Cancel Booking</button>
+    </form>
     <% } else { %>
         <div class="cancelled">❌ Cancelled</div>
     <% } %>
-
 </div>
 
-<% } } %>
+<% } %>
 
 </div>
 </body>

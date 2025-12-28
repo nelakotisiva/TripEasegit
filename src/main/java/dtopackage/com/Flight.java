@@ -1,5 +1,7 @@
 package dtopackage.com;
 
+import java.sql.Date;
+
 public class Flight {
 
     // ===== Flight master data =====
@@ -52,4 +54,15 @@ public class Flight {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    
+    private Date bookingDate;
+
+    public Date getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(Date bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
 }
