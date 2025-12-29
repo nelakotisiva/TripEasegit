@@ -1,10 +1,6 @@
 package UserDaopackage.com;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +10,12 @@ import utilpackage.com.DBConnection;
 public class FlightBookingDAOImpl implements FlightBookingDAO {
 
     private static final String INSERT_BOOKING =
-        "INSERT INTO flight_booking (user_id, flight_id, num_seats, travel_date) VALUES (?, ?, ?, ?)";
+        "INSERT INTO flight_booking (user_id, flight_id, num_seats, travel_date) " +
+        "VALUES (?, ?, ?, ?)";
 
     @Override
     public boolean bookFlight(int userId, int flightId, int seats, Date travelDate) {
+
         boolean result = false;
 
         try (Connection con = DBConnection.getConnection();
@@ -30,10 +28,34 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
 
             result = ps.executeUpdate() > 0;
 
+            // 🔥 INSERT INTO MAIN BOOKING TABLE
+            if (result) {
+                saveMainBooking(userId, flightId);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private void saveMainBooking(int userId, int flightId) {
+
+        String sql =
+            "INSERT INTO booking " +
+            "(user_id, destination_id, booking_date, status, service_type) " +
+            "VALUES (?, ?, CURDATE(), 'Confirmed', 'FLIGHT')";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            ps.setInt(2, flightId); // using flightId as reference
+            ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -70,16 +92,15 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
                 f.setPrice(rs.getDouble("price"));
                 list.add(f);
             }
-        } catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
-
     @Override
     public Flight getFlightById(int flightId) {
+
         Flight f = null;
 
         String sql = "SELECT * FROM flight WHERE flight_id = ?";
@@ -93,7 +114,7 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
             if (rs.next()) {
                 f = new Flight();
                 f.setFlightId(rs.getInt("flight_id"));
-                f.setAirline(rs.getString("airline"));   // 🔥 FIXED
+                f.setAirline(rs.getString("airline"));
                 f.setSource(rs.getString("source"));
                 f.setDestination(rs.getString("destination"));
                 f.setPrice(rs.getDouble("price"));
@@ -105,7 +126,6 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
         return f;
     }
 
-    
     public void cancelBooking(int bookingId) {
 
         String sql1 =
@@ -117,13 +137,11 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
 
         try (Connection con = DBConnection.getConnection()) {
 
-            // 🔹 Cancel flight_booking
             try (PreparedStatement ps1 = con.prepareStatement(sql1)) {
                 ps1.setInt(1, bookingId);
                 ps1.executeUpdate();
             }
 
-            // 🔹 Cancel main booking
             try (PreparedStatement ps2 = con.prepareStatement(sql2)) {
                 ps2.setInt(1, bookingId);
                 ps2.executeUpdate();
@@ -133,5 +151,4 @@ public class FlightBookingDAOImpl implements FlightBookingDAO {
             e.printStackTrace();
         }
     }
-
 }

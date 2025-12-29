@@ -203,7 +203,7 @@ body{
         <nav class="nav">
             <a href="AdminDashboard.jsp">Dashboard</a>
             <a href="ManageUsers">Users</a>
-            <a href="ManageBookings">Bookings</a>
+            <a href="AdminManageBookings">Bookings</a>
             <a href="ManageHotels">Hotels</a>
             <a href="AdminManageCabs">Cab Rentals</a>
             <a href="adminRestaurant?action=list">Restaurants</a>

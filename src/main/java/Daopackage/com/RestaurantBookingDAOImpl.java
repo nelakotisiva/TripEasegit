@@ -22,11 +22,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
 
             ps.setInt(1, rb.getUserId());
             ps.setInt(2, rb.getRestaurantId());
-
-            // DATE ONLY
-            ps.setDate(3,
-                new java.sql.Date(rb.getBookingDate1().getTime()));
-
+            ps.setDate(3, new java.sql.Date(rb.getBookingDate1().getTime()));
             ps.setInt(4, rb.getNumPeople());
             ps.setString(5, rb.getStatus());
 
@@ -106,7 +102,6 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
         return list;
     }
 
-    
     @Override
     public boolean cancelBooking(int bookingId) {
 
@@ -119,13 +114,11 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
 
         try (Connection con = DBConnection.getConnection()) {
 
-            // 🔹 Cancel in restaurant_booking
             try (PreparedStatement ps1 = con.prepareStatement(sql1)) {
                 ps1.setInt(1, bookingId);
                 ps1.executeUpdate();
             }
 
-            // 🔹 Cancel in main booking table
             try (PreparedStatement ps2 = con.prepareStatement(sql2)) {
                 ps2.setInt(1, bookingId);
                 ps2.executeUpdate();
@@ -139,8 +132,7 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
         return false;
     }
 
-    
-    
+    // 🔥 MAIN FIX IS HERE
     @Override
     public void saveServiceBooking(int userId,
                                    int destinationId,
@@ -149,18 +141,16 @@ public class RestaurantBookingDAOImpl implements RestaurantBookingDAO {
 
         String sql =
             "INSERT INTO booking " +
-            "(user_id, destination_id, booking_date, status, num_of_people) " +
-            "VALUES (?, ?, ?, 'Confirmed', ?)";
+            "(user_id, destination_id, booking_date, status, num_of_people, service_type) " +
+            "VALUES (?, ?, ?, 'Confirmed', ?, 'RESTAURANT')";
 
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, userId);
             ps.setInt(2, destinationId);
-            ps.setDate(3,
-                new java.sql.Date(bookingDate1.getTime()));
+            ps.setDate(3, new java.sql.Date(bookingDate1.getTime()));
             ps.setInt(4, numPeople);
-
             ps.executeUpdate();
 
         } catch (Exception e) {

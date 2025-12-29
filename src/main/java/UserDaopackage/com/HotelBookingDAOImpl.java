@@ -10,31 +10,61 @@ public class HotelBookingDAOImpl implements HotelBookingDAO {
 
     /* ================= SAVE BOOKING ================= */
     @Override
-    public boolean saveBooking(int userId, int hotelId, String checkin,
-                               String checkout, int guests, double total) {
+    public boolean saveBooking(int userId, int hotelId,
+            String checkin, String checkout,
+            int guests, double total) {
 
-        String sql =
-            "INSERT INTO hotel_booking " +
-            "(user_id, hotel_id, check_in, check_out, guests, total_amount) " +
-            "VALUES (?, ?, ?, ?, ?, ?)";
+Connection con = null;
+PreparedStatement ps1 = null;
+PreparedStatement ps2 = null;
+ResultSet rs = null;
 
-        try (Connection con = DBConnection.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+try {
+con = DBConnection.getConnection();
+con.setAutoCommit(false);
 
-            ps.setInt(1, userId);
-            ps.setInt(2, hotelId);
-            ps.setString(3, checkin);
-            ps.setString(4, checkout);
-            ps.setInt(5, guests);
-            ps.setDouble(6, total);
+/* 1️⃣ INSERT INTO booking */
+String bookingSql =
+"INSERT INTO booking " +
+"(user_id, service_type, booking_date, status) " +
+"VALUES (?, 'HOTEL', NOW(), 'Confirmed')";
 
-            return ps.executeUpdate() > 0;
+ps1 = con.prepareStatement(bookingSql, Statement.RETURN_GENERATED_KEYS);
+ps1.setInt(1, userId);
+ps1.executeUpdate();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+rs = ps1.getGeneratedKeys();
+if (!rs.next()) return false;
+
+int bookingId = rs.getInt(1);
+
+/* 2️⃣ INSERT INTO hotel_booking */
+String hotelSql =
+"INSERT INTO hotel_booking " +
+"(booking_id, user_id, hotel_id, check_in, check_out, guests, total_amount, status) " +
+"VALUES (?, ?, ?, ?, ?, ?, ?, 'Confirmed')";
+
+ps2 = con.prepareStatement(hotelSql);
+ps2.setInt(1, bookingId);
+ps2.setInt(2, userId);
+ps2.setInt(3, hotelId);
+ps2.setString(4, checkin);
+ps2.setString(5, checkout);
+ps2.setInt(6, guests);
+ps2.setDouble(7, total);
+
+ps2.executeUpdate();
+
+con.commit();
+return true;
+
+} catch (Exception e) {
+try { con.rollback(); } catch (Exception ex) {}
+e.printStackTrace();
+}
+return false;
+}
+
 
     /* ================= GET BOOKINGS BY USER ================= */
     @Override

@@ -103,7 +103,7 @@ button:hover{
     <!-- HEADER WITH BACK BUTTON -->
     <div class="header">
         <h2>Edit Booking</h2>
-        <a href="ManageBookings" class="back-btn">Back</a>
+        <a href="AdminManageBookings" class="back-btn">Back</a>
     </div>
 
     <form action="EditBooking" method="post">

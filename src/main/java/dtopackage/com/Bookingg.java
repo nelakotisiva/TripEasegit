@@ -1,5 +1,6 @@
 package dtopackage.com;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Bookingg {
@@ -107,4 +108,17 @@ public class Bookingg {
     public void setHotelLocation(String hotelLocation) {
         this.hotelLocation = hotelLocation;
     }
+
+    private Date bookingDate1;
+
+    public Date getBookingDate1() {
+		return bookingDate1;
+	}
+
+	public void setBookingDate1(Date bookingDate1) {
+		this.bookingDate1 = bookingDate1;
+	}
+
+	
+   
 }

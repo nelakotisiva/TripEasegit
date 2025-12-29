@@ -212,5 +212,29 @@ public class BookingDAOImpl implements BookingDAO {
         return list;
     }
 
+    public String getUserEmailByBookingId(int bookingId) {
+
+        String sql =
+            "SELECT u.email " +
+            "FROM booking b " +
+            "JOIN user u ON b.user_id = u.user_id " +
+            "WHERE b.booking_id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, bookingId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("email");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

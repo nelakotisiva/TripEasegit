@@ -12,14 +12,14 @@ import jakarta.mail.internet.MimeMessage;
 
 public class EmailUtil {
 
-    public static void sendEmail(String to, String subject, String messageText) {
+    // 🔐 Sender Email (TripEase official)
+    private static final String FROM_EMAIL = "tripeaseproject@gmail.com";
 
-        // 🔐 Sender Email
-        final String fromEmail = "tripeaseproject@gmail.com";
+    // 🔐 Gmail App Password
+    // ⚠️ Later move this to environment variable
+    private static final String APP_PASSWORD = "tmnebphgwppuxlhw";
 
-        // 🔐 Gmail App Password
-        // (Later you can move this to env variable)
-        final String password = "tmnebphgwppuxlhw";
+    private static Session getSession() {
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -27,17 +27,23 @@ public class EmailUtil {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
 
-        Session session = Session.getInstance(props,
+        return Session.getInstance(props,
             new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(fromEmail, password);
+                    return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
                 }
             });
+    }
+
+    // =============================
+    // 📧 SEND PLAIN TEXT EMAIL
+    // =============================
+    public static void sendEmail(String to, String subject, String messageText) {
 
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(fromEmail));
+            Message message = new MimeMessage(getSession());
+            message.setFrom(new InternetAddress(FROM_EMAIL));
             message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse(to)
@@ -47,10 +53,35 @@ public class EmailUtil {
 
             Transport.send(message);
 
-            System.out.println("✅ Email sent successfully");
+            System.out.println("✅ Email sent to: " + to);
 
         } catch (Exception e) {
             System.out.println("❌ Email sending failed");
+            e.printStackTrace();
+        }
+    }
+
+    // =============================
+    // 📧 SEND HTML EMAIL (OPTIONAL)
+    // =============================
+    public static void sendHtmlEmail(String to, String subject, String htmlContent) {
+
+        try {
+            MimeMessage message = new MimeMessage(getSession());
+            message.setFrom(new InternetAddress(FROM_EMAIL));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(to)
+            );
+            message.setSubject(subject);
+            message.setContent(htmlContent, "text/html; charset=UTF-8");
+
+            Transport.send(message);
+
+            System.out.println("✅ HTML Email sent to: " + to);
+
+        } catch (Exception e) {
+            System.out.println("❌ HTML Email sending failed");
             e.printStackTrace();
         }
     }

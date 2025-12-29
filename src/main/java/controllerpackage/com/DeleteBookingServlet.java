@@ -31,7 +31,7 @@ public class DeleteBookingServlet extends HttpServlet {
         try {
             bookingId = Integer.parseInt(idParam);
         } catch (NumberFormatException e) {
-            resp.sendRedirect("ManageBookings?msg=Invalid+booking+id");
+            resp.sendRedirect("AdminManageBookings?msg=Invalid+booking+id");
             return;
         }
 
@@ -39,9 +39,9 @@ public class DeleteBookingServlet extends HttpServlet {
         boolean result = dao.deleteBooking(bookingId);
 
         if (result) {
-            resp.sendRedirect("ManageBookings?msg=Booking+Deleted+Successfully");
+            resp.sendRedirect("AdminManageBookings?msg=Booking+Deleted+Successfully");
         } else {
-            resp.sendRedirect("ManageBookings?msg=Delete+Failed");
+            resp.sendRedirect("AdminManageBookings?msg=Delete+Failed");
         }
     }
 }
