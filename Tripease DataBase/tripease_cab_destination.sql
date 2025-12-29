@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: tripease
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,34 +16,29 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `review`
+-- Table structure for table `cab_destination`
 --
 
-DROP TABLE IF EXISTS `review`;
+DROP TABLE IF EXISTS `cab_destination`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `review` (
-  `review_id` int NOT NULL,
-  `booking_id` int DEFAULT NULL,
-  `user_id` int DEFAULT NULL,
-  `rating` int DEFAULT NULL,
-  `comment` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`review_id`),
-  UNIQUE KEY `review_id_UNIQUE` (`review_id`),
-  KEY `booking_id_idx` (`booking_id`),
-  KEY `user_id_idx` (`user_id`),
-  CONSTRAINT `fk_review_booking` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`) ON DELETE CASCADE,
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `cab_destination` (
+  `destination_id` int NOT NULL AUTO_INCREMENT,
+  `location` varchar(100) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`destination_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `review`
+-- Dumping data for table `cab_destination`
 --
 
-LOCK TABLES `review` WRITE;
-/*!40000 ALTER TABLE `review` DISABLE KEYS */;
-/*!40000 ALTER TABLE `review` ENABLE KEYS */;
+LOCK TABLES `cab_destination` WRITE;
+/*!40000 ALTER TABLE `cab_destination` DISABLE KEYS */;
+INSERT INTO `cab_destination` VALUES (1,'Hyderabad','City cab services','hyd.jpg'),(2,'Bangalore','IT hub cabs','blr.jpg'),(3,'Chennai','Coastal city cabs','chn.jpg'),(4,'Mumbai','Metro city cabs','mum.jpg');
+/*!40000 ALTER TABLE `cab_destination` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-15  0:19:48
+-- Dump completed on 2025-12-29 11:03:39

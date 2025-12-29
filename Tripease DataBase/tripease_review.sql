@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: tripease
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,35 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `user`
+-- Table structure for table `review`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `user_id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `full_name` varchar(45) NOT NULL,
-  `phone` bigint NOT NULL,
-  `role` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`user_id`),
-  UNIQUE KEY `user_id_UNIQUE` (`user_id`),
-  UNIQUE KEY `email_UNIQUE` (`email`),
-  UNIQUE KEY `phone_UNIQUE` (`phone`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `review` (
+  `review_id` int NOT NULL,
+  `booking_id` int DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  `rating` int DEFAULT NULL,
+  `comment` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`review_id`),
+  UNIQUE KEY `review_id_UNIQUE` (`review_id`),
+  KEY `booking_id_idx` (`booking_id`),
+  KEY `user_id_idx` (`user_id`),
+  CONSTRAINT `fk_review_booking` FOREIGN KEY (`booking_id`) REFERENCES `booking` (`booking_id`) ON DELETE CASCADE,
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `review`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'erriswamy','1234','erriswamy@gmail.com','Erriswamy',9380046055,'developer'),(2,'jack','1234','jack@gmail.com','jack',1234567890,'developer'),(3,'deny','1234','deny@gmail.com','deny',565445477,'Hacker'),(4,'deny','1234','Gibis@gmail.com','deny',5654454768,'HR'),(8,'banty@gmail.com','8888','banty@gmail.com','banty',9848883848,'Hacker');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `review` WRITE;
+/*!40000 ALTER TABLE `review` DISABLE KEYS */;
+/*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -56,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-15  0:19:48
+-- Dump completed on 2025-12-29 11:03:40

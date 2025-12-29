@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: tripease
 -- ------------------------------------------------------
--- Server version	8.0.43
+-- Server version	8.0.42
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,11 +28,12 @@ CREATE TABLE `flight_booking` (
   `flight_id` int DEFAULT NULL,
   `num_seats` int DEFAULT NULL,
   `travel_date` date DEFAULT NULL,
+  `status` varchar(20) DEFAULT 'Confirmed',
   PRIMARY KEY (`booking_id`),
   KEY `flight_id` (`flight_id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `flight_booking_ibfk_1` FOREIGN KEY (`flight_id`) REFERENCES `flight` (`flight_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +42,7 @@ CREATE TABLE `flight_booking` (
 
 LOCK TABLES `flight_booking` WRITE;
 /*!40000 ALTER TABLE `flight_booking` DISABLE KEYS */;
-INSERT INTO `flight_booking` VALUES (1,3,1,1,'2025-12-06'),(2,3,40,1,'2025-12-08'),(3,3,1,1,'2025-12-04'),(4,3,1,1,'2025-12-25'),(5,3,1,1,'2025-12-11'),(6,3,40,1,'2025-12-11'),(7,3,1,1,'2025-12-11'),(8,3,17,1,'2025-12-24'),(9,3,1,1,'2025-12-17'),(16,8,2,1,'2025-12-07'),(17,8,40,1,'2025-12-07'),(18,8,2,1,'2025-12-07'),(19,8,2,1,'2025-12-08'),(20,8,1,1,'2025-12-07'),(21,8,18,1,'2025-12-07'),(22,8,1,1,'2025-12-10'),(23,8,2,1,'2025-12-11'),(24,8,2,5,'2025-12-12'),(25,8,1,2,'2026-04-04'),(26,8,2,3,'0026-12-20'),(27,8,1,2,'2025-12-15'),(28,8,2,2,'2025-12-15');
+INSERT INTO `flight_booking` VALUES (1,3,13,1,'2025-12-29','Cancelled'),(2,3,1,1,'2025-12-29','Cancelled'),(3,3,13,1,'2025-12-29','Cancelled'),(4,3,13,1,'2025-12-29','Confirmed'),(5,3,13,1,'2025-12-29','Cancelled'),(6,3,2,1,'2025-12-29','Confirmed'),(7,3,13,1,'2025-12-29','Confirmed'),(8,3,13,1,'2025-12-30','Confirmed'),(9,3,13,1,'2025-12-30','Confirmed'),(10,1,13,1,'2025-12-30','Confirmed'),(11,3,13,1,'2025-12-30','Confirmed'),(12,18,13,1,'2025-12-30','Confirmed');
 /*!40000 ALTER TABLE `flight_booking` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-12-15  0:19:51
+-- Dump completed on 2025-12-29 11:03:40
